@@ -4,4 +4,4 @@ TriangleRaw = "23e41cea-d446-4615-b08b-3b0251e4039d"
 
 [compat]
 Documenter = "0.24"
-TriangleRaw = "0.1.0"
+
