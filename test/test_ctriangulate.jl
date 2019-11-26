@@ -7,10 +7,10 @@ function test()
     faces=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
     faceregions=Matrix{Cint}([1 2 3 4]')
     regionpoints=Matrix{Cdouble}([0.5 0.5 1 0.01;]')
-    regionnumbers=[1]
     triin=TriangleRaw.CTriangulateIO()
     triout=TriangleRaw.CTriangulateIO()
     vorout=TriangleRaw.CTriangulateIO()
+    
     triin.numberofpoints=Cint(size(nodes,2))
     triin.pointlist=pointer(nodes)
     triin.numberofsegments=size(faces,2)
@@ -19,18 +19,8 @@ function test()
     triin.numberofregions=size(regionpoints,2)
     triin.regionlist=pointer(regionpoints)
     
-    TriangleRaw.triangulate("paAqQ",triin,triout,vorout)
-    return true
+    triangulate("paAqQ",triin,triout,vorout)
 
-    # points = convert(Array{Float64,2}, Base.unsafe_wrap(Array, triout.pointlist, (2,Int(triout.numberofpoints)), own=true))
-    # cells  = convert(Array{Int32,2}, Base.unsafe_wrap(Array, triout.trianglelist, (2,Int(triout.numberoftriangles)), own=true))
-    # bfaces = convert(Array{Int32,2}, Base.unsafe_wrap(Array, triout.segmentlist, (2,Int(triout.numberofsegments)), own=true))
-    # cellregions=convert(Array{Float64,1}, Base.unsafe_wrap(Array, triout.triangleattributelist, (Int(triout.numberoftriangles)), own=true))
-    # bfaceregions=convert(Array{Int32,1}, Base.unsafe_wrap(Array, triout.segmentmarkerlist, (Int(triout.numberofsegments)), own=true))
-    # cellregions=Vector{Int32}(cellregions)
-    
-    # grid=VoronoiFVM.Grid(points,cells,cellregions,bfaces,bfaceregions)
-    
-    # num_nodes(grid)==177 && num_cells(grid)==319 && num_bfaces(grid)==33
+    triout.numberofpoints==177 && triout.numberoftriangles==319 && triout.numberofsegments==33
 end
 end

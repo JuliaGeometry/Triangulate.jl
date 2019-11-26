@@ -7,9 +7,10 @@ function test()
     triin.segmentlist=Matrix{Int32}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
     triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
     triin.regionlist=Matrix{Float64}([0.5 0.5 1 0.01;]')
-#    grid=VoronoiFVM.Grid("paAqQ",triin)
-    #    num_nodes(grid)==177 && num_cells(grid)==319 && num_bfaces(grid)==33
-    return true
+
+    (triout, vorout)=triangulate("paAqQ", triin)
+
+    size(triout.pointlist,2)==177 && size(triout.trianglelist,2)==319 && size(triout.segmentlist,2)==33
 end
 end
 
