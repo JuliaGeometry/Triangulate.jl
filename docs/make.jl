@@ -8,16 +8,16 @@ function make_all()
         modules = [TriangleRaw],
         clean = true,
         doctest = false,
-        authors = "J. Fuhrmann, ...",
-#        repo="https://github.com/j-fu/VoronoiFVM.jl",
+        authors = "Juergen Fuhrmann, Francesco Furiani, Konrad Simon",
+        repo="https://github.com/j-fu/TriangleRaw.jl",
         pages=[ 
             "Home"=>"index.md",
-            ]
-
+            "triangle-h.md"
+        ]
     )
     
     if !isinteractive()
-        deploydocs(repo = "github.com/j-fu/VoronoiFVM.jl.git")
+        deploydocs(repo = "github.com/j-fu/TriangleRaw.jl.git")
     end
 end
 

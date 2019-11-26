@@ -1,5 +1,9 @@
+# Methods and structs from this file are not meant to be part ot the public interface, so
+# Documentation is in the comments, but not filed to Documenter.
 #
-# Prepare shared lib calls
+
+#
+# Prepare shared library calls
 #
 const basedir=Base.@__DIR__
 const depsdir=basedir*"/../deps/"
@@ -19,13 +23,17 @@ const libtriangle = depsdir*"usr/lib/libtriangle"*libsuffix
 
 
 if ~isfile(libtriangle)
-    Base.@error("Triangle library not found. Please run `Pkg.build(\"VoronoiFVM\")` first.")
+    Base.@error("Triangle library not found. Please run `Pkg.build(\"TriangleRaw\")` first.")
 end
 
 #
-# Struct maping Triangle's triangulateio
+# Struct mapping Triangle's triangulateio
+#
+# We use a mutable struct because we need fields to be able  initialized
+# in differerent ways.
 #
 mutable struct CTriangulateIO
+
     pointlist :: Ptr{Cdouble}
     pointattributelist :: Ptr{Cdouble}
     pointmarkerlist :: Ptr{Cint}
@@ -57,7 +65,7 @@ mutable struct CTriangulateIO
 end 
 
 #
-# Constructor for `CTriangulateIO`. Initialize everything as `NULL`. Only for internal use.
+# Constructor for `CTriangulateIO`. Initializes everything as `NULL`. 
 # 
 function CTriangulateIO()
     return CTriangulateIO(C_NULL, C_NULL, C_NULL, 0, 0,
