@@ -3,8 +3,5 @@ Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 TriangleRaw = "23e41cea-d446-4615-b08b-3b0251e4039d"
 
 [compat]
-DocStringExtensions = "0.8"
-Documenter = "0.23"
+Documenter = "0.24"
 TriangleRaw = "0.1.0"
-
-
