@@ -11,5 +11,6 @@ export TriangulateIO
 export numberofpoints
 export numberofsegments
 export numberoftriangles
+export isplots, ispyplot
 
 end # module Triangle

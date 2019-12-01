@@ -1,11 +1,19 @@
 #
-# Plotting routines. The only public one here is plot()
+# Plotting routines.
 #
 
-# Heuristic check if Plotter is PyPlot
+"""
+$(TYPEDSIGNATURES)
+
+Heuristic check if Plotter is PyPlot
+"""
 ispyplot(Plotter::Module)=isdefined(Plotter,:Gcf)
 
-# Heuristic check if Plotter is Plots
+"""
+$(TYPEDSIGNATURES)
+
+Heuristic check if Plotter is Plots
+"""
 isplots(Plotter::Module)=isdefined(Plotter,:gr)
 
 # Plot color scale for grid colors.

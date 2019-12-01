@@ -4,7 +4,7 @@
 # These are a couple of more or less useful first examples which at the
 # same time serve as tests. They can be loaded into Julia by
 # `includet("examples/TriangleExamples.jl")` and run via e.g.
-# `TriangleExamples.main(plotter="PyPlot",example="convexhull")`
+# `TriangleExamples.main(plotter=PyPlot,example="convexhull")`
 # 
 # 
 module TriangleExamples
@@ -13,26 +13,13 @@ module TriangleExamples
 using TriangleRaw
 using Test
 
-#
-# We make the use of a plot package optional and handle this here.
-# In particular, tests will not depend on PyPlot or Plots installed.
-#
-using Pkg
-installed(pkg)=haskey(Pkg.installed(),pkg)
-
-if installed("PyPlot")
-    using PyPlot
-end
-
-function ispyplot(plotter)
-    plotter=="PyPlot" && installed(plotter)
-end
 
 #
 # Plot a pair of input and output triangulateio structs
 #
-function plotpair(plotter, triin, triout;title="")
-    if ispyplot(plotter)
+function plotpair(Plotter::Module, triin, triout;title="")
+    if ispyplot(Plotter)
+        PyPlot=Plotter
         PyPlot.clf()
         PyPlot.suptitle(title)
         PyPlot.subplot(121)
@@ -47,18 +34,18 @@ end
 
 #
 # This function can be called interactively
-# with `plotter ="PyPlot"` and example set to one
+# with `Plotter =PyPlot` and example set to one
 # of the example strings. "Plots" is in the making...
 #
 # At the same time it is used as part of the
 # runtime tests.
-function main(;plotter="PyPlot", example="all")
+function main(;Plotter=TriangleRaw, example="all")
    
     do_example(ex)= example==ex || example=="all"
 
     # Handle plot setup
-    if ispyplot(plotter)
-        fig = PyPlot.matplotlib.pyplot.gcf()
+    if ispyplot(Plotter)
+        fig = Plotter.matplotlib.pyplot.gcf()
         fig.set_size_inches(10,5)
     end
     
@@ -69,7 +56,7 @@ function main(;plotter="PyPlot", example="all")
         (triout, vorout)=triangulate("c", triin)
         @test numberofpoints(triin)==numberofpoints(triout)
         @test numberofsegments(triout)>0
-        plotpair(plotter,triin,triout,title=example)
+        plotpair(Plotter,triin,triout,title=example)
     end
 
     # Constrained Delaunay triangulation 
@@ -81,7 +68,7 @@ function main(;plotter="PyPlot", example="all")
         (triout, vorout)=triangulate("pc", triin)
         @test numberofpoints(triin)<=numberofpoints(triout)
         @test numberofsegments(triout)>0
-        plotpair(plotter,triin,triout,title=example)
+        plotpair(Plotter,triin,triout,title=example)
     end
     
     # Delaunay triangulation of pointset
@@ -93,7 +80,7 @@ function main(;plotter="PyPlot", example="all")
         (triout, vorout)=triangulate("Dpc", triin)
         @test numberofpoints(triin)<=numberofpoints(triout)
         @test numberofsegments(triout)>0
-        plotpair(plotter,triin,triout,title=example)
+        plotpair(Plotter,triin,triout,title=example)
     end
     
     # Delaunay triangulation of domain
@@ -106,7 +93,7 @@ function main(;plotter="PyPlot", example="all")
         @test numberofpoints(triout)==87
         @test numberofsegments(triout)==21
         @test numberoftriangles(triout)==151
-        plotpair(plotter,triin,triout,title=example)
+        plotpair(Plotter,triin,triout,title=example)
     end
     # Boundary conforming Delaunay triangulation of domain
     if do_example("ddomain")
@@ -118,7 +105,7 @@ function main(;plotter="PyPlot", example="all")
         @test numberofpoints(triout)==84
         @test numberofsegments(triout)==32
         @test numberoftriangles(triout)==134
-        plotpair(plotter,triin,triout,title=example)
+        plotpair(Plotter,triin,triout,title=example)
     end
 
     # Example with local refinement calling user triunsuitable function
@@ -147,7 +134,7 @@ function main(;plotter="PyPlot", example="all")
         @test numberofpoints(triout)==420
         @test numberofsegments(triout)==48
         @test numberoftriangles(triout)==790
-        plotpair(plotter,triin,triout,title=example)
+        plotpair(Plotter,triin,triout,title=example)
     end
     true
 end
@@ -156,7 +143,7 @@ end
 # Called by runtest.
 #
 function test()
-    main(;plotter="none", example="all")
+    main(;Plotter=TriangleRaw, example="all")
 end
 
 # End of module
