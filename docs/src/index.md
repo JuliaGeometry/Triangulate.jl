@@ -36,9 +36,6 @@ of Triangle.
 
 ```@autodocs
 Modules = [TriangleRaw]
-Pages = [ 
-"triangulateio.jl"
-]
-Order = [:type,:function]
+Pages = [ "triangulateio.jl", "plot.jl"]
 ```
 

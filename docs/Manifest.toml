@@ -59,6 +59,12 @@ uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 deps = ["Libdl"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
+[[Literate]]
+deps = ["Base64", "JSON", "REPL"]
+git-tree-sha1 = "463a0fe61a863fe1098f45a80eade3ed04f6586e"
+uuid = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
+version = "2.2.0"
+
 [[Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
 
@@ -118,7 +124,7 @@ uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[TriangleRaw]]
 deps = ["BinDeps", "DocStringExtensions", "Test"]
-git-tree-sha1 = "b1cfbe01ebc78657a89272aa5af5ba581a806282"
+git-tree-sha1 = "9d082bd78cccc15c71fad9e6c3fe08c79c03b701"
 repo-rev = "master"
 repo-url = "https://github.com/j-fu/TriangleRaw.jl"
 uuid = "23e41cea-d446-4615-b08b-3b0251e4039d"

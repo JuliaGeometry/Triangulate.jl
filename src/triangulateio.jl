@@ -1,4 +1,11 @@
-##################################################################################
+#
+# Triangulateio structure and public interface methods
+#
+# Public interface methods have docstrings, internal ones
+# comments.
+
+
+#########################################################
 """
 $(TYPEDEF)
 
@@ -17,6 +24,7 @@ Arrays are used to store points, triangles, markers, and so forth.
 Description of fields:
 
 $(TYPEDFIELDS)
+
 """
 mutable struct TriangulateIO
 
@@ -126,12 +134,42 @@ mutable struct TriangulateIO
     normlist :: Array{Cdouble,2}
 end 
 
+
+
 ##########################################################
 """
 $(TYPEDSIGNATURES)
 
+Return number of points in triangulatio structure.
 
-Create TriangulateIO structure with empty arrays.
+"""
+numberofpoints(tio::TriangulateIO)=size(tio.pointlist,2)
+
+
+##########################################################
+"""
+$(TYPEDSIGNATURES)
+
+Return number of segments in triangulateio structure.
+
+"""
+numberofsegments(tio::TriangulateIO)=size(tio.segmentlist,2)
+
+##########################################################
+"""
+$(TYPEDSIGNATURES)
+
+Return number of triangles in triangulateio structure.
+
+"""
+numberoftriangles(tio::TriangulateIO)=size(tio.trianglelist,2)
+
+##########################################################
+"""
+$(TYPEDSIGNATURES)
+
+Create TriangulateIO structure with empty data.
+
 """
 function TriangulateIO()
     return TriangulateIO(Array{Cdouble,2}(undef,0,0), # poinlist
@@ -238,7 +276,7 @@ function TriangulateIO(ctio::CTriangulateIO)
         tio.trianglearealist=convert(Array{Cdouble,1}, Base.unsafe_wrap(Array, ctio.trianglearealist, (Int(ctio.numberoftriangles)), own=true))
     end
 
-    if ctio.numberofsegments>0
+    if ctio.numberofsegments>0  && ctio.segmentlist!=C_NULL && ctio.segmentmarkerlist!=C_NULL
         tio.segmentlist=convert(Array{Cint,2}, Base.unsafe_wrap(Array, ctio.segmentlist, (2,Int(ctio.numberofsegments)), own=true))
         tio.segmentmarkerlist=convert(Array{Cint,1}, Base.unsafe_wrap(Array, ctio.segmentmarkerlist, (Int(ctio.numberofsegments)), own=true))
     end
@@ -323,4 +361,41 @@ function triangulate(switches::String, tri_in::TriangulateIO)
     vor_out=TriangulateIO(cvor_out)
     return out,vor_out
 end
+
+
+##########################################################
+"""
+$(TYPEDSIGNATURES)
+
+Set triunsuitable callback used by Triangle if the '-u' flag is set.
+
+This is a function called by Triangle with the coordinates of the vertices
+of a triangle in order to learn if that triangle needs further 
+refinement (i.e. 'true' returned) or not ('false' returned).
+
+Other checks (e.g. maximum edge lengths) are possible here as well.
+
+Note, that the handling of this function is currently not thread safe.
+````
+function unsuitable(x1,y1,x2,y2,x3,y3,area)
+    myarea=locally_desired_area(x1,y1,x2,y2,x3,y3)
+    if area>myarea 
+       return true
+    else 
+       return false
+    end
+end
+````
+
+"""
+function triunsuitable(unsuitable::Function;check_signature=true)
+    global triunsuitable_func
+    if check_signature
+        unsuitable(1,2,3,4,5,6,7)
+    end
+    triunsuitable_func=unsuitable
+    nothing
+end
+
+
 

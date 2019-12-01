@@ -33,5 +33,6 @@ end
 
 @time begin
     run_tests_from_directory(@__DIR__,"test_")
+    run_tests_from_directory(joinpath(@__DIR__,"..","examples"),"Triangle")
 end
 

@@ -1,7 +1,8 @@
 # Methods and structs from this file are not meant to be part ot the public interface, so
-# Documentation is in the comments, but not filed to Documenter.
+# documentation is in the comments, no docstrings here.
 #
 
+###############################################################
 #
 # Prepare shared library calls
 #
@@ -25,6 +26,58 @@ const libtriangle = depsdir*"usr/lib/libtriangle"*libsuffix
 if ~isfile(libtriangle)
     Base.@error("Triangle library not found. Please run `Pkg.build(\"TriangleRaw\")` first.")
 end
+
+
+###############################################################
+# Check for LC_NUMERIC
+# Possibly there are other options to handle this, e.g. replace strtod call in triangle
+# See e.g.  https://github.com/JuliaLang/julia/issues/5928
+# It might be the case that this problem occurs only in vendor distributions of Julia
+
+
+function checklocale()
+    if ccall((:strtod), Cdouble, (Cstring,), "0.5")!=0.5
+        print(
+            """ 
+
+             Triangle uses  the C  library function strtod  to convert
+             strings to double numbers.   The interpretation of double
+             numbers  (whether  they  are  written with  ','  or  '.')
+             depends on  the language  settings of your  computer.  In
+             order  to ensure  portability  of  programs written  with
+             TriangleRaw.jl, one should insist  on assuming '.' as the
+             decimal point.
+
+             In  the moment,  due to  whatever reason  (e.g. due  to a
+             change  of  settings  performed  by  PyPlot),  the  wrong
+             behavior has been detected.  The correct behaviour can be
+             enforced by setting the environment variable 'LC_NUMERIC'
+             to 'C' before starting Julia.
+
+             See e.g. https://github.com/JuliaComputing/TextParse.jl/issues/30
+         """)
+        error("Missing or wrong value of LC_NUMERIC")
+        return false
+    end
+    true
+end
+
+###############################################################
+# Handling of triunsuitable callback
+
+# Trivial default trinunsuitable function
+function trivial_triunsuitable(org_x, org_y, dest_x, dest_y, apex_x, apex_y, area)
+    return 0
+end
+
+# Global variable containing triunsuitable function
+triunsuitable_func=trivial_triunsuitable
+
+# triunsuitable function called from C (by triangulate(::ctriangulateio)) if -u flag has been set
+function jl_wrap_triunsuitable(org_x::Cdouble, org_y::Cdouble, dest_x::Cdouble, dest_y::Cdouble, apex_x::Cdouble, apex_y::Cdouble, area::Cdouble)::Cint
+    return Cint(triunsuitable_func(org_x, org_y, dest_x, dest_y, apex_x, apex_y, area))
+end
+
 
 #
 # Struct mapping Triangle's triangulateio
@@ -80,7 +133,21 @@ end
 #
 # "Raw" triangulation call to Triangle library
 #
-function triangulate(triangle_switches::String, ctio_in::CTriangulateIO, ctio_out::CTriangulateIO, vor_out::CTriangulateIO)
+function triangulate(triangle_switches::String,
+                     ctio_in::CTriangulateIO,
+                     ctio_out::CTriangulateIO,
+                     vor_out::CTriangulateIO)
+
+    # Check locale settings for decimal point
+    checklocale()
+
+    # Set unsuitable callback
+    if occursin("u",triangle_switches)
+        c_wrap_triunsuitable=@cfunction(jl_wrap_triunsuitable, Cint, (Cdouble,Cdouble,Cdouble,Cdouble,Cdouble,Cdouble,Cdouble,))
+        ccall((:triunsuitable_callback,libtriangle),Cvoid,(Ptr{Cvoid},),c_wrap_triunsuitable)
+    end
+    
+    # Call triangulate
     ccall((:triangulate,libtriangle),
           Cvoid,
           ( Cstring,
