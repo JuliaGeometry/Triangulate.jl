@@ -36,7 +36,8 @@ end
 
 
 function checklocale()
-    if ccall((:strtod), Cdouble, (Cstring,), "0.5")!=0.5
+    endptr::Ptr{Ptr{UInt8}}=C_NULL
+    if ccall((:strtod), Cdouble, (Cstring,Ptr{Ptr{UInt8}},), "0.5",endptr)!=0.5
         print(
             """ 
 
