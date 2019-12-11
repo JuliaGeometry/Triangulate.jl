@@ -9,25 +9,25 @@
 # 
 module TriangleExamples
 
-# Include TriangleRaw and Test module
-using TriangleRaw
+# Include TriangulateIO and Test module
+using TriangulateIO
 using Test
 
 
 #
 # Plot a pair of input and output triangulateio structs
 #
-function plotpair(Plotter::Module, triin, triout;title="")
+function plotpair(Plotter, triin, triout;title="")
     if ispyplot(Plotter)
         PyPlot=Plotter
         PyPlot.clf()
         PyPlot.suptitle(title)
         PyPlot.subplot(121)
         PyPlot.title("In")
-        TriangleRaw.plot(PyPlot,triin)
+        TriangulateIO.plot(PyPlot,triin)
         PyPlot.subplot(122)
         PyPlot.title("Out")
-        TriangleRaw.plot(PyPlot,triout)
+        TriangulateIO.plot(PyPlot,triout)
     end
 end
 
@@ -39,7 +39,7 @@ end
 #
 # At the same time it is used as part of the
 # runtime tests.
-function main(;Plotter=TriangleRaw, example="all")
+function main(;Plotter=nothing, example="all")
    
     do_example(ex)= example==ex || example=="all"
 
@@ -51,7 +51,7 @@ function main(;Plotter=TriangleRaw, example="all")
     
     # Delaunay triangulation of convex hull
     if do_example("convexhull")
-        triin=TriangleRaw.TriangulateIO()
+        triin=TriangulateIO.JLTriangulateIO()
         triin.pointlist=rand(Cdouble,2,20)
         (triout, vorout)=triangulate("c", triin)
         @test numberofpoints(triin)==numberofpoints(triout)
@@ -61,7 +61,7 @@ function main(;Plotter=TriangleRaw, example="all")
 
     # Constrained Delaunay triangulation 
     if do_example("cdt")
-        triin=TriangleRaw.TriangulateIO()
+        triin=TriangulateIO.JLTriangulateIO()
         triin.pointlist=rand(Cdouble,2,20)
         triin.segmentlist=Matrix{Cint}([1 20; 9 10]')
         triin.segmentmarkerlist=Vector{Cint}([2,3])
@@ -73,7 +73,7 @@ function main(;Plotter=TriangleRaw, example="all")
     
     # Delaunay triangulation of pointset
     if do_example("dcdt")
-        triin=TriangleRaw.TriangulateIO()
+        triin=TriangulateIO.JLTriangulateIO()
         triin.pointlist=rand(Cdouble,2,20)
         triin.segmentlist=Matrix{Cint}([1 20; 9 10]')
         triin.segmentmarkerlist=Vector{Cint}([2,3])
@@ -85,7 +85,7 @@ function main(;Plotter=TriangleRaw, example="all")
     
     # Delaunay triangulation of domain
     if do_example("domain")
-        triin=TriangleRaw.TriangulateIO()
+        triin=TriangulateIO.JLTriangulateIO()
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 1.0 0.0 ; 0.9  0.9 ; 0.0 1.0]')
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
@@ -97,7 +97,7 @@ function main(;Plotter=TriangleRaw, example="all")
     end
     # Boundary conforming Delaunay triangulation of domain
     if do_example("ddomain")
-        triin=TriangleRaw.TriangulateIO()
+        triin=TriangulateIO.JLTriangulateIO()
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 1.0 0.0 ; 0.9  0.9 ; 0.0 1.0]')
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
@@ -126,7 +126,7 @@ function main(;Plotter=TriangleRaw, example="all")
             (dist^2<localdist^2 && area>localarea) || (area>minarea)
         end
         triunsuitable(unsuitable)
-        triin=TriangleRaw.TriangulateIO()
+        triin=TriangulateIO.JLTriangulateIO()
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 10.0 0.0 ; 10.0  10.0 ; 0.0 10.0]')
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
@@ -143,7 +143,7 @@ end
 # Called by runtest.
 #
 function test()
-    main(;Plotter=TriangleRaw, example="all")
+    main(;Plotter=nothing, example="all")
 end
 
 # End of module

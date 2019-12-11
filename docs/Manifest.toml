@@ -124,9 +124,7 @@ uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[TriangleRaw]]
 deps = ["BinDeps", "DocStringExtensions", "Test"]
-git-tree-sha1 = "9d082bd78cccc15c71fad9e6c3fe08c79c03b701"
-repo-rev = "master"
-repo-url = "https://github.com/j-fu/TriangleRaw.jl"
+path = "/home/fuhrmann/Wias/work/julia/dev/TriangleRaw"
 uuid = "23e41cea-d446-4615-b08b-3b0251e4039d"
 version = "0.1.0"
 

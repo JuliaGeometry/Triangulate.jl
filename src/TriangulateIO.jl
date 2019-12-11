@@ -1,4 +1,4 @@
-module TriangleRaw
+module TriangulateIO
 using DocStringExtensions
 
 include("ctriangulateio.jl")

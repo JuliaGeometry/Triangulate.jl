@@ -7,14 +7,14 @@ $(TYPEDSIGNATURES)
 
 Heuristic check if Plotter is PyPlot
 """
-ispyplot(Plotter::Module)=isdefined(Plotter,:Gcf)
+ispyplot(Plotter)=typeof(Plotter)==Module&& isdefined(Plotter,:Gcf)
 
 """
 $(TYPEDSIGNATURES)
 
 Heuristic check if Plotter is Plots
 """
-isplots(Plotter::Module)=isdefined(Plotter,:gr)
+isplots(Plotter)=typeof(Plotter)==Module&& isdefined(Plotter,:gr)
 
 # Plot color scale for grid colors.
 function frgb(Plotter,i,max;pastel=false)
@@ -50,8 +50,8 @@ The plot module (currently only PyPlot is possible,Plots may follow soon)
 is passed as a parameter. This allows to keep the package free of heavy
 plot package dependencies.
 """
-function plot(Plotter::Module,
-              tio::TriangulateIO;
+function plot(Plotter,
+              tio::JLTriangulateIO;
               voronoi=nothing,
               aspect=1
               )

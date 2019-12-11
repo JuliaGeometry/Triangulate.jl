@@ -1,4 +1,4 @@
-using Documenter, TriangleRaw, Literate
+using Documenter, TriangulateIO, Literate
 
 
 function make_all()
@@ -22,12 +22,12 @@ function make_all()
 
     
     makedocs(
-        sitename="TriangleRaw.jl",
-        modules = [TriangleRaw],
+        sitename="TriangulateIO.jl",
+        modules = [TriangulateIO],
         clean = true,
         doctest = false,
         authors = "Juergen Fuhrmann, Francesco Furiani, Konrad Simon",
-        repo="https://github.com/j-fu/TriangleRaw.jl",
+        repo="https://github.com/JuliaGeometry/TriangulateIO.jl",
         pages=[ 
             "Home"=>"index.md",
             "triangle-h.md",
@@ -37,7 +37,7 @@ function make_all()
     )
     
     if !isinteractive()
-        deploydocs(repo = "github.com/j-fu/TriangleRaw.jl.git")
+        deploydocs(repo = "github.com/JuliaGeometry/TriangulateIO.jl.git")
     end
 end
 

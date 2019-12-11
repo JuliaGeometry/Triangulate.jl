@@ -24,7 +24,7 @@ const libtriangle = depsdir*"usr/lib/libtriangle"*libsuffix
 
 
 if ~isfile(libtriangle)
-    Base.@error("Triangle library not found. Please run `Pkg.build(\"TriangleRaw\")` first.")
+    Base.@error("Triangle library not found. Please run `Pkg.build(\"TriangulateIO\")` first.")
 end
 
 
@@ -46,8 +46,8 @@ function checklocale()
              numbers  (whether  they  are  written with  ','  or  '.')
              depends on  the language  settings of your  computer.  In
              order  to ensure  portability  of  programs written  with
-             TriangleRaw.jl, one should insist  on assuming '.' as the
-             decimal point.
+             TriangulateIO.jl, one  should insist  on assuming  '.' as
+             the decimal point.
 
              In  the moment,  due to  whatever reason  (e.g. due  to a
              change  of  settings  performed  by  PyPlot),  the  wrong
@@ -74,7 +74,7 @@ end
 # Global variable containing triunsuitable function
 triunsuitable_func=trivial_triunsuitable
 
-# triunsuitable function called from C (by triangulate(::ctriangulateio)) if -u flag has been set
+# triunsuitable function called from C (by triangulate(::CTriangulateIO)) if -u flag has been set
 function jl_wrap_triunsuitable(org_x::Cdouble, org_y::Cdouble, dest_x::Cdouble, dest_y::Cdouble, apex_x::Cdouble, apex_y::Cdouble, area::Cdouble)::Cint
     return Cint(triunsuitable_func(org_x, org_y, dest_x, dest_y, apex_x, apex_y, area))
 end
