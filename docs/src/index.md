@@ -35,7 +35,7 @@ Significant parts of the documentation text has been taken from the documentatio
 of Triangle.
 
 ```@autodocs
-Modules = [TriangleRaw]
+Modules = [Triangulate]
 Pages = [ "triangulateio.jl", "plot.jl"]
 ```
 

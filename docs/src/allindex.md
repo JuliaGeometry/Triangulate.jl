@@ -1,5 +1,5 @@
 # Index
 
 ```@index
-Modules = [TriangleRaw]
+Modules = [Triangulate]
 ```

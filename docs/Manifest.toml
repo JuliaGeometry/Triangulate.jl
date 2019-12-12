@@ -122,10 +122,12 @@ uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 deps = ["Distributed", "InteractiveUtils", "Logging", "Random"]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
-[[TriangulateIO]]
+[[Triangulate]]
 deps = ["BinDeps", "DocStringExtensions", "Test"]
-path = "/home/fuhrmann/Wias/work/julia/dev/TriangulateIO"
-uuid = "2d5ea9ce-d22c-4cb0-a053-78efb41c0cf4"
+git-tree-sha1 = "a0c0df75910970b15a5075b3f3b3c9365f21ccbd"
+repo-rev = "master"
+repo-url = "https://github.com/JuliaGeometry/Triangulate.jl"
+uuid = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 version = "0.1.0"
 
 [[URIParser]]

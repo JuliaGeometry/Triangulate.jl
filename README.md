@@ -1,9 +1,7 @@
-TriangulateIO
-=============
-<!--
-[![Build Status](https://img.shields.io/travis/j-fu/TriangleRaw.jl/master.svg?label=Linux+MacOSX)](https://travis-ci.org/j-fu/TriangleRaw.jl)
-[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://j-fu.github.io/TriangleRaw.jl/dev)
--->
+Triangulate
+===========
+<!--- [![Build Status](https://img.shields.io/travis/j-fu/TriangleRaw.jl/master.svg?label=Linux+MacOSX)](https://travis-ci.org/j-fu/TriangleRaw.jl) --> 
+<!--- [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://j-fu.github.io/TriangleRaw.jl/dev) -->
 
 (This package is under development and shall be registered soon)
 
