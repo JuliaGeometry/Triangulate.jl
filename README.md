@@ -1,7 +1,7 @@
 Triangulate
 ===========
-<!--- [![Build Status](https://img.shields.io/travis/j-fu/TriangleRaw.jl/master.svg?label=Linux+MacOSX)](https://travis-ci.org/j-fu/TriangleRaw.jl) --> 
-<!--- [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://j-fu.github.io/TriangleRaw.jl/dev) -->
+[![Build Status](https://img.shields.io/travis/JuliaGeometry/Triangulate.jl/master.svg?label=Linux+MacOSX)](https://travis-ci.org/JuliaGeometry/Triangulate.jl)
+[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliageometry.github.io/Triangulate.jl/dev)
 
 (This package is under development and shall be registered soon)
 
