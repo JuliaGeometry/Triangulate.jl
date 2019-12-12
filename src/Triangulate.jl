@@ -13,4 +13,5 @@ export numberofsegments
 export numberoftriangles
 export isplots, ispyplot
 
-end # module Triangle
+end
+
