@@ -1,5 +1,5 @@
-name = "TriangulateIO"
-uuid = "2d5ea9ce-d22c-4cb0-a053-78efb41c0cf4"
+name = "Triangulate"
+uuid = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 authors = ["Juergen Fuhrmann <juergen.fuhrmann@wias-berlin.de>"]
 version = "0.1.0"
 

@@ -51,7 +51,7 @@ is passed as a parameter. This allows to keep the package free of heavy
 plot package dependencies.
 """
 function plot(Plotter,
-              tio::JLTriangulateIO;
+              tio::TriangulateIO;
               voronoi=nothing,
               aspect=1
               )

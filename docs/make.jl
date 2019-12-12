@@ -1,4 +1,4 @@
-using Documenter, TriangulateIO, Literate
+using Documenter, Triangulate, Literate
 
 
 function make_all()
@@ -22,12 +22,12 @@ function make_all()
 
     
     makedocs(
-        sitename="TriangulateIO.jl",
-        modules = [TriangulateIO],
+        sitename="Triangulate.jl",
+        modules = [Triangulate],
         clean = true,
         doctest = false,
         authors = "Juergen Fuhrmann, Francesco Furiani, Konrad Simon",
-        repo="https://github.com/JuliaGeometry/TriangulateIO.jl",
+        repo="https://github.com/JuliaGeometry/Triangulate.jl",
         pages=[ 
             "Home"=>"index.md",
             "triangle-h.md",
@@ -37,7 +37,7 @@ function make_all()
     )
     
     if !isinteractive()
-        deploydocs(repo = "github.com/JuliaGeometry/TriangulateIO.jl.git")
+        deploydocs(repo = "github.com/JuliaGeometry/Triangulate.jl.git")
     end
 end
 

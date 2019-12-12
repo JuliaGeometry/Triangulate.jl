@@ -1,5 +1,5 @@
 module test_ctriangulate
-using TriangulateIO
+using Triangulate
 
 
 function test()
@@ -7,9 +7,9 @@ function test()
     faces=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
     faceregions=Matrix{Cint}([1 2 3 4]')
     regionpoints=Matrix{Cdouble}([0.5 0.5 1 0.01;]')
-    triin=TriangulateIO.CTriangulateIO()
-    triout=TriangulateIO.CTriangulateIO()
-    vorout=TriangulateIO.CTriangulateIO()
+    triin=Triangulate.CTriangulateIO()
+    triout=Triangulate.CTriangulateIO()
+    vorout=Triangulate.CTriangulateIO()
     
     triin.numberofpoints=Cint(size(nodes,2))
     triin.pointlist=pointer(nodes)

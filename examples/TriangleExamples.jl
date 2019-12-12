@@ -10,7 +10,7 @@
 module TriangleExamples
 
 # Include TriangulateIO and Test module
-using TriangulateIO
+using Triangulate
 using Test
 
 
@@ -24,10 +24,10 @@ function plotpair(Plotter, triin, triout;title="")
         PyPlot.suptitle(title)
         PyPlot.subplot(121)
         PyPlot.title("In")
-        TriangulateIO.plot(PyPlot,triin)
+        Triangulate.plot(PyPlot,triin)
         PyPlot.subplot(122)
         PyPlot.title("Out")
-        TriangulateIO.plot(PyPlot,triout)
+        Triangulate.plot(PyPlot,triout)
     end
 end
 
@@ -51,7 +51,7 @@ function main(;Plotter=nothing, example="all")
     
     # Delaunay triangulation of convex hull
     if do_example("convexhull")
-        triin=TriangulateIO.JLTriangulateIO()
+        triin=Triangulate.TriangulateIO()
         triin.pointlist=rand(Cdouble,2,20)
         (triout, vorout)=triangulate("c", triin)
         @test numberofpoints(triin)==numberofpoints(triout)
@@ -61,7 +61,7 @@ function main(;Plotter=nothing, example="all")
 
     # Constrained Delaunay triangulation 
     if do_example("cdt")
-        triin=TriangulateIO.JLTriangulateIO()
+        triin=Triangulate.TriangulateIO()
         triin.pointlist=rand(Cdouble,2,20)
         triin.segmentlist=Matrix{Cint}([1 20; 9 10]')
         triin.segmentmarkerlist=Vector{Cint}([2,3])
@@ -73,7 +73,7 @@ function main(;Plotter=nothing, example="all")
     
     # Delaunay triangulation of pointset
     if do_example("dcdt")
-        triin=TriangulateIO.JLTriangulateIO()
+        triin=Triangulate.TriangulateIO()
         triin.pointlist=rand(Cdouble,2,20)
         triin.segmentlist=Matrix{Cint}([1 20; 9 10]')
         triin.segmentmarkerlist=Vector{Cint}([2,3])
@@ -85,7 +85,7 @@ function main(;Plotter=nothing, example="all")
     
     # Delaunay triangulation of domain
     if do_example("domain")
-        triin=TriangulateIO.JLTriangulateIO()
+        triin=Triangulate.TriangulateIO()
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 1.0 0.0 ; 0.9  0.9 ; 0.0 1.0]')
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
@@ -97,7 +97,7 @@ function main(;Plotter=nothing, example="all")
     end
     # Boundary conforming Delaunay triangulation of domain
     if do_example("ddomain")
-        triin=TriangulateIO.JLTriangulateIO()
+        triin=Triangulate.TriangulateIO()
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 1.0 0.0 ; 0.9  0.9 ; 0.0 1.0]')
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
@@ -126,7 +126,7 @@ function main(;Plotter=nothing, example="all")
             (dist^2<localdist^2 && area>localarea) || (area>minarea)
         end
         triunsuitable(unsuitable)
-        triin=TriangulateIO.JLTriangulateIO()
+        triin=Triangulate.TriangulateIO()
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 10.0 0.0 ; 10.0  10.0 ; 0.0 10.0]')
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])

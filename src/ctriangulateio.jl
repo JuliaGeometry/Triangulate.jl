@@ -24,7 +24,7 @@ const libtriangle = depsdir*"usr/lib/libtriangle"*libsuffix
 
 
 if ~isfile(libtriangle)
-    Base.@error("Triangle library not found. Please run `Pkg.build(\"TriangulateIO\")` first.")
+    Base.@error("Triangle library not found. Please run `Pkg.build(\"Triangulate\")` first.")
 end
 
 
@@ -46,8 +46,8 @@ function checklocale()
              numbers  (whether  they  are  written with  ','  or  '.')
              depends on  the language  settings of your  computer.  In
              order  to ensure  portability  of  programs written  with
-             TriangulateIO.jl, one  should insist  on assuming  '.' as
-             the decimal point.
+             Triangulate.jl, one should insist  on assuming '.' as the
+             decimal point.
 
              In  the moment,  due to  whatever reason  (e.g. due  to a
              change  of  settings  performed  by  PyPlot),  the  wrong

@@ -1,7 +1,7 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
-TriangleRaw = "23e41cea-d446-4615-b08b-3b0251e4039d"
+TriangulateIO = "2d5ea9ce-d22c-4cb0-a053-78efb41c0cf4"
 
 [compat]
 Documenter = "^0.24"

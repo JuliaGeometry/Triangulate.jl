@@ -1,5 +1,5 @@
 #
-# JLTriangulateIO structure and public interface methods
+# TriangulateIO structure and public interface methods
 #
 # Public interface methods have docstrings, private ones
 # have comments.
@@ -26,7 +26,7 @@ Description of fields:
 $(TYPEDFIELDS)
 
 """
-mutable struct JLTriangulateIO
+mutable struct TriangulateIO
 
     """
     An array of point coordinates with `size(pointlist,1)==2`.
@@ -143,7 +143,7 @@ $(TYPEDSIGNATURES)
 Return number of points in triangulatio structure.
 
 """
-numberofpoints(tio::JLTriangulateIO)=size(tio.pointlist,2)
+numberofpoints(tio::TriangulateIO)=size(tio.pointlist,2)
 
 
 ##########################################################
@@ -153,7 +153,7 @@ $(TYPEDSIGNATURES)
 Return number of segments in triangulateio structure.
 
 """
-numberofsegments(tio::JLTriangulateIO)=size(tio.segmentlist,2)
+numberofsegments(tio::TriangulateIO)=size(tio.segmentlist,2)
 
 ##########################################################
 """
@@ -162,7 +162,7 @@ $(TYPEDSIGNATURES)
 Return number of triangles in triangulateio structure.
 
 """
-numberoftriangles(tio::JLTriangulateIO)=size(tio.trianglelist,2)
+numberoftriangles(tio::TriangulateIO)=size(tio.trianglelist,2)
 
 ##########################################################
 """
@@ -171,17 +171,17 @@ $(TYPEDSIGNATURES)
 Return number of triangles in triangulateio structure.
 
 """
-numberofedges(tio::JLTriangulateIO)=size(tio.edgelist,2)
+numberofedges(tio::TriangulateIO)=size(tio.edgelist,2)
 
 ##########################################################
 """
 $(TYPEDSIGNATURES)
 
-Create JLTriangulateIO structure with empty data.
+Create TriangulateIO structure with empty data.
 
 """
-function JLTriangulateIO()
-    return JLTriangulateIO(Array{Cdouble,2}(undef,0,0), # poinlist
+function TriangulateIO()
+    return TriangulateIO(Array{Cdouble,2}(undef,0,0), # poinlist
                          Array{Cdouble,2}(undef,0,0), # pointattrlist
                          Array{Cint,1}(undef,0),     # pointmarkers
                          Array{Cint,2}(undef,0,0),   # trianglelist
@@ -200,9 +200,9 @@ end
 
 
 #
-# Construct CTriangulateIO from JLTriangulateIO
+# Construct CTriangulateIO from TriangulateIO
 #
-function CTriangulateIO(tio::JLTriangulateIO)
+function CTriangulateIO(tio::TriangulateIO)
     ctio=CTriangulateIO()
     ctio.numberofpoints=size(tio.pointlist,2)
     @assert ctio.numberofpoints>0
@@ -258,10 +258,10 @@ end
 
 
 #
-# Construct JLTriangulateIO from CTriangulateIO
+# Construct TriangulateIO from CTriangulateIO
 #
-function JLTriangulateIO(ctio::CTriangulateIO)
-    tio=JLTriangulateIO()
+function TriangulateIO(ctio::CTriangulateIO)
+    tio=TriangulateIO()
     if ctio.numberofpoints>0
         tio.pointlist = convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.pointlist, (2,Int(ctio.numberofpoints)), own=true))
     end
@@ -313,7 +313,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-Create triangulation. Returns tuple `(out::JLTriangulateIO, vor_out::JLTriangulateIO)`
+Create triangulation. Returns tuple `(out::TriangulateIO, vor_out::TriangulateIO)`
 containing the output triangulation and the optional Voronoi tesselation.
 
 After a call to triangulate(), the valid fields of `out' and `vorout'
@@ -361,14 +361,14 @@ This is the list of switches used by triangle:
 | -V     | Verbose:  Detailed information on what I'm doing.             |
 
 """
-function triangulate(switches::String, tri_in::JLTriangulateIO)
+function triangulate(switches::String, tri_in::TriangulateIO)
     @assert(numberofpoints(tri_in)>=3)
     ctio_in=CTriangulateIO(tri_in)
     ctio_out=CTriangulateIO()
     cvor_out=CTriangulateIO()
     triangulate(switches,ctio_in,ctio_out,cvor_out)
-    out=JLTriangulateIO(ctio_out)
-    vor_out=JLTriangulateIO(cvor_out)
+    out=TriangulateIO(ctio_out)
+    vor_out=TriangulateIO(cvor_out)
     return out,vor_out
 end
 

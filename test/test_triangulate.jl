@@ -1,8 +1,8 @@
 module test_triangulate
-using TriangulateIO
+using Triangulate
 
 function test()
-    triin=TriangulateIO.JLTriangulateIO()
+    triin=Triangulate.TriangulateIO()
     triin.pointlist=Matrix{Float64}([1.0 0.0 ; 0.0 1.0 ; -1.0 0.0 ; 0.0 -1.0]')
     triin.segmentlist=Matrix{Int32}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
     triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
