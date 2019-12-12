@@ -14,10 +14,10 @@ const depsdir=basedir*"/../deps/"
 
 if Sys.isapple()
     libsuffix = ".dylib"
-elseif Sys.islinux()
+elseif Sys.iswindows()
+    libsuffix = ".dll"
+else # probably a "normal" unix derivate
     libsuffix = ".so"
-else
-    Base.@error "Operating system not supported."
 end
 
 const libtriangle = depsdir*"usr/lib/libtriangle"*libsuffix
