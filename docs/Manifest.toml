@@ -130,7 +130,7 @@ uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[Triangulate]]
 deps = ["BinDeps", "BinaryProvider", "DocStringExtensions", "Libdl", "Test"]
-git-tree-sha1 = "c3c0c0dc5f413badff5431c8a8dea7394186e311"
+git-tree-sha1 = "b1c7ccc29798f403d3536425385d2e890dbb634d"
 repo-rev = "master"
 repo-url = "https://github.com/JuliaGeometry/Triangulate.jl"
 uuid = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
