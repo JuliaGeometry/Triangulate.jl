@@ -6,26 +6,26 @@
 #
 # Prepare shared library calls
 #
-const basedir=Base.@__DIR__
-const depsdir=basedir*"/../deps/"
+# const basedir=Base.@__DIR__
+# const depsdir=basedir*"/../deps/"
 
-# if Sys.iswindows()
-# 	libsuffix = ".dll"
+# # if Sys.iswindows()
+# # 	libsuffix = ".dll"
 
-if Sys.isapple()
-    libsuffix = ".dylib"
-elseif Sys.iswindows()
-    libsuffix = ".dll"
-else # probably a "normal" unix derivate
-    libsuffix = ".so"
-end
+# if Sys.isapple()
+#     libsuffix = ".dylib"
+# elseif Sys.iswindows()
+#     libsuffix = ".dll"
+# else # probably a "normal" unix derivate
+#     libsuffix = ".so"
+# end
 
-const libtriangle = depsdir*"usr/lib/libtriangle"*libsuffix
+# const libtriangle = depsdir*"usr/lib/libtriangle"*libsuffix
 
 
-if ~isfile(libtriangle)
-    Base.@error("Triangle library not found. Please run `Pkg.build(\"Triangulate\")` first.")
-end
+# if ~isfile(libtriangle)
+#     Base.@error("Triangle library not found. Please run `Pkg.build(\"Triangulate\")` first.")
+# end
 
 
 ###############################################################
