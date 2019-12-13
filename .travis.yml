@@ -12,9 +12,9 @@ julia:
 
 # Uncomment the following lines to allow failures on nightly julia
 # (tests will run but not make your overall status red)
-jobs:
-  allow_failures:
-  - julia: nightly
+# jobs:
+#   allow_failures:
+#   - julia: nightly
 
 notifications:
   email: false
@@ -28,6 +28,7 @@ jobs:
       os: linux
       script:
         - julia --project=docs/ -e 'using Pkg; Pkg.instantiate(); Pkg.develop(PackageSpec(path=pwd()))'
+        - julia --project=docs/ -e 'using Pkg; Pkg.build("Triangulate")'
         - julia --project=docs/ docs/make.jl
-      after_success: skip
+
 
