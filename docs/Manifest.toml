@@ -9,6 +9,12 @@ git-tree-sha1 = "12093ca6cdd0ee547c39b1870e0c9c3f154d9ca9"
 uuid = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
 version = "0.8.10"
 
+[[BinaryProvider]]
+deps = ["Libdl", "SHA"]
+git-tree-sha1 = "5b08ed6036d9d3f0ee6369410b830f8873d4024c"
+uuid = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
+version = "0.5.8"
+
 [[Compat]]
 deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "Statistics", "Test", "UUIDs", "Unicode"]
 git-tree-sha1 = "ed2c4abadf84c53d9e58510b5fc48912c2336fbb"
@@ -61,9 +67,9 @@ uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
 [[Literate]]
 deps = ["Base64", "JSON", "REPL"]
-git-tree-sha1 = "463a0fe61a863fe1098f45a80eade3ed04f6586e"
+git-tree-sha1 = "1237e824184149798082d89a60805a67b577bc75"
 uuid = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
-version = "2.2.0"
+version = "2.2.1"
 
 [[Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
@@ -123,12 +129,12 @@ deps = ["Distributed", "InteractiveUtils", "Logging", "Random"]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[Triangulate]]
-deps = ["BinDeps", "DocStringExtensions", "Test"]
-git-tree-sha1 = "4f4637cb19887bb68c2ede81077168289e074302"
+deps = ["BinDeps", "BinaryProvider", "DocStringExtensions", "Libdl", "Test"]
+git-tree-sha1 = "8616537707d75333c614d97c43556972a107dd8a"
 repo-rev = "master"
 repo-url = "https://github.com/JuliaGeometry/Triangulate.jl"
 uuid = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
-version = "0.1.1"
+version = "0.1.0"
 
 [[URIParser]]
 deps = ["Test", "Unicode"]
