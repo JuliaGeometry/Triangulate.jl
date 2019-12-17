@@ -20,7 +20,7 @@ end</code></pre><p>This function can be called interactively with <code>Plotter 
     end</code></pre><p>Delaunay triangulation of convex hull</p><pre><code class="language-julia">    if do_example(&quot;convexhull&quot;)
         triin=Triangulate.TriangulateIO()
         triin.pointlist=rand(Cdouble,2,20)
-        (triout, vorout)=triangulate(&quot;c&quot;, triin)
+        (triout, vorout)=triangulate(&quot;cQ&quot;, triin)
         @test numberofpoints(triin)==numberofpoints(triout)
         @test numberofsegments(triout)&gt;0
         plotpair(Plotter,triin,triout,title=example)
@@ -29,7 +29,7 @@ end</code></pre><p>This function can be called interactively with <code>Plotter 
         triin.pointlist=rand(Cdouble,2,20)
         triin.segmentlist=Matrix{Cint}([1 20; 9 10]&#39;)
         triin.segmentmarkerlist=Vector{Cint}([2,3])
-        (triout, vorout)=triangulate(&quot;pc&quot;, triin)
+        (triout, vorout)=triangulate(&quot;pcQ&quot;, triin)
         @test numberofpoints(triin)&lt;=numberofpoints(triout)
         @test numberofsegments(triout)&gt;0
         plotpair(Plotter,triin,triout,title=example)
@@ -38,7 +38,7 @@ end</code></pre><p>This function can be called interactively with <code>Plotter 
         triin.pointlist=rand(Cdouble,2,20)
         triin.segmentlist=Matrix{Cint}([1 20; 9 10]&#39;)
         triin.segmentmarkerlist=Vector{Cint}([2,3])
-        (triout, vorout)=triangulate(&quot;Dpc&quot;, triin)
+        (triout, vorout)=triangulate(&quot;DpcQ&quot;, triin)
         @test numberofpoints(triin)&lt;=numberofpoints(triout)
         @test numberofsegments(triout)&gt;0
         plotpair(Plotter,triin,triout,title=example)
@@ -47,7 +47,7 @@ end</code></pre><p>This function can be called interactively with <code>Plotter 
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 1.0 0.0 ; 0.9  0.9 ; 0.0 1.0]&#39;)
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]&#39;)
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
-        (triout, vorout)=triangulate(&quot;pa0.01&quot;, triin)
+        (triout, vorout)=triangulate(&quot;pa0.01Q&quot;, triin)
         @test numberofpoints(triout)==87
         @test numberofsegments(triout)==21
         @test numberoftriangles(triout)==151
@@ -57,7 +57,7 @@ end</code></pre><p>This function can be called interactively with <code>Plotter 
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 1.0 0.0 ; 0.9  0.9 ; 0.0 1.0]&#39;)
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]&#39;)
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
-        (triout, vorout)=triangulate(&quot;pa0.01D&quot;, triin)
+        (triout, vorout)=triangulate(&quot;pa0.01DQ&quot;, triin)
         @test numberofpoints(triout)==84
         @test numberofsegments(triout)==32
         @test numberoftriangles(triout)==134
@@ -83,7 +83,7 @@ end</code></pre><p>This function can be called interactively with <code>Plotter 
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 10.0 0.0 ; 10.0  10.0 ; 0.0 10.0]&#39;)
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]&#39;)
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
-        (triout, vorout)=triangulate(&quot;puaD&quot;, triin)
+        (triout, vorout)=triangulate(&quot;puaDQ&quot;, triin)
         @test numberofpoints(triout)==420
         @test numberofsegments(triout)==48
         @test numberoftriangles(triout)==790
@@ -92,4 +92,4 @@ end</code></pre><p>This function can be called interactively with <code>Plotter 
     true
 end</code></pre><p>Called by runtest.</p><pre><code class="language-julia">function test()
     main(;Plotter=nothing, example=&quot;all&quot;)
-end</code></pre><p>End of module</p><pre><code class="language-julia">end</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../allindex/">« Index</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Tuesday 17 December 2019 18:04">Tuesday 17 December 2019</span>. Using Julia version 1.0.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+end</code></pre><p>End of module</p><pre><code class="language-julia">end</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../allindex/">« Index</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Tuesday 17 December 2019 18:16">Tuesday 17 December 2019</span>. Using Julia version 1.0.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
