@@ -53,7 +53,7 @@ function main(;Plotter=nothing, example="all")
     if do_example("convexhull")
         triin=Triangulate.TriangulateIO()
         triin.pointlist=rand(Cdouble,2,20)
-        (triout, vorout)=triangulate("c", triin)
+        (triout, vorout)=triangulate("cQ", triin)
         @test numberofpoints(triin)==numberofpoints(triout)
         @test numberofsegments(triout)>0
         plotpair(Plotter,triin,triout,title=example)
@@ -65,7 +65,7 @@ function main(;Plotter=nothing, example="all")
         triin.pointlist=rand(Cdouble,2,20)
         triin.segmentlist=Matrix{Cint}([1 20; 9 10]')
         triin.segmentmarkerlist=Vector{Cint}([2,3])
-        (triout, vorout)=triangulate("pc", triin)
+        (triout, vorout)=triangulate("pcQ", triin)
         @test numberofpoints(triin)<=numberofpoints(triout)
         @test numberofsegments(triout)>0
         plotpair(Plotter,triin,triout,title=example)
@@ -77,7 +77,7 @@ function main(;Plotter=nothing, example="all")
         triin.pointlist=rand(Cdouble,2,20)
         triin.segmentlist=Matrix{Cint}([1 20; 9 10]')
         triin.segmentmarkerlist=Vector{Cint}([2,3])
-        (triout, vorout)=triangulate("Dpc", triin)
+        (triout, vorout)=triangulate("DpcQ", triin)
         @test numberofpoints(triin)<=numberofpoints(triout)
         @test numberofsegments(triout)>0
         plotpair(Plotter,triin,triout,title=example)
@@ -89,7 +89,7 @@ function main(;Plotter=nothing, example="all")
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 1.0 0.0 ; 0.9  0.9 ; 0.0 1.0]')
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
-        (triout, vorout)=triangulate("pa0.01", triin)
+        (triout, vorout)=triangulate("pa0.01Q", triin)
         @test numberofpoints(triout)==87
         @test numberofsegments(triout)==21
         @test numberoftriangles(triout)==151
@@ -101,7 +101,7 @@ function main(;Plotter=nothing, example="all")
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 1.0 0.0 ; 0.9  0.9 ; 0.0 1.0]')
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
-        (triout, vorout)=triangulate("pa0.01D", triin)
+        (triout, vorout)=triangulate("pa0.01DQ", triin)
         @test numberofpoints(triout)==84
         @test numberofsegments(triout)==32
         @test numberoftriangles(triout)==134
@@ -130,7 +130,7 @@ function main(;Plotter=nothing, example="all")
         triin.pointlist=Matrix{Cdouble}([0.0 0.0 ; 10.0 0.0 ; 10.0  10.0 ; 0.0 10.0]')
         triin.segmentlist=Matrix{Cint}([1 2 ; 2 3 ; 3 4 ; 4 1 ]')
         triin.segmentmarkerlist=Vector{Int32}([1, 2, 3, 4])
-        (triout, vorout)=triangulate("puaD", triin)
+        (triout, vorout)=triangulate("puaDQ", triin)
         @test numberofpoints(triout)==420
         @test numberofsegments(triout)==48
         @test numberoftriangles(triout)==790

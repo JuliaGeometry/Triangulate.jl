@@ -10,7 +10,7 @@ function test()
     
     triin.numberofpoints=Cint(size(nodes,2))
     triin.pointlist=pointer(nodes)
-    rc=triangulate("",triin,triout,vorout)
+    rc=triangulate("Q",triin,triout,vorout)
     rc==1
 end
 end

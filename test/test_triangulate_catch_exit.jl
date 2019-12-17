@@ -5,7 +5,7 @@ function test()
     triin=Triangulate.TriangulateIO()
     triin.pointlist=Matrix{Float64}([1.0 0.0 ; 0.0 1.0 ;])
     try
-        (triout, vorout)=triangulate("", triin)
+        (triout, vorout)=triangulate("Q", triin)
     catch err
         if typeof(err)==TriangulateError
             println("Catched TriangulateError")
