@@ -7,7 +7,7 @@ Triangulate
 Julia wrapper for Johnathan Richard Shewchuk's Triangle mesh generator. The package tries to
 provide a 1:1 mapping of Triangle's functionality to Julia.
 
-Useful information abut Triangle:
+Useful information about Triangle:
 - Triangle home page   [https://www.cs.cmu.edu/~quake/triangle.html](https://www.cs.cmu.edu/~quake/triangle.html)
   with instructions for using Triangle
    - [Research credit, references, and online papers](https://www.cs.cmu.edu/~quake/triangle.research.html)
