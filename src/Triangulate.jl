@@ -25,6 +25,7 @@ export TriangulateIO
 export numberofpoints
 export numberofsegments
 export numberoftriangles
+export TriangulateError
 export isplots, ispyplot
 
 end

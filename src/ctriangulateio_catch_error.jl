@@ -134,7 +134,6 @@ function triangulate(triangle_switches::String,
              Ref(ctio_out),
              Ref(vor_out)
              )
-    return rc
 end
 
 

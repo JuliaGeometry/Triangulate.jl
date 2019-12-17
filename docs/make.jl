@@ -31,6 +31,7 @@ function make_all()
         pages=[ 
             "Home"=>"index.md",
             "triangle-h.md",
+            "changes.md",
             "allindex.md",
             "Examples" => generated_examples
         ]
