@@ -1,5 +1,5 @@
 # Changes
-## dev
+## v0.4.0, Dec. 20, 2019
 - bug fix: ownerships of regionlist, holelist
 - bug fix: dimension of region list
 - added several numberof... methods
