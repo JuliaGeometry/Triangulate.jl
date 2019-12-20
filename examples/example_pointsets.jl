@@ -2,9 +2,10 @@
 # ===========================
 #
 #
-# These examples can be loaded into Julia (Revise.jl reommended)
+# These examples can be loaded into Julia (Revise.jl recommended)
 # and run by calling one of the methods with the optional arguments "Plotter=PyPlot".
-# At the same time, these examples serve as standard test cases.
+# Alternatively, you can download a [jupyter notebook](example_pointsets.ipynb) created
+# from this source.
 # 
 # 
 #---

@@ -8,7 +8,7 @@ function make_all()
     #
     output_dir  = joinpath(@__DIR__,"src","examples")
     example_dir = joinpath(@__DIR__,"..","examples")
-    
+    generated_examples=[]
     for example_source in readdir(example_dir)
         base,ext=splitext(example_source)
         if ext==".jl"
@@ -16,10 +16,13 @@ function make_all()
                               output_dir,
                               documenter=false,
                               info=true)
+            Literate.notebook(joinpath(@__DIR__,"..","examples",example_source),
+                               output_dir,
+                               documenter=false,
+                               info=true)
+            push!(generated_examples,joinpath("examples",base*".md"))
         end
     end
-    generated_examples=joinpath.("examples",readdir(output_dir))
-
     
     makedocs(
         sitename="Triangulate.jl",
