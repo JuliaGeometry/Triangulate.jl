@@ -139,9 +139,7 @@ end
 ##########################################################
 """
 $(TYPEDSIGNATURES)
-
 Return number of points in triangulatio structure.
-
 """
 numberofpoints(tio::TriangulateIO)=size(tio.pointlist,2)
 
@@ -151,7 +149,6 @@ numberofpoints(tio::TriangulateIO)=size(tio.pointlist,2)
 $(TYPEDSIGNATURES)
 
 Return number of segments in triangulateio structure.
-
 """
 numberofsegments(tio::TriangulateIO)=size(tio.segmentlist,2)
 
@@ -160,7 +157,6 @@ numberofsegments(tio::TriangulateIO)=size(tio.segmentlist,2)
 $(TYPEDSIGNATURES)
 
 Return number of triangles in triangulateio structure.
-
 """
 numberoftriangles(tio::TriangulateIO)=size(tio.trianglelist,2)
 
@@ -169,7 +165,6 @@ numberoftriangles(tio::TriangulateIO)=size(tio.trianglelist,2)
 $(TYPEDSIGNATURES)
 
 Return number of triangles in triangulateio structure.
-
 """
 numberofedges(tio::TriangulateIO)=size(tio.edgelist,2)
 
@@ -177,27 +172,78 @@ numberofedges(tio::TriangulateIO)=size(tio.edgelist,2)
 """
 $(TYPEDSIGNATURES)
 
-Create TriangulateIO structure with empty data.
-
+Return number of regions in triangulateio structure.
 """
-function TriangulateIO()
-    return TriangulateIO(Array{Cdouble,2}(undef,0,0), # poinlist
-                         Array{Cdouble,2}(undef,0,0), # pointattrlist
-                         Array{Cint,1}(undef,0),     # pointmarkers
-                         Array{Cint,2}(undef,0,0),   # trianglelist
-                         Array{Cint,2}(undef,0,0),   # triangleattrlist
-                         Array{Cdouble,1}(undef,0),   # trianglearealist
-                         Array{Cint,2}(undef,0,0),   # nblist
-                         Array{Cint,2}(undef,0,0),   # seglist
-                         Array{Cint,1}(undef,0),     # segmarkers
-                         Array{Cdouble,2}(undef,0,0), # holelist
-                         Array{Cdouble,2}(undef,0,0), # regionlist
-                         Array{Cint,2}(undef,0,0),   # edgelist
-                         Array{Cint,1}(undef,0),     # edgemarkerlist
-                         Array{Cdouble,2}(undef,0,0)  # normlist
-                         )
+numberofregions(tio::TriangulateIO)=size(tio.regionlist,2)
+
+##########################################################
+"""
+$(TYPEDSIGNATURES)
+
+Return number of holes in triangulateio structure.
+"""
+numberofholes(tio::TriangulateIO)=size(tio.holelist,2)
+
+##########################################################
+"""
+$(TYPEDSIGNATURES)
+
+Return number of holes in triangulateio structure.
+"""
+numberoftriangleattributes(tio::TriangulateIO)=size(tio.triangleattributelist,1)
+
+##########################################################
+"""
+$(TYPEDSIGNATURES)
+
+Create TriangulateIO structure with empty data.
+"""
+function TriangulateIO(;
+                       pointlist=Array{Cdouble,2}(undef,0,0),
+                       pointattributelist=Array{Cdouble,2}(undef,0,0),
+                       pointmarkerlist=Array{Cint,1}(undef,0),    
+                       trianglelist=Array{Cint,2}(undef,0,0), 
+                       triangleattributelist=Array{Cint,2}(undef,0,0),
+                       trianglearealist=Array{Cdouble,1}(undef,0), 
+                       neighborlist=Array{Cint,2}(undef,0,0), 
+                       segmentlist=Array{Cint,2}(undef,0,0), 
+                       segmentmarkerlist=Array{Cint,1}(undef,0),  
+                       holelist=Array{Cdouble,2}(undef,0,0),
+                       regionlist=Array{Cdouble,2}(undef,0,0),
+                       edgelist=Array{Cint,2}(undef,0,0), 
+                       edgemarkerlist=Array{Cint,1}(undef,0),  
+                       normlist=Array{Cdouble,2}(undef,0,0))
+    
+    return TriangulateIO(pointlist,
+                         pointattributelist,
+                         pointmarkerlist,
+                         trianglelist,
+                         triangleattributelist,
+                         trianglearealist,
+                         neighborlist,
+                         segmentlist,
+                         segmentmarkerlist,
+                         holelist,
+                         regionlist,
+                         edgelist,
+                         edgemarkerlist,
+                         normlist)
 end
 
+
+function Base.show(io::IO, tio::TriangulateIO)
+    nonempty(a)=size(a,ndims(a))>0
+    println(io,"TriangulateIO(")
+    for name in fieldnames(typeof(tio))
+        a=getfield(tio,name)
+        if nonempty(a)
+            print(io,"$(name)=")
+            print(io,a)
+            println(io,",")
+        end
+    end
+    println(io,")")
+end
 
 #
 # Construct CTriangulateIO from TriangulateIO
@@ -245,7 +291,7 @@ function CTriangulateIO(tio::TriangulateIO)
     ctio.numberofholes=size(tio.holelist,2)
     if ctio.numberofholes>0
         @assert size(tio.holelist,1)==2
-        ctio.holeist=pointer(tio.holelist)
+        ctio.holelist=pointer(tio.holelist)
     end
     
     ctio.numberofregions=size(tio.regionlist,2)
@@ -262,10 +308,11 @@ end
 #
 function TriangulateIO(ctio::CTriangulateIO)
     tio=TriangulateIO()
-    if ctio.numberofpoints>0
+
+    if ctio.numberofpoints>0 && ctio.pointlist!=C_NULL
         tio.pointlist = convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.pointlist, (2,Int(ctio.numberofpoints)), own=true))
     end
-    if ctio.numberofpointattributes>0
+    if ctio.numberofpointattributes>0  && ctio.pointattributelist!=C_NULL
         tio.pointattributelist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.pointattributelistlist, (Int(ctio.numberofpointattributes),Int(ctio.numberofpoints)), own=true))
     end
 
@@ -273,15 +320,14 @@ function TriangulateIO(ctio::CTriangulateIO)
         tio.pointmarkerlist=convert(Array{Cint,1}, Base.unsafe_wrap(Array, ctio.pointmarkerlist, (Int(ctio.numberofpoints)), own=true))
     end
 
-
-    if ctio.numberoftriangles>0
+    if ctio.numberoftriangles>0 && ctio.trianglelist!=C_NULL
         tio.trianglelist=convert(Array{Cint,2}, Base.unsafe_wrap(Array, ctio.trianglelist, (3,Int(ctio.numberoftriangles)), own=true))
     end
-    if ctio.numberoftriangleattributes>0
+    if ctio.numberoftriangleattributes>0  && ctio.triangleattributelist!=C_NULL
         tio.triangleattributelist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.triangleattributelist, (Int(ctio.numberoftriangleattributes),Int(ctio.numberoftriangles)), own=true))
     end
 
-    if ctio.trianglearealist!=C_NULL
+    if ctio.trianglearealist!=C_NULL 
         tio.trianglearealist=convert(Array{Cdouble,1}, Base.unsafe_wrap(Array, ctio.trianglearealist, (Int(ctio.numberoftriangles)), own=true))
     end
 
@@ -289,18 +335,24 @@ function TriangulateIO(ctio::CTriangulateIO)
         tio.segmentlist=convert(Array{Cint,2}, Base.unsafe_wrap(Array, ctio.segmentlist, (2,Int(ctio.numberofsegments)), own=true))
         tio.segmentmarkerlist=convert(Array{Cint,1}, Base.unsafe_wrap(Array, ctio.segmentmarkerlist, (Int(ctio.numberofsegments)), own=true))
     end
-    
-    if ctio.numberofholes>0
-        tio.holelist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.holelist, (2,Int(ctio.numberofholes)), own=true))
+
+    # Usually, ctio comes from the output of triangulate(). In this case, the holelist pointer is copied from the input
+    # so we would get a double free corruption if we own it here.
+    if ctio.numberofholes>0 && ctio.holelist!=C_NULL
+        tio.holelist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.holelist, (2,Int(ctio.numberofholes)), own=false))
     end
     
-    if ctio.numberofregions>0
-        tio.regionlist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.holelist, (2,Int(ctio.numberofregions)), own=true))
+    # Usually, ctio comes from the output of triangulate(). In this case, the regionlist pointer is copied from the input
+    # so we would get a double free corruption if we own it here.
+    if ctio.numberofregions>0  && ctio.regionlist!=C_NULL
+        tio.regionlist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.regionlist, (4,Int(ctio.numberofregions)), own=false))
     end
     
-    if ctio.numberofedges>0 && ctio.edgelist!=C_NULL        
+    if ctio.numberofedges>0 && ctio.edgelist!=C_NULL
         tio.edgelist=convert(Array{Cint,2}, Base.unsafe_wrap(Array, ctio.edgelist, (2,Int(ctio.numberofedges)), own=true))
-        tio.edgemarkerlist=convert(Array{Cint,1}, Base.unsafe_wrap(Array, ctio.edgemarkerlist, (Int(ctio.numberofedges)), own=true))
+        if ctio.edgemarkerlist!=C_NULL 
+            tio.edgemarkerlist=convert(Array{Cint,1}, Base.unsafe_wrap(Array, ctio.edgemarkerlist, (Int(ctio.numberofedges)), own=true))
+        end
         if ctio.normlist!=C_NULL
             tio.normlist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.normlist, (2,Int(ctio.numberofedges)), own=true))
         end
@@ -324,11 +376,11 @@ $(TYPEDSIGNATURES)
 Create triangulation. Returns tuple `(out::TriangulateIO, vor_out::TriangulateIO)`
 containing the output triangulation and the optional Voronoi tesselation.
 
-After a call to triangulate(), the valid fields of `out' and `vorout'
+After a call to triangulate(), the valid fields of `out` and `vorout`
 will depend, in an obvious way, on the choice of switches used.  Note
-that when the 'p' switch is used, the pointers `holelist' and
-`regionlist' are copied from `tr_in' to `out', but no new space is
-#allocated;  On   the other hand, Triangle will never copy the `pointlist' pointer (or any 
+that when the 'p' switch is used, the pointers `holelist` and
+`regionlist` are copied from `tri_in' to the output, but no new space is
+allocated;  On   the other hand, Triangle will never copy the `pointlist` pointer (or any 
 others); new space is allocated for `out.pointlist', or if the `N'
 switch is used, `out.pointlist' remains uninitialized. 
 
