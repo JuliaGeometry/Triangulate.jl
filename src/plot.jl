@@ -57,16 +57,21 @@ function plot(Plotter,
               )
     
     if ispyplot(Plotter)
-        ax = Plotter.matplotlib.pyplot.gca()
+        PyPlot=Plotter
+        ax = PyPlot.matplotlib.pyplot.gca()
         ax.set_aspect(aspect)
         if numberofpoints(tio)==0
             return
         end
         x=tio.pointlist[1,:]
         y=tio.pointlist[2,:]
-        Plotter.scatter(x,y, s=10,color="b")
+        PyPlot.scatter(x,y, s=10,color="b")
+        t=transpose(tio.trianglelist.-1)
+        if size(tio.triangleattributelist,2)>0
+            PyPlot.tripcolor(x,y,t,tio.triangleattributelist[1,:],cmap="Pastel2")
+        end
         if numberoftriangles(tio)>0
-            Plotter.triplot(x,y,transpose(tio.trianglelist.-1),color="k")
+            PyPlot.triplot(x,y,t,color="k")
         end
         if numberofsegments(tio)>0
             lines=Any[]
@@ -79,10 +84,19 @@ function plot(Plotter,
                 x2=tio.pointlist[1,tio.segmentlist[2,i]]                 
                 y2=tio.pointlist[2,tio.segmentlist[2,i]]
                 push!(lines,collect(zip([x1,x2],[y1,y2])))
-                push!(rgb,frgb(Plotter,tio.segmentmarkerlist[i],markermax))
+                push!(rgb,frgb(PyPlot,tio.segmentmarkerlist[i],markermax))
             end
-            ax.add_collection(Plotter.matplotlib.collections.LineCollection(lines,colors=rgb,linewidth=3))
+            ax.add_collection(PyPlot.matplotlib.collections.LineCollection(lines,colors=rgb,linewidth=3))
         end
+
+        if numberoftriangles(tio)==0 && numberofregions(tio)>0 
+            x=tio.regionlist[1,:]
+            y=tio.regionlist[2,:]
+            r=tio.regionlist[3,:]
+            PyPlot.scatter(x,y, s=20,c=r,cmap="Dark2")
+        end
+ 
+
         if voronoi!=nothing && numberofedges(voronoi)>0
             bcx=sum(x)/length(x)
             bcy=sum(y)/length(y)
@@ -92,12 +106,12 @@ function plot(Plotter,
             
             x=voronoi.pointlist[1,:]
             y=voronoi.pointlist[2,:]
-            Plotter.scatter(x,y, s=10,color="g")
+            PyPlot.scatter(x,y, s=10,color="g")
             for i=1:numberofedges(voronoi)
                 i1=voronoi.edgelist[1,i]
                 i2=voronoi.edgelist[2,i]
                 if i1>0 && i2>0
-                    Plotter.plot([voronoi.pointlist[1,i1],voronoi.pointlist[1,i2]],
+                    PyPlot.plot([voronoi.pointlist[1,i1],voronoi.pointlist[1,i2]],
                                  [voronoi.pointlist[2,i1],voronoi.pointlist[2,i2]],
                                  color="g")
                 else
@@ -118,7 +132,7 @@ function plot(Plotter,
                     if y0+normscale*yn<bcy-ww
                         normscale=abs((bcy-ww-y0)/yn)
                     end
-                    Plotter.plot([x0, x0+normscale*xn], [y0,y0+normscale*yn],color="g")
+                    PyPlot.plot([x0, x0+normscale*xn], [y0,y0+normscale*yn],color="g")
                 end
                 
             end
@@ -159,5 +173,28 @@ function plot(Plotter,
         end
         return p
         =#
+    end
+end
+
+
+"""
+$(TYPEDSIGNATURES)
+
+Plot  pair of triangulateio structures arranged 
+in two subplots. This is intendd for visualizing both input
+and output data.
+"""
+function plot_in_out(Plotter, triin, triout;voronoi=nothing, title="")
+    if ispyplot(Plotter)
+        PyPlot=Plotter
+        PyPlot.clf()
+        PyPlot.suptitle(title)
+        PyPlot.subplot(121)
+        PyPlot.title("In")
+        Triangulate.plot(PyPlot,triin)
+        PyPlot.subplot(122)
+        PyPlot.title("Out")
+        plot(PyPlot,triout,voronoi=voronoi)
+        PyPlot.tight_layout()
     end
 end
