@@ -19,7 +19,7 @@ if injupyter()
     import PyPlot
 end
 
-# ## Constrained Delaunay triangulation (CDT) of a domain given by a segment list specifying its boundary.
+# ### Constrained Delaunay triangulation (CDT) of a domain given by a segment list specifying its boundary.
 #
 # This is obtained by
 # specifying the "p" flag.
@@ -39,7 +39,7 @@ end
 #
 injupyter() && example_domain_cdt(Plotter=PyPlot);
 
-# ## Constrained Delaunay triangulation (CDT) of a domain given by a segment list specifying its boundary together with a maximum  area constraint.
+# ### Constrained Delaunay triangulation (CDT) of a domain given by a segment list specifying its boundary together with a maximum  area constraint.
 #
 # This constraint is specfied as a floating
 # point number given after the -a flag.
@@ -62,7 +62,7 @@ end
 #
 injupyter() && example_domain_cdt_area(Plotter=PyPlot,maxarea=0.05);
 
-# ## Boundary conforming  Delaunay triangulation (BCDT) of a domain given by a segment list specifying its boundary
+# ### Boundary conforming  Delaunay triangulation (BCDT) of a domain given by a segment list specifying its boundary
 # In addition to the area constraint specify the -D flag
 # in order to keep the triangle circumcenters  within the domain.
 function example_domain_bcdt_area(;Plotter=nothing,maxarea=0.05)
@@ -82,7 +82,7 @@ end
 #
 injupyter() && example_domain_bcdt_area(Plotter=PyPlot,maxarea=0.05);
 
-# ## Constrained Delaunay triangulation of a domain with minimum angle condition
+# ### Constrained Delaunay triangulation of a domain with minimum angle condition
 #
 # The "q" flag  allows to specify a minimum angle
 # constraint preventing skinny triangles.
@@ -112,7 +112,7 @@ injupyter() && example_domain_qcdt_area(Plotter=PyPlot,maxarea=0.05,minangle=20)
 
 
 
-# ## Triangulation of a domain with refinement callback
+# ### Triangulation of a domain with refinement callback
 #
 # A maximum area constraint is specified in the `unsuitable` callback
 # which is activated via the "u" flag if it has been passed before calling triangulate.
@@ -148,7 +148,7 @@ end
 #
 injupyter() && example_domain_localref(Plotter=PyPlot,minangle=20);
 
-# ## Triangulation of a heterogeneous domain
+# ### Triangulation of a heterogeneous domain
 #
 # The segment list specifies its boundary and the inner boundary between subdomains.
 # An additional region list is specified which provides "region points" in `regionlist[1,:]`
@@ -179,7 +179,7 @@ end
 #
 injupyter() && example_domain_regions(Plotter=PyPlot,minangle=20);
 
-# ## Triangulation of a domain with holes
+# ### Triangulation of a domain with holes
 #
 # The segment list specifies its boundary and the boundaries of the holes.
 # An additional hole list is specified which provides "hole points" in `holelist[1,:]`

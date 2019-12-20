@@ -20,7 +20,8 @@ if injupyter()
     import PyPlot
 end
 
-
+# ### Delaunay triangulation of point set
+#
 # Create a set of random points in the plane and calculate
 # the Delaunay triangulation of this set of points. It is a triangulation
 # where for each triangle, the interior of its circumcircle  does not contain any points
@@ -48,6 +49,9 @@ end
 #
 injupyter()&& example_convex_hull(Plotter=PyPlot,n=10,raster=10);
 
+
+# ### Delaunay triangulation of point set with boundary
+#
 # Same as the previous example, but in addition specify the "c" flag
 # In this case, Triangle outputs an additional list of segments
 # describing the boundary of the convex hull. In fact this is a constrained
@@ -67,6 +71,8 @@ end
 #
 injupyter()&&  example_convex_hull_with_boundary(Plotter=PyPlot,n=10,raster=10);
 
+# ### Delaunay triangulation of point set with Voronoi diagram
+#
 # Same as the previous example, but instead of "c" specify the "v" flag
 # In this case, Triangle outputs information about the Voronoi diagram
 # of the point set which is a structure dual to  the Delaunay triangulation.
@@ -93,6 +99,7 @@ end
 #
 injupyter()&&  example_convex_hull_voronoi(Plotter=PyPlot,n=10,raster=10);
 
+# ### Boundary conforming Delaunay triangulation of point set
 # Specify "c" flag for convex hull segments, "v" flag for Voronoi
 # and "D" flag for creating a boundary conforming Delaunay triangulation of
 # the point set. In this case additional points are created which split
@@ -113,6 +120,7 @@ end
 #
 injupyter()&&  example_convex_hull_voronoi_delaunay(Plotter=PyPlot,n=10,raster=10);
 
+# ### Constrained Delaunay triangulation (CDT) of a point set with edges
 # Constrained Delaunay triangulation (CDT) of a point set with
 # additional constraints given a priori. This is obtained when
 # specifying the "p" flag and an additional list of segments each described
