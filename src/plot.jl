@@ -96,6 +96,12 @@ function plot(Plotter,
             PyPlot.scatter(x,y, s=20,c=r,cmap="Dark2")
         end
  
+        if numberoftriangles(tio)==0 && numberofholes(tio)>0 
+            x=tio.holelist[1,:]
+            y=tio.holelist[2,:]
+            PyPlot.scatter(x,y, s=20,color="k")
+        end
+ 
 
         if voronoi!=nothing && numberofedges(voronoi)>0
             bcx=sum(x)/length(x)
