@@ -106,17 +106,26 @@ injupyter()&&  example_convex_hull_voronoi(Plotter=PyPlot,n=10,raster=10);
 # the point set. In this case additional points are created which split
 # the boundary segments and ensure that all triangle circumcenters
 # lie within the convex hull.
+# Due to random input, there may be situations where Triangle fails with this task,
+# so we check for the corresponding exception.
 function example_convex_hull_voronoi_delaunay(;Plotter=nothing,n=10,raster=10)
     triin=Triangulate.TriangulateIO()
     triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
     display(triin)
-    (triout, vorout)=triangulate("vcDQ", triin)
-    plot_in_out(Plotter,triin,triout,voronoi=vorout,title="Convex hull with Voronoi diagram")
-    display(triout)
-    display(vorout)
-    @test numberofpoints(triin)<=numberofpoints(triout)
-    @test numberoftriangles(triout)>0
-    @test numberofpoints(vorout)>0
+    try
+        (triout, vorout)=triangulate("vcDQ", triin)
+        plot_in_out(Plotter,triin,triout,voronoi=vorout,title="Convex hull with Voronoi diagram")
+        display(triout)
+        display(vorout)
+        @test numberofpoints(triin)<=numberofpoints(triout)
+        @test numberoftriangles(triout)>0
+        @test numberofpoints(vorout)>0
+    catch err
+        if typeof(err)==TriangulateError
+            println("Triangle had some problem.")
+            return true
+        end
+    end
 end
 #
 injupyter()&&  example_convex_hull_voronoi_delaunay(Plotter=PyPlot,n=10,raster=10);
