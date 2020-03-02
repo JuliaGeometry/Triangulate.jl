@@ -43,6 +43,9 @@ injupyter() && example_domain_cdt(Plotter=PyPlot);
 #
 # This constraint is specfied as a floating
 # point number given after the -a flag.
+# Be careful to not give it in the exponential format as Triangle would be unable to analyse it.
+# Therefore it is dangerous to a number in the string interpolation and it is better to convert
+# it to a string before using `@sprintf`.
 # Specifying only the maximum area constraint does not prevent very thin
 # triangles from occuring at the boundary.
 function example_domain_cdt_area(;Plotter=nothing,maxarea=0.05)
