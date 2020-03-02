@@ -14,12 +14,12 @@ function test()
         # don't give segmentmarkerlist !
     )
 
-    (triout, vorout) = triangulate("peDQ", triin)
+    (triout, vorout) = triangulate("pcDQ", triin)
 
     return all([
         size(triout.pointlist, 2) == 4,
         size(triout.trianglelist, 2) == 2,
-        size(triout.segmentlist, 2) == 3,
+        size(triout.segmentlist, 2) == 5,
     ])
 end
 
