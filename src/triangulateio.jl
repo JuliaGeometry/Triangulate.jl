@@ -284,8 +284,11 @@ function CTriangulateIO(tio::TriangulateIO)
     ctio.numberofsegments=size(tio.segmentlist,2)
     if ctio.numberofsegments>0
         ctio.segmentlist=pointer(tio.segmentlist)
-        @assert size(tio.segmentmarkerlist,1)==ctio.numberofsegments
-        ctio.segmentmarkerlist=pointer(tio.segmentmarkerlist)
+
+        if size(tio.segmentmarkerlist, 1) > 0
+            @assert size(tio.segmentmarkerlist, 1) == ctio.numberofsegments
+            ctio.segmentmarkerlist = pointer(tio.segmentmarkerlist)
+        end
     end
     
     ctio.numberofholes=size(tio.holelist,2)
