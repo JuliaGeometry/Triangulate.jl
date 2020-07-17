@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Triangulations of point sets · Triangulate.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">Triangulate.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../triangle-h/">Output of <code>triangle -h</code></a></li><li><a class="tocitem" href="../../changes/">Changes</a></li><li><a class="tocitem" href="../../allindex/">Index</a></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../example_domains/">Triangulations of domains</a></li><li class="is-active"><a class="tocitem" href>Triangulations of point sets</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Triangulations of point sets</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Triangulations of point sets</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaGeometry/Triangulate.jl" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Triangulations-of-point-sets-1"><a class="docs-heading-anchor" href="#Triangulations-of-point-sets-1">Triangulations of point sets</a><a class="docs-heading-anchor-permalink" href="#Triangulations-of-point-sets-1" title="Permalink"></a></h1><p>These examples can be loaded into Julia (Revise.jl recommended) and run by calling one of the methods with the optional arguments &quot;Plotter=PyPlot&quot;. Alternatively, you can download a <a href="../example_pointsets.ipynb">jupyter notebook</a> created from this source.</p><p>Set  up environment</p><pre><code class="language-julia">using Triangulate
+using Test
+
+injupyter()=(isdefined(Main, :IJulia) &amp;&amp; Main.IJulia.inited)
+
+if injupyter()
+    import PyPlot
+end</code></pre><h3 id="Delaunay-triangulation-of-point-set-1"><a class="docs-heading-anchor" href="#Delaunay-triangulation-of-point-set-1">Delaunay triangulation of point set</a><a class="docs-heading-anchor-permalink" href="#Delaunay-triangulation-of-point-set-1" title="Permalink"></a></h3><p>Create a set of random points in the plane and calculate the Delaunay triangulation of this set of points. It is a triangulation where for each triangle, the interior of its circumcircle  does not contain any points of the trianglation.</p><p>The Delaunay triangulation of a set of points in general position (no 4 of them on a circle) is unique. At the same time, it is a triangulation of the convex hull of these points.</p><p>Given an input list of points, without any further flags, Triangle creates just this triangulation (the &quot;Q&quot; flag suppresses the text output of Triangle). For this and the next examples, the input list of points is created randomly, but on a raster, preventing the appearance of too close points.</p><pre><code class="language-julia">function example_convex_hull(;Plotter=nothing,n=10,raster=10)
+    triin=Triangulate.TriangulateIO()
+    triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
+    display(triin)
+    (triout, vorout)=triangulate(&quot;Q&quot;, triin)
+    display(triout)
+    plot_in_out(Plotter,triin,triout,title=&quot;Convex hull&quot;)
+    @test numberofpoints(triin)==numberofpoints(triout)
+    @test numberoftriangles(triout)&gt;0
+end</code></pre><pre><code class="language-julia">injupyter()&amp;&amp; example_convex_hull(Plotter=PyPlot,n=10,raster=10);</code></pre><h3 id="Delaunay-triangulation-of-point-set-with-boundary-1"><a class="docs-heading-anchor" href="#Delaunay-triangulation-of-point-set-with-boundary-1">Delaunay triangulation of point set with boundary</a><a class="docs-heading-anchor-permalink" href="#Delaunay-triangulation-of-point-set-with-boundary-1" title="Permalink"></a></h3><p>Same as the previous example, but in addition specify the &quot;c&quot; flag In this case, Triangle outputs an additional list of segments describing the boundary of the convex hull. In fact this is a constrained Delaunay triangulation (CDT) where the boundary segments are the seen constraining edges which must appear in the output.</p><pre><code class="language-julia">function example_convex_hull_with_boundary(;Plotter=nothing,n=10,raster=10)
+    triin=Triangulate.TriangulateIO()
+    triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
+    display(triin)
+    (triout, vorout)=triangulate(&quot;cQ&quot;, triin)
+    display(triout)
+    @test numberofpoints(triin)==numberofpoints(triout)
+    @test numberoftriangles(triout)&gt;0
+    @test numberofsegments(triout)&gt;0
+    plot_in_out(Plotter,triin,triout,title=&quot;Convex hull with boundary&quot;)
+end</code></pre><pre><code class="language-julia">injupyter()&amp;&amp;  example_convex_hull_with_boundary(Plotter=PyPlot,n=10,raster=10);</code></pre><h3 id="Delaunay-triangulation-of-point-set-with-Voronoi-diagram-1"><a class="docs-heading-anchor" href="#Delaunay-triangulation-of-point-set-with-Voronoi-diagram-1">Delaunay triangulation of point set with Voronoi diagram</a><a class="docs-heading-anchor-permalink" href="#Delaunay-triangulation-of-point-set-with-Voronoi-diagram-1" title="Permalink"></a></h3><p>Same as the previous example, but instead of &quot;c&quot; specify the &quot;v&quot; flag In this case, Triangle outputs information about the Voronoi diagram of the point set which is a structure dual to  the Delaunay triangulation.</p><p>The Voronoi cell around a point <span>$p$</span> a point set <span>$S$</span> is defined as the set of points <span>$x$</span> such that <span>$|x-p|&lt;|x-q|$</span> for all <span>$q\in S$</span> such that <span>$p\neq q$</span>. The Voronoi cells of boundary points of the convex hull are of infinite size. The corners of the Voronoi cells are the circumcenters of the triangles. They can be far outside of the triangulated domain.</p><pre><code class="language-julia">function example_convex_hull_voronoi(;Plotter=nothing,n=10,raster=10)
+    triin=Triangulate.TriangulateIO()
+    triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
+    display(triin)
+    (triout, vorout)=triangulate(&quot;vQ&quot;, triin)
+    display(triout)
+    display(vorout)
+    plot_in_out(Plotter,triin,triout,voronoi=vorout,title=&quot;Convex hull with Voronoi diagram&quot;)
+    @test numberofpoints(triin)==numberofpoints(triout)
+    @test numberoftriangles(triout)&gt;0
+    @test numberofpoints(vorout)&gt;0
+end</code></pre><pre><code class="language-julia">injupyter()&amp;&amp;  example_convex_hull_voronoi(Plotter=PyPlot,n=10,raster=10);</code></pre><h3 id="Boundary-conforming-Delaunay-triangulation-of-point-set-1"><a class="docs-heading-anchor" href="#Boundary-conforming-Delaunay-triangulation-of-point-set-1">Boundary conforming Delaunay triangulation of point set</a><a class="docs-heading-anchor-permalink" href="#Boundary-conforming-Delaunay-triangulation-of-point-set-1" title="Permalink"></a></h3><p>Specify &quot;c&quot; flag for convex hull segments, &quot;v&quot; flag for Voronoi and &quot;D&quot; flag for creating a boundary conforming Delaunay triangulation of the point set. In this case additional points are created which split the boundary segments and ensure that all triangle circumcenters lie within the convex hull. Due to random input, there may be situations where Triangle fails with this task, so we check for the corresponding exception.</p><pre><code class="language-julia">function example_convex_hull_voronoi_delaunay(;Plotter=nothing,n=10,raster=10)
+    triin=Triangulate.TriangulateIO()
+    triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
+    display(triin)
+    try
+        (triout, vorout)=triangulate(&quot;vcDQ&quot;, triin)
+        plot_in_out(Plotter,triin,triout,voronoi=vorout,title=&quot;Convex hull with Voronoi diagram&quot;)
+        display(triout)
+        display(vorout)
+        @test numberofpoints(triin)&lt;=numberofpoints(triout)
+        @test numberoftriangles(triout)&gt;0
+        @test numberofpoints(vorout)&gt;0
+    catch err
+        if typeof(err)==TriangulateError
+            println(&quot;Triangle had some problem.&quot;)
+            return true
+        end
+    end
+end</code></pre><pre><code class="language-julia">injupyter()&amp;&amp;  example_convex_hull_voronoi_delaunay(Plotter=PyPlot,n=10,raster=10);</code></pre><h3 id="Constrained-Delaunay-triangulation-(CDT)-of-a-point-set-with-edges-1"><a class="docs-heading-anchor" href="#Constrained-Delaunay-triangulation-(CDT)-of-a-point-set-with-edges-1">Constrained Delaunay triangulation (CDT) of a point set with edges</a><a class="docs-heading-anchor-permalink" href="#Constrained-Delaunay-triangulation-(CDT)-of-a-point-set-with-edges-1" title="Permalink"></a></h3><p>Constrained Delaunay triangulation (CDT) of a point set with additional constraints given a priori. This is obtained when specifying the &quot;p&quot; flag and an additional list of segments each described by two points which should become edges of the triangulation. Note that the resulting triangulation is not Delaunay in the sense given above.</p><pre><code class="language-julia">function example_cdt(;Plotter=nothing,n=10,raster=10)
+    triin=Triangulate.TriangulateIO()
+    triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
+    npt=size(triin.pointlist,2)
+    triin.segmentlist=Matrix{Cint}([1 2; npt-1 npt-2;  1 npt;]&#39;)
+    triin.segmentmarkerlist=Vector{Cint}([2,3,4])
+    display(triin)
+    (triout, vorout)=triangulate(&quot;pcQ&quot;, triin)
+    display(triout)
+    plot_in_out(Plotter,triin,triout,title=&quot;CDT&quot;)
+    @test numberofpoints(triin)&lt;=numberofpoints(triout)
+    @test numberofsegments(triout)&gt;=numberofsegments(triin)
+    @test numberoftriangles(triout)&gt;0
+end</code></pre><pre><code class="language-julia">injupyter()&amp;&amp;  example_cdt(Plotter=PyPlot,n=10,raster=10);</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_domains/">« Triangulations of domains</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 17 July 2020 18:17">Friday 17 July 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
