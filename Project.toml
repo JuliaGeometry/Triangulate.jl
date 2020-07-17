@@ -1,18 +1,15 @@
 name = "Triangulate"
 uuid = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 authors = ["Juergen Fuhrmann <juergen.fuhrmann@wias-berlin.de>"]
-version = "0.4.3"
+version = "0.5.0"
 
 [deps]
-BinDeps = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
-BinaryProvider = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Triangle_jll = "5639c1d2-226c-5e70-8d55-b3095415a16a"
 
 [compat]
-BinDeps = "^0.8.10, <1.1.0"
-BinaryProvider = "^0.5.8"
 DocStringExtensions = "^0.8.0"
-julia = "1"
+julia = "^1.3"

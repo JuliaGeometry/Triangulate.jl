@@ -1,19 +1,6 @@
 module Triangulate
 using DocStringExtensions
-
-const depsfile = joinpath(@__DIR__, "..", "deps", "deps.jl")
-
-if isfile(depsfile)
-    include(depsfile)
-else
-    error("Triangulate not built correctly. Please run Pkg.build(\"Triangulate\")")
-end
-
-function __init__()
-    check_deps()
-end
-
-
+using Triangle_jll
 
 include("ctriangulateio.jl")
 include("triangulateio.jl")
