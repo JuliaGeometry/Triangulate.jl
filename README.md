@@ -1,7 +1,7 @@
 Triangulate
 ===========
 
-[![Build status](https://github.com/j-fu/Triangulate.jl/workflows/CI/badge.svg)](https://github.com/j-fu/Triangulate.jl/actions)
+[![Build status](https://github.com/JuliaGeometry/Triangulate.jl/workflows/CI/badge.svg)](https://github.com/JuliaGeometry/Triangulate.jl/actions)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliageometry.github.io/Triangulate.jl/dev)
 [![PkgEval](https://juliaci.github.io/NanosoldierReports/pkgeval_badges/T/Triangulate.svg)](https://juliaci.github.io/NanosoldierReports/pkgeval_badges/report.html)
 
