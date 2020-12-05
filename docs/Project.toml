@@ -3,6 +3,3 @@ Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 Triangulate = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 
-[compat]
-Documenter = "^0.24"
-Literate = "^2.2"
