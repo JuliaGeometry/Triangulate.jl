@@ -41,6 +41,62 @@ function frgb(Plotter,i,max;pastel=false)
     end
 end
 
+"""
+$(SIGNATURES)
+
+Find the circumcenter of a triangle.                 
+									 
+Created from C source of Jonathan R Shewchuk <jrs@cs.cmu.edu>
+
+Modified to return absolute coordinates.
+"""
+function tricircumcenter!(circumcenter,a,b,c)
+
+    # Use coordinates relative to point `a' of the triangle.
+    xba = b[1] - a[1]
+    yba = b[2] - a[2]
+    xca = c[1] - a[1]
+    yca = c[2] - a[2]
+
+    # Squares of lengths of the edges incident to `a'.
+    balength = xba * xba + yba * yba
+    calength = xca * xca + yca * yca
+    
+    # Calculate the denominator of the formulae.
+    # if EXACT
+    #    Use orient2d() from http://www.cs.cmu.edu/~quake/robust.html	 
+    #    to ensure a correctly signed (and reasonably accurate) result, 
+    #    avoiding any possibility of division by zero.		    
+    #  denominator = 0.5 / orient2d((double*) b, (double*) c, (double*) a)
+    
+    
+    # Take your chances with floating-point roundoff
+    denominator = 0.5 / (xba * yca - yba * xca)
+
+    # Calculate offset (from `a') of circumcenter. 
+    xcirca = (yca * balength - yba * calength) * denominator  
+    ycirca = (xba * calength - xca * balength) * denominator  
+
+
+# The result is returned both in terms of x-y coordinates and xi-eta	 
+# coordinates, relative to the triangle's point `a' (that is, `a' is	 
+# the origin of both coordinate systems).	 Hence, the x-y coordinates	 
+# returned are NOT absolute; one must add the coordinates of `a' to	 
+# find the absolute coordinates of the circumcircle.  However, this means	 
+# that the result is frequently more accurate than would be possible if	 
+# absolute coordinates were returned, due to limited floating-point	 
+# precision.  In general, the circumradius can be computed much more	 
+# accurately.								 
+    
+
+    circumcenter[1] = xcirca+a[1]
+    circumcenter[2] = ycirca+a[2]
+
+    return circumcenter
+end
+
+
+
 
 """
 $(TYPEDSIGNATURES)
@@ -53,7 +109,8 @@ plot package dependencies.
 function plot(Plotter,
               tio::TriangulateIO;
               voronoi=nothing,
-              aspect=1
+              aspect=1,
+              circumcircles=false
               )
     
     if ispyplot(Plotter)
@@ -72,6 +129,22 @@ function plot(Plotter,
         end
         if numberoftriangles(tio)>0
             PyPlot.triplot(x,y,t,color="k")
+            if circumcircles
+                t=0:0.025*π:2π
+                circle(x,y,r)=PyPlot.plot(x.+r.*cos.(t),y.+r.*sin.(t),color=(0.4,0.05,0.4), linewidth=0.3)	
+                cc=zeros(2)
+                for itri=1:numberoftriangles(tio)
+                    
+                    trinodes=tio.trianglelist[:,itri]
+                    a=tio.pointlist[:,trinodes[1]]
+                    b=tio.pointlist[:,trinodes[2]]
+                    c=tio.pointlist[:,trinodes[3]]
+                    tricircumcenter!(cc,a,b,c)
+                    r=sqrt((cc[1]-a[1])^2+(cc[2]-a[2])^2)
+                    circle(cc[1],cc[2],r)
+                    PyPlot.scatter([cc[1]],[cc[2]], s=20,color=(0.4,0.05,0.4))
+                end
+            end
         end
         if numberofsegments(tio)>0
             lines=Any[]
@@ -190,7 +263,7 @@ Plot  pair of triangulateio structures arranged
 in two subplots. This is intendd for visualizing both input
 and output data.
 """
-function plot_in_out(Plotter, triin, triout;voronoi=nothing, title="")
+function plot_in_out(Plotter, triin, triout;voronoi=nothing, circumcircles=false,title="")
     if ispyplot(Plotter)
         PyPlot=Plotter
         PyPlot.clf()
@@ -200,7 +273,7 @@ function plot_in_out(Plotter, triin, triout;voronoi=nothing, title="")
         Triangulate.plot(PyPlot,triin)
         PyPlot.subplot(122)
         PyPlot.title("Out")
-        plot(PyPlot,triout,voronoi=voronoi)
+        plot(PyPlot,triout,voronoi=voronoi,circumcircles=circumcircles)
         PyPlot.tight_layout()
     end
 end
