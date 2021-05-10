@@ -102,9 +102,10 @@ end
 $(TYPEDSIGNATURES)
 
 Plot contents of triangulateio structure.
-The plot module (currently only PyPlot is possible,Plots may follow soon)
-is passed as a parameter. This allows to keep the package free of heavy
-plot package dependencies.
+The plot module (currently only PyPlot is possible, GLMakie may follow)
+is passed as parameter.
+This allows to keep the package free of heavy
+plot package dependencies. 
 """
 function plot(Plotter,
               tio::TriangulateIO;
@@ -122,6 +123,15 @@ function plot(Plotter,
         end
         x=tio.pointlist[1,:]
         y=tio.pointlist[2,:]
+        xminmax=extrema(x)
+        yminmax=extrema(y)
+
+        dx=xminmax[2]-xminmax[1]
+        ax.set_xlim(xminmax[1]-dx/10,xminmax[2]+dx/10)
+        dy=yminmax[2]-yminmax[1]
+        ax.set_ylim(yminmax[1]-dy/10,yminmax[2]+dy/10)
+
+        
         PyPlot.scatter(x,y, s=10,color="b")
         t=transpose(tio.trianglelist.-1)
         if size(tio.triangleattributelist,2)>0
