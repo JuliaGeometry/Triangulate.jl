@@ -1,4 +1,10 @@
 # Changes
+## v2.0.0, June 16, 2021
+Breaking (but not for core functionality): don't export plot anymore
+- rename plot to plot_triangulateio
+- keep Triangulate.plot (not exported)
+## v1.0.1, Dec. 16, 2020
+- Add option to plot circumcenters with PyPlot
 ## v0.4.0, Dec. 20, 2019
 - bug fix: ownerships of regionlist, holelist
 - bug fix: dimension of region list
