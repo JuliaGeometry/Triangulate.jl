@@ -1,33 +1,23 @@
-using Documenter, Triangulate, Literate
+using Documenter, Triangulate, Literate, Pluto
+
+function rendernotebook(name)
+    input=joinpath(@__DIR__,"..","examples",name*".jl")
+    output=joinpath(@__DIR__,"src",name*".html")
+    session = Pluto.ServerSession();
+    notebook = Pluto.SessionActions.open(session, input; run_async=false)
+    html_contents = Pluto.generate_html(notebook)
+    write(output, html_contents)
+end
+
 
 
 function make_all()
-
-    #
-    # Generate Markdown pages from examples
-    #
-    output_dir  = joinpath(@__DIR__,"src","examples")
-    example_dir = joinpath(@__DIR__,"..","examples")
-    generated_examples=[]
-    for example_source in readdir(example_dir)
-        base,ext=splitext(example_source)
-        if ext==".jl"
-            Literate.markdown(joinpath(@__DIR__,"..","examples",example_source),
-                              output_dir,
-                              documenter=false,
-                              info=true)
-            Literate.notebook(joinpath(@__DIR__,"..","examples",example_source),
-                               output_dir,
-                               documenter=false,
-                               info=true)
-            push!(generated_examples,joinpath("examples",base*".md"))
-        end
-    end
+    rendernotebook("pluto-examples")
     
     makedocs(
         sitename="Triangulate.jl",
         modules = [Triangulate],
-        clean = true,
+        clean = false,
         doctest = false,
         authors = "Juergen Fuhrmann, Francesco Furiani, Konrad Simon",
         repo="https://github.com/JuliaGeometry/Triangulate.jl",
@@ -36,7 +26,7 @@ function make_all()
             "triangle-h.md",
             "changes.md",
             "allindex.md",
-            "Examples" => generated_examples
+            "examples.md"
         ]
     )
     
