@@ -281,13 +281,14 @@ function plot_in_out(Plotter, triin, triout;voronoi=nothing, circumcircles=false
     if ispyplot(Plotter)
         PyPlot=Plotter
         PyPlot.clf()
+        PyPlot.subplots(nrows=1, ncols=2)
         PyPlot.suptitle(title)
         PyPlot.subplot(121)
         PyPlot.title("In")
         plot_triangulateio(PyPlot,triin)
         PyPlot.subplot(122)
         PyPlot.title("Out")
-        plot(PyPlot,triout,voronoi=voronoi,circumcircles=circumcircles)
+        plot_triangulateio(PyPlot,triout,voronoi=voronoi,circumcircles=circumcircles)
         PyPlot.tight_layout()
     end
 end
