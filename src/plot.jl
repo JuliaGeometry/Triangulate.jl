@@ -95,8 +95,12 @@ function tricircumcenter!(circumcenter,a,b,c)
     return circumcenter
 end
 
+"""
+$(TYPEDSIGNATURES)
 
-
+The plot function is not exported, but kept for backward compatibility.
+"""
+plot(Plotter, tio; kwargs...)=plot_triangulateio(Plotter, tio; kwargs...)
 
 """
 $(TYPEDSIGNATURES)
@@ -107,12 +111,12 @@ is passed as parameter.
 This allows to keep the package free of heavy
 plot package dependencies. 
 """
-function plot(Plotter,
-              tio::TriangulateIO;
-              voronoi=nothing,
-              aspect=1,
-              circumcircles=false
-              )
+function plot_triangulateio(Plotter,
+                            tio::TriangulateIO;
+                            voronoi=nothing,
+                            aspect=1,
+                            circumcircles=false
+                            )
     
     if ispyplot(Plotter)
         PyPlot=Plotter
@@ -280,7 +284,7 @@ function plot_in_out(Plotter, triin, triout;voronoi=nothing, circumcircles=false
         PyPlot.suptitle(title)
         PyPlot.subplot(121)
         PyPlot.title("In")
-        Triangulate.plot(PyPlot,triin)
+        plot_triangulateio(PyPlot,triin)
         PyPlot.subplot(122)
         PyPlot.title("Out")
         plot(PyPlot,triout,voronoi=voronoi,circumcircles=circumcircles)

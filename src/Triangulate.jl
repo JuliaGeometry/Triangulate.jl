@@ -13,7 +13,7 @@ export numberofpoints
 export numberofsegments
 export numberoftriangles
 export TriangulateError
-export plot, plot_in_out, isplots, ispyplot
+export plot_triangulateio, plot_in_out, isplots, ispyplot
 
 end
 
