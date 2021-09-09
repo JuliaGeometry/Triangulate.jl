@@ -32,6 +32,7 @@ jobs:
           arch: ${{ matrix.arch }}
       - uses: actions/cache@v1
         env:
+          PYTHON: ""
           cache-name: cache-artifacts
         with:
           path: ~/.julia/artifacts
@@ -66,6 +67,7 @@ jobs:
       #       doctest(MYPACKAGE)'
       - run: julia --project=docs docs/make.jl
         env:
+          PYTHON: ""
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
           

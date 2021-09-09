@@ -5,8 +5,7 @@ Triangulate
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliageometry.github.io/Triangulate.jl/stable)
 [![PkgEval](https://juliaci.github.io/NanosoldierReports/pkgeval_badges/T/Triangulate.svg)](https://juliaci.github.io/NanosoldierReports/pkgeval_badges/report.html)
 
-Julia wrapper for Johnathan Richard Shewchuk's Triangle mesh generator. The package tries to
-provide a 1:1 mapping of Triangle's functionality to Julia.
+Julia wrapper for Jonathan Richard Shewchuk's Triangle mesh generator. The package tries to provide a 1:1 mapping of Triangle's functionality to Julia.
 
 Useful information about Triangle:
 - Triangle home page   [https://www.cs.cmu.edu/~quake/triangle.html](https://www.cs.cmu.edu/~quake/triangle.html)
