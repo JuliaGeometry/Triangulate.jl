@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.8
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
@@ -8,16 +8,17 @@ using InteractiveUtils
 begin 
 	using Pkg
 	Pkg.activate(mktempdir())
-	ENV["LC_NUMERIC"]="C"
-	Pkg.add("Revise")
-	using Revise
+
+	
+	ENV["LC_NUMERIC"]="C" # necessary for ensuring 
+	                      # parallel proper use of PyPlot and Triangulate
 	Pkg.develop("Triangulate")
 	Pkg.add("PyPlot")
 	Pkg.add("PlutoUI")
 	
 	using Triangulate, PyPlot, PlutoUI, Printf
-	PyPlot.svg(true);
-end
+	PyPlot.svg(true)
+end;
 
 # ╔═╡ 7b468c8a-ce16-11eb-3009-f9e4c79e6c17
 md"""
@@ -218,7 +219,7 @@ function example_convex_hull(;n=10,raster=10)
 	pyplot() do
 		plot_in_out(PyPlot,triin,triout,title="Convex hull",circumcircles=true)
 	end
-end
+end;
 
 # ╔═╡ d0e63ebd-9288-42d5-9735-3c94a2baa8e3
 example_convex_hull(;n=10,raster=10)
@@ -232,8 +233,7 @@ function example_convex_hull_with_boundary(;n=10,raster=10)
 	pyplot() do
     	plot_in_out(PyPlot,triin,triout,title="Convex hull with boundary")
 	end
-end
-
+end;
 
 # ╔═╡ 6ec811ca-e6d3-43ea-8da9-02bb05060d8d
 example_convex_hull_with_boundary(;n=10,raster=10)
@@ -246,8 +246,7 @@ function example_convex_hull_voronoi(;n=10,raster=10)
 	pyplot() do
     plot_in_out(PyPlot,triin,triout,voronoi=vorout,title="Convex hull with Voronoi diagram")
 	end
-end
-
+end;
 
 # ╔═╡ 0b54833f-0458-4417-aa03-27c4fe2a873c
 example_convex_hull_voronoi(;n=10,raster=10)
@@ -267,8 +266,7 @@ function example_convex_hull_voronoi_delaunay(;n=10,raster=10)
             return true
         end
     end
-end
-
+end;
 
 # ╔═╡ 4da9a598-bf59-4b3b-aea7-ee1c2721c206
  example_convex_hull_voronoi_delaunay(;n=10,raster=10)
@@ -284,8 +282,7 @@ function example_cdt(;n=10,raster=10)
 	pyplot() do
     plot_in_out(PyPlot,triin,triout,title="CDT")
 	end
-end
-
+end;
 
 # ╔═╡ 910ce428-4989-4b08-8037-887dae5c847e
 example_cdt(;n=10,raster=10)
@@ -300,8 +297,7 @@ function example_domain_cdt()
 	pyplot() do
     plot_in_out(PyPlot,triin,triout,title="Domain CDT")
 	end
-end
-
+end;
 
 # ╔═╡ fc5264cf-b1f7-43c5-bcff-09e6274ca215
 example_domain_cdt()
@@ -317,7 +313,7 @@ function example_domain_cdt_area(;maxarea=0.05)
 	pyplot() do
     plot_in_out(PyPlot,triin,triout,voronoi=vorout, title="Domain CDT with area constraint",circumcircles=true)
 	end
-end
+end;
 
 # ╔═╡ cd007961-7f0e-4c56-9c86-1a9827a71e3e
 example_domain_cdt_area(;maxarea=0.05)
@@ -334,7 +330,7 @@ function example_domain_bcdt_area(;maxarea=0.05)
     plot_in_out(PyPlot,triin,triout,voronoi=vorout, title="Boundary conforming Delaunay triangulation", circumcircles=true)
 
 	end
-end
+end;
 
 # ╔═╡ a0cb6060-8278-444a-a4e5-46055d98616c
 example_domain_bcdt_area(;maxarea=0.05)
@@ -351,7 +347,7 @@ function example_domain_qcdt_area(;minangle=20, maxarea=0.05)
 	pyplot() do
     plot_in_out(PyPlot,triin,triout,voronoi=vorout, title="Quality triangulation")
 	end
-end
+end;
 
 # ╔═╡ 4e7dad4d-7d3c-4201-a56f-28e3df51e885
 example_domain_qcdt_area(;maxarea=0.05,minangle=20)
@@ -380,8 +376,7 @@ function example_domain_localref(;minangle=20)
 	pyplot() do
     plot_in_out(PyPlot,triin,triout,voronoi=vorout, title="Quality triangulation with local refinement")
 	end
-end
-
+end;
 
 # ╔═╡ 3c88e5cb-5e85-4146-a6d7-3682f4b9a892
 example_domain_localref(;minangle=20)
@@ -398,8 +393,7 @@ function example_domain_regions(;minangle=20)
 	pyplot() do
     plot_in_out(PyPlot,triin,triout,voronoi=vorout, title="Hetero domain triangulation")
 	end
-end
-
+end;
 
 # ╔═╡ 58dbd0e3-b34f-44ec-905a-488c7bbd07ca
 example_domain_regions(minangle=20)
@@ -430,8 +424,7 @@ function example_domain_holes(;minangle=20,maxarea=0.001)
 	pyplot() do
     plot_in_out(PyPlot,triin,triout,voronoi=vorout, title="Domain with holes")
 	end
-end
-
+end;
 
 # ╔═╡ 6545d149-d4dd-4f26-8f51-5db90f6b444d
 example_domain_holes(minangle=20,maxarea=0.05)
