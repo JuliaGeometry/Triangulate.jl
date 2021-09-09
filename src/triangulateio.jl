@@ -49,10 +49,12 @@ mutable struct TriangulateIO
     An array of triangle corners. The first three entries
     of each column describe the three nodes of the triangle
     in counterclockwise manner. They are followd by  any other nodes if the triangle    
-    represents a nonlinear element.
+    represents a nonlinear element. This means that without specfiying the 'o2' switch,
+    each column contains three node indices, while in the opposite case, each column
+    contains six entries: the three triangle vertices and the three edge mindpoint nodes.
 
     __Mandatory if the 'r' switch is used__. In this case `trianglelist' 
-    must point to a list oftriangles with optional higher order nodes. 
+    must point to a list of triangles with optional higher order nodes. 
     """    
     trianglelist :: Array{Cint,2}
 
@@ -324,8 +326,9 @@ function TriangulateIO(ctio::CTriangulateIO)
     end
 
     if ctio.numberoftriangles>0 && ctio.trianglelist!=C_NULL
-        tio.trianglelist=convert(Array{Cint,2}, Base.unsafe_wrap(Array, ctio.trianglelist, (3,Int(ctio.numberoftriangles)), own=true))
+        tio.trianglelist=convert(Array{Cint,2}, Base.unsafe_wrap(Array, ctio.trianglelist, (Int(ctio.numberofcorners),Int(ctio.numberoftriangles)), own=true))
     end
+    
     if ctio.numberoftriangleattributes>0  && ctio.triangleattributelist!=C_NULL
         tio.triangleattributelist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.triangleattributelist, (Int(ctio.numberoftriangleattributes),Int(ctio.numberoftriangles)), own=true))
     end

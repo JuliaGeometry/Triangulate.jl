@@ -198,6 +198,8 @@ and `holelist[2,:]`.
 html"""<hr>"""
 
 # ╔═╡ 9447e874-22ce-4b99-9037-e0d202430ee2
+# Wrap "Pyplotting" into this function in order to shield calling code
+# from all these peculiarities.
 function pyplot(f;w=650,h=300)
 	PyPlot.close()
 	PyPlot.clf()
