@@ -18,7 +18,7 @@ Julia wrapper for Jonathan Richard Shewchuk's Triangle mesh generator. The packa
 
 ## Licensing
 
-When installing Triangulate.jl, a compiled library version of the Triangle library will be downloaded from the [Triangle_jll.jl](https://github.com/JuliaBinaryWrappers/Triangle_jll.jl) repository.  This library is bound to a BSD License with Commercial Use Restriction,  but the bindings to the library in this package, Triangulate.jl, are licensed under MIT. This means that code using the Triangle library via the Triangulate.jl bindings is subject to Triangle's licensing terms reproduced here:
+When installing Triangulate.jl, a compiled library version of the Triangle library will be downloaded from the [Triangle_jll.jl](https://github.com/JuliaBinaryWrappers/Triangle_jll.jl) repository.  This library is freely available with Commercial Use Restriction,  but the bindings to the library in this package, Triangulate.jl, are licensed under MIT. This means that code using the Triangle library via the Triangulate.jl bindings is subject to Triangle's licensing terms reproduced here:
 
 ````
 These programs may be freely redistributed under the condition that the
