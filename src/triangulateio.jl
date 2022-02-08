@@ -318,7 +318,7 @@ function TriangulateIO(ctio::CTriangulateIO)
         tio.pointlist = convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.pointlist, (2,Int(ctio.numberofpoints)), own=true))
     end
     if ctio.numberofpointattributes>0  && ctio.pointattributelist!=C_NULL
-        tio.pointattributelist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.pointattributelistlist, (Int(ctio.numberofpointattributes),Int(ctio.numberofpoints)), own=true))
+        tio.pointattributelist=convert(Array{Cdouble,2}, Base.unsafe_wrap(Array, ctio.pointattributelist, (Int(ctio.numberofpointattributes),Int(ctio.numberofpoints)), own=true))
     end
 
     if ctio.pointmarkerlist!=C_NULL
