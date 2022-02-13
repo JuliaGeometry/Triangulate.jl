@@ -385,10 +385,10 @@ containing the output triangulation and the optional Voronoi tesselation.
 After a call to triangulate(), the valid fields of `out` and `vorout`
 will depend, in an obvious way, on the choice of switches used.  Note
 that when the 'p' switch is used, the pointers `holelist` and
-`regionlist` are copied from `tri_in' to the output, but no new space is
+`regionlist` are copied from `tri_in` to the output, but no new space is
 allocated;  On   the other hand, Triangle will never copy the `pointlist` pointer (or any 
-others); new space is allocated for `out.pointlist', or if the `N'
-switch is used, `out.pointlist' remains uninitialized. 
+others); new space is allocated for `out.pointlist`, or if the 'N'
+switch is used, `out.pointlist` remains uninitialized. 
 
 This is the list of switches used by triangle:
 
