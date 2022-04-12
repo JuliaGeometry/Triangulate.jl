@@ -337,6 +337,10 @@ function TriangulateIO(ctio::CTriangulateIO)
         tio.trianglearealist=convert(Array{Cdouble,1}, Base.unsafe_wrap(Array, ctio.trianglearealist, (Int(ctio.numberoftriangles)), own=true))
     end
 
+    if ctio.numberoftriangles>0 && ctio.neighborlist!=C_NULL
+        tio.neighborlist=convert(Array{Cint,2}, Base.unsafe_wrap(Array, ctio.neighborlist, (3,Int(ctio.numberoftriangles)), own=true))
+    end
+
     if ctio.numberofsegments>0  && ctio.segmentlist!=C_NULL && ctio.segmentmarkerlist!=C_NULL
         tio.segmentlist=convert(Array{Cint,2}, Base.unsafe_wrap(Array, ctio.segmentlist, (2,Int(ctio.numberofsegments)), own=true))
         tio.segmentmarkerlist=convert(Array{Cint,1}, Base.unsafe_wrap(Array, ctio.segmentmarkerlist, (Int(ctio.numberofsegments)), own=true))
