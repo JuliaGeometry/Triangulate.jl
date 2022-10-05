@@ -13,8 +13,8 @@ function run_tests_from_directory(testdir,prefix)
     @time begin
         examples=modname.(readdir(testdir))
         for example in examples
-            println("  $(example):")
             if example[1:length(prefix)]==prefix
+                println("  $(example):")
                 path=joinpath(testdir,"$(example).jl")
                 @eval begin
                     include($path)
