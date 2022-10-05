@@ -113,17 +113,16 @@ function triangulate(triangle_switches::String,
                      vor_out::CTriangulateIO)
 
     # Check locale settings for decimal point
-#    checklocale()
+    checklocale()
 
     # Set unsuitable callback
     if occursin("u",triangle_switches)
         c_wrap_triunsuitable=@cfunction(jl_wrap_triunsuitable, Cint, (Cdouble,Cdouble,Cdouble,Cdouble,Cdouble,Cdouble,Cdouble,))
         ccall((:triunsuitable_callback,libtriangle),Cvoid,(Ptr{Cvoid},),c_wrap_triunsuitable)
     end
-    #triangulate_catch_exit
+
     # Call triangulate
-    @info "hi"
-    rc=ccall((:triangulate,libtriangle),
+    rc=ccall((:triangulate_catch_exit,libtriangle),
              Cint,
              ( Cstring,
                Ref{CTriangulateIO}, 
