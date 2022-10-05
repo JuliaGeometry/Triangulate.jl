@@ -122,6 +122,7 @@ function triangulate(triangle_switches::String,
     end
     #triangulate_catch_exit
     # Call triangulate
+    @info "hi"
     rc=ccall((:triangulate,libtriangle),
              Cint,
              ( Cstring,
