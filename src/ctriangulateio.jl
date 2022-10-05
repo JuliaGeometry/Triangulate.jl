@@ -113,7 +113,7 @@ function triangulate(triangle_switches::String,
                      vor_out::CTriangulateIO)
 
     # Check locale settings for decimal point
-    checklocale()
+#    checklocale()
 
     # Set unsuitable callback
     if occursin("u",triangle_switches)
