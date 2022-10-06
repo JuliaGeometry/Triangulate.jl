@@ -134,7 +134,10 @@ int triangulate_catch_exit(char *triswitches,
     /* We just initialized the jump buffer. 
        Call triangulate and see what happens.
     */
+    printf("sizeof(ulong)=%d\n",sizeof(unsigned long));
+    printf("enter triangulate...\n");
     triangulate(triswitches,in,out,vorout);
+    printf("exit triangulate...\n");
     /* If we arrive here, error_exit()  not been called.
        We assume no error and signalize this by
        returning 0 to the caller.
