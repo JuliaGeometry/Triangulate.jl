@@ -40,9 +40,7 @@ end
 function example_convex_hull(;Plotter=nothing,n=10,raster=10)
     triin=Triangulate.TriangulateIO()
     triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
-    display(triin)
     (triout, vorout)=triangulate("Q", triin)
-    display(triout)
     plot_in_out(Plotter,triin,triout,title="Convex hull")
     @test numberofpoints(triin)==numberofpoints(triout)
     @test numberoftriangles(triout)>0
@@ -61,9 +59,7 @@ injupyter()&& example_convex_hull(Plotter=PyPlot,n=10,raster=10);
 function example_convex_hull_with_boundary(;Plotter=nothing,n=10,raster=10)
     triin=Triangulate.TriangulateIO()
     triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
-    display(triin)
     (triout, vorout)=triangulate("cQ", triin)
-    display(triout)
     @test numberofpoints(triin)==numberofpoints(triout)
     @test numberoftriangles(triout)>0
     @test numberofsegments(triout)>0
@@ -88,10 +84,7 @@ injupyter()&&  example_convex_hull_with_boundary(Plotter=PyPlot,n=10,raster=10);
 function example_convex_hull_voronoi(;Plotter=nothing,n=10,raster=10)
     triin=Triangulate.TriangulateIO()
     triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
-    display(triin)
     (triout, vorout)=triangulate("vQ", triin)
-    display(triout)
-    display(vorout)
     plot_in_out(Plotter,triin,triout,voronoi=vorout,title="Convex hull with Voronoi diagram")
     @test numberofpoints(triin)==numberofpoints(triout)
     @test numberoftriangles(triout)>0
@@ -111,12 +104,9 @@ injupyter()&&  example_convex_hull_voronoi(Plotter=PyPlot,n=10,raster=10);
 function example_convex_hull_voronoi_delaunay(;Plotter=nothing,n=10,raster=10)
     triin=Triangulate.TriangulateIO()
     triin.pointlist=hcat(unique([ Cdouble[rand(1:raster)/raster, rand(1:raster)/raster] for i in 1:n])...)
-    display(triin)
     try
         (triout, vorout)=triangulate("vcDQ", triin)
         plot_in_out(Plotter,triin,triout,voronoi=vorout,title="Convex hull with Voronoi diagram")
-        display(triout)
-        display(vorout)
         @test numberofpoints(triin)<=numberofpoints(triout)
         @test numberoftriangles(triout)>0
         @test numberofpoints(vorout)>0
@@ -144,9 +134,7 @@ function example_cdt(;Plotter=nothing,n=10,raster=10)
     npt=size(triin.pointlist,2)
     triin.segmentlist=Matrix{Cint}([1 2; npt-1 npt-2;  1 npt;]')
     triin.segmentmarkerlist=Vector{Cint}([2,3,4])
-    display(triin)
     (triout, vorout)=triangulate("pcQ", triin)
-    display(triout)
     plot_in_out(Plotter,triin,triout,title="CDT")
     @test numberofpoints(triin)<=numberofpoints(triout)
     @test numberofsegments(triout)>=numberofsegments(triin)

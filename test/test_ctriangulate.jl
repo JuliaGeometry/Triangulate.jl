@@ -18,8 +18,9 @@ function test()
     triin.segmentmarkerlist=pointer(faceregions)
     triin.numberofregions=size(regionpoints,2)
     triin.regionlist=pointer(regionpoints)
-    triangulate("paAqQV",triin,triout,vorout)
+    triangulate("paAqQ",triin,triout,vorout)
 
     triout.numberofpoints==177 && triout.numberoftriangles==319 && triout.numberofsegments==33
 end
+
 end
