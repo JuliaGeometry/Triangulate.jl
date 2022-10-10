@@ -120,7 +120,7 @@ function triangulate(triangle_switches::String,
         c_wrap_triunsuitable=@cfunction(jl_wrap_triunsuitable, Cint, (Cdouble,Cdouble,Cdouble,Cdouble,Cdouble,Cdouble,Cdouble,))
         ccall((:triunsuitable_callback,libtriangle),Cvoid,(Ptr{Cvoid},),c_wrap_triunsuitable)
     end
-    
+
     # Call triangulate
     rc=ccall((:triangulate_catch_exit,libtriangle),
              Cint,
