@@ -11,12 +11,11 @@ function rendernotebook(name)
 end
 
 function make_all()
-    thisdir = pwd()
     Pkg.activate(joinpath(@__DIR__, "..", "examples"))
-    Pkg.develop(; path = joinpath(thisdir, ".."))
+    Pkg.develop(; path = joinpath(@__DIR__, ".."))
     Pkg.instantiate()
-    Pkg.activate(thisdir)
     rendernotebook("pluto-examples")
+    Pkg.activate(@__DIR__)
 
     makedocs(; sitename = "Triangulate.jl",
         modules = [Triangulate],
