@@ -1,16 +1,30 @@
 name = "Triangulate"
 uuid = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 authors = ["Juergen Fuhrmann <juergen.fuhrmann@wias-berlin.de>"]
-version = "2.2.0"
+version = "2.2.1"
 
 [deps]
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 Triangle_jll = "5639c1d2-226c-5e70-8d55-b3095415a16a"
 
+[weakdeps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+
 [compat]
+CairoMakie = "0.10"
 DocStringExtensions = "0.8, 0.9"
-julia = "1.3"
+GLMakie = "0.8"
+Libdl = "1.6"
+Printf = "1.6"
+PyPlot = "2"
 Triangle_jll = "1.6.2"
+julia = "1.6"
+
+[extras]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"

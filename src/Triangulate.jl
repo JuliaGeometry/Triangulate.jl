@@ -16,4 +16,3 @@ export TriangulateError
 export plot_triangulateio, plot_in_out, isplots, ispyplot
 
 end
-
