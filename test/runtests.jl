@@ -1,6 +1,6 @@
 using Test
 
-modname(fname)=splitext(basename(fname))[1]
+modname(fname) = splitext(basename(fname))[1]
 
 #
 # Include all Julia files in `testdir` whose name starts with `prefix`,
@@ -8,14 +8,14 @@ modname(fname)=splitext(basename(fname))[1]
 # `prefixModName` which has a method test() returning true
 # or false depending on success.
 #
-function run_tests_from_directory(testdir,prefix)
+function run_tests_from_directory(testdir, prefix)
     @testset "all tests" begin
         println("Directory $(testdir):")
-        examples=modname.(readdir(testdir))
+        examples = modname.(readdir(testdir))
         for example in examples
-            if example[1:length(prefix)]==prefix
+            if example[1:length(prefix)] == prefix
                 println("  $(example):")
-                path=joinpath(testdir,"$(example).jl")
+                path = joinpath(testdir, "$(example).jl")
                 @eval begin
                     include($path)
                     # Compile + run test
@@ -30,8 +30,6 @@ function run_tests_from_directory(testdir,prefix)
     end
 end
 
-
 @time begin
-    run_tests_from_directory(@__DIR__,"test_")
+    run_tests_from_directory(@__DIR__, "test_")
 end
-

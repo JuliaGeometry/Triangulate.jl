@@ -6,11 +6,10 @@ function test()
     #     |
     #  *--*--*
 
-    triin = Triangulate.TriangulateIO(
-        pointlist = Float64[0.0 1.0 2.0 1.0
-                            0.0 0.0 0.0 1.0],
+    triin = Triangulate.TriangulateIO(; pointlist = Float64[0.0 1.0 2.0 1.0;
+            0.0 0.0 0.0 1.0],
         segmentlist = Int32[1 2 2
-                            2 3 4],
+            2 3 4]
         # don't give segmentmarkerlist !
     )
 

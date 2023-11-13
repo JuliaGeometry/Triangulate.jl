@@ -10,13 +10,10 @@ function rendernotebook(name)
     write(output, html_contents)
 end
 
-
-
 function make_all()
     rendernotebook("pluto-examples")
 
-    makedocs(
-        sitename = "Triangulate.jl",
+    makedocs(; sitename = "Triangulate.jl",
         modules = [Triangulate],
         clean = false,
         doctest = false,
@@ -28,11 +25,10 @@ function make_all()
             "changes.md",
             "allindex.md",
             "examples.md",
-        ],
-    )
+        ])
 
     if !isinteractive()
-        deploydocs(repo = "github.com/JuliaGeometry/Triangulate.jl.git")
+        deploydocs(; repo = "github.com/JuliaGeometry/Triangulate.jl.git")
     end
 end
 

@@ -4,7 +4,6 @@
 # Public interface methods have docstrings, private ones
 # have comments.
 
-
 #########################################################
 """
 $(TYPEDEF)
@@ -27,23 +26,22 @@ $(TYPEDFIELDS)
 
 """
 mutable struct TriangulateIO
-
     """
     An array of point coordinates with `size(pointlist,1)==2`.
     `pointlist' must always point to a list of points. __Mandatory__.                   
     """
-    pointlist::Array{Cdouble,2}
+    pointlist::Array{Cdouble, 2}
 
     """
     An array of point attributes. There can be several attributes per point.
     Optional for input.
     """
-    pointattributelist::Array{Cdouble,2}
+    pointattributelist::Array{Cdouble, 2}
 
     """
     An array of point markers. Optional for input.
     """
-    pointmarkerlist::Array{Cint,1}
+    pointmarkerlist::Array{Cint, 1}
 
     """
     An array of triangle corners. The first three entries
@@ -56,39 +54,39 @@ mutable struct TriangulateIO
     __Mandatory if the 'r' switch is used__. In this case `trianglelist' 
     must point to a list of triangles with optional higher order nodes. 
     """
-    trianglelist::Array{Cint,2}
+    trianglelist::Array{Cint, 2}
 
     """
     An array of triangle attributes. There can be several attributes per triangle.
     Optional on input.
     """
-    triangleattributelist::Array{Cdouble,2}
+    triangleattributelist::Array{Cdouble, 2}
 
     """
     An array of triangle area constraints. Input only.
 
     __Mandatory if both the 'r' and the 'a'  switch (with no number following) are used.__
     """
-    trianglearealist::Array{Cdouble,1}
+    trianglearealist::Array{Cdouble, 1}
 
     """
     An array of triangle neighbors. `size(neighborlist,1)==3`
     triangle.  Output only.
     """
-    neighborlist::Array{Cint,2}
+    neighborlist::Array{Cint, 2}
 
     """
     An array of segment endpoints. `size(segmentlist,1)==2`
 
     __Mandatory if the 'p' switch is used__.
     """
-    segmentlist::Array{Cint,2}
+    segmentlist::Array{Cint, 2}
 
     """
     An array of segment markers. Optional on input. If not set then
     segment markers on output default to zero.
     """
-    segmentmarkerlist::Array{Cint,1}
+    segmentmarkerlist::Array{Cint, 1}
 
     """
     An array of holes. Holes are marked by some point from within the hole.
@@ -97,7 +95,7 @@ mutable struct TriangulateIO
 
     Used if  the 'p' switch is used without the 'r' switch.
     """
-    holelist::Array{Cdouble,2}
+    holelist::Array{Cdouble, 2}
 
     """
     An array of regional attributes and area constraints.     
@@ -115,17 +113,17 @@ mutable struct TriangulateIO
     Input only, although the pointer is copied to the output structure for 
     convenience.                                                      
     """
-    regionlist::Array{Cdouble,2}
+    regionlist::Array{Cdouble, 2}
 
     """
     An array of edge endpoints. `sizeof(edgelist,1)==2`.  Output only.
     """
-    edgelist::Array{Cint,2}
+    edgelist::Array{Cint, 2}
 
     """
     An array of edge markers; Output   only.
     """
-    edgemarkerlist::Array{Cint,1}
+    edgemarkerlist::Array{Cint, 1}
 
     """
     An array of normal vectors, used for infinite rays in       
@@ -133,10 +131,8 @@ mutable struct TriangulateIO
     the normal vector written is the     
      zero vector.  `sizeof(normlist,1)==2`. Output only.                        
     """
-    normlist::Array{Cdouble,2}
+    normlist::Array{Cdouble, 2}
 end
-
-
 
 ##########################################################
 """
@@ -144,7 +140,6 @@ $(TYPEDSIGNATURES)
 Return number of points in triangulatio structure.
 """
 numberofpoints(tio::TriangulateIO) = size(tio.pointlist, 2)
-
 
 ##########################################################
 """
@@ -201,24 +196,21 @@ $(TYPEDSIGNATURES)
 Create TriangulateIO structure with empty data.
 """
 function TriangulateIO(;
-    pointlist = Array{Cdouble,2}(undef, 0, 0),
-    pointattributelist = Array{Cdouble,2}(undef, 0, 0),
-    pointmarkerlist = Array{Cint,1}(undef, 0),
-    trianglelist = Array{Cint,2}(undef, 0, 0),
-    triangleattributelist = Array{Cint,2}(undef, 0, 0),
-    trianglearealist = Array{Cdouble,1}(undef, 0),
-    neighborlist = Array{Cint,2}(undef, 0, 0),
-    segmentlist = Array{Cint,2}(undef, 0, 0),
-    segmentmarkerlist = Array{Cint,1}(undef, 0),
-    holelist = Array{Cdouble,2}(undef, 0, 0),
-    regionlist = Array{Cdouble,2}(undef, 0, 0),
-    edgelist = Array{Cint,2}(undef, 0, 0),
-    edgemarkerlist = Array{Cint,1}(undef, 0),
-    normlist = Array{Cdouble,2}(undef, 0, 0),
-)
-
-    return TriangulateIO(
-        pointlist,
+        pointlist = Array{Cdouble, 2}(undef, 0, 0),
+        pointattributelist = Array{Cdouble, 2}(undef, 0, 0),
+        pointmarkerlist = Array{Cint, 1}(undef, 0),
+        trianglelist = Array{Cint, 2}(undef, 0, 0),
+        triangleattributelist = Array{Cint, 2}(undef, 0, 0),
+        trianglearealist = Array{Cdouble, 1}(undef, 0),
+        neighborlist = Array{Cint, 2}(undef, 0, 0),
+        segmentlist = Array{Cint, 2}(undef, 0, 0),
+        segmentmarkerlist = Array{Cint, 1}(undef, 0),
+        holelist = Array{Cdouble, 2}(undef, 0, 0),
+        regionlist = Array{Cdouble, 2}(undef, 0, 0),
+        edgelist = Array{Cint, 2}(undef, 0, 0),
+        edgemarkerlist = Array{Cint, 1}(undef, 0),
+        normlist = Array{Cdouble, 2}(undef, 0, 0),)
+    return TriangulateIO(pointlist,
         pointattributelist,
         pointmarkerlist,
         trianglelist,
@@ -231,10 +223,8 @@ function TriangulateIO(;
         regionlist,
         edgelist,
         edgemarkerlist,
-        normlist,
-    )
+        normlist)
 end
-
 
 function Base.show(io::IO, tio::TriangulateIO)
     nonempty(a) = size(a, ndims(a)) > 0
@@ -310,7 +300,6 @@ function CTriangulateIO(tio::TriangulateIO)
     return ctio
 end
 
-
 #
 # Construct TriangulateIO from CTriangulateIO
 #
@@ -318,170 +307,114 @@ function TriangulateIO(ctio::CTriangulateIO)
     tio = TriangulateIO()
 
     if ctio.numberofpoints > 0 && ctio.pointlist != C_NULL
-        tio.pointlist = convert(
-            Array{Cdouble,2},
-            Base.unsafe_wrap(
-                Array,
+        tio.pointlist = convert(Array{Cdouble, 2},
+            Base.unsafe_wrap(Array,
                 ctio.pointlist,
-                (2, Int(ctio.numberofpoints)),
-                own = true,
-            ),
-        )
+                (2, Int(ctio.numberofpoints));
+                own = true))
     end
     if ctio.numberofpointattributes > 0 && ctio.pointattributelist != C_NULL
-        tio.pointattributelist = convert(
-            Array{Cdouble,2},
-            Base.unsafe_wrap(
-                Array,
+        tio.pointattributelist = convert(Array{Cdouble, 2},
+            Base.unsafe_wrap(Array,
                 ctio.pointattributelist,
-                (Int(ctio.numberofpointattributes), Int(ctio.numberofpoints)),
-                own = true,
-            ),
-        )
+                (Int(ctio.numberofpointattributes), Int(ctio.numberofpoints));
+                own = true))
     end
 
     if ctio.pointmarkerlist != C_NULL
-        tio.pointmarkerlist = convert(
-            Array{Cint,1},
-            Base.unsafe_wrap(
-                Array,
+        tio.pointmarkerlist = convert(Array{Cint, 1},
+            Base.unsafe_wrap(Array,
                 ctio.pointmarkerlist,
-                (Int(ctio.numberofpoints)),
-                own = true,
-            ),
-        )
+                (Int(ctio.numberofpoints));
+                own = true))
     end
 
     if ctio.numberoftriangles > 0 && ctio.trianglelist != C_NULL
-        tio.trianglelist = convert(
-            Array{Cint,2},
-            Base.unsafe_wrap(
-                Array,
+        tio.trianglelist = convert(Array{Cint, 2},
+            Base.unsafe_wrap(Array,
                 ctio.trianglelist,
-                (Int(ctio.numberofcorners), Int(ctio.numberoftriangles)),
-                own = true,
-            ),
-        )
+                (Int(ctio.numberofcorners), Int(ctio.numberoftriangles));
+                own = true))
     end
 
     if ctio.numberoftriangleattributes > 0 && ctio.triangleattributelist != C_NULL
-        tio.triangleattributelist = convert(
-            Array{Cdouble,2},
-            Base.unsafe_wrap(
-                Array,
+        tio.triangleattributelist = convert(Array{Cdouble, 2},
+            Base.unsafe_wrap(Array,
                 ctio.triangleattributelist,
-                (Int(ctio.numberoftriangleattributes), Int(ctio.numberoftriangles)),
-                own = true,
-            ),
-        )
+                (Int(ctio.numberoftriangleattributes), Int(ctio.numberoftriangles));
+                own = true))
     end
 
     if ctio.trianglearealist != C_NULL
-        tio.trianglearealist = convert(
-            Array{Cdouble,1},
-            Base.unsafe_wrap(
-                Array,
+        tio.trianglearealist = convert(Array{Cdouble, 1},
+            Base.unsafe_wrap(Array,
                 ctio.trianglearealist,
-                (Int(ctio.numberoftriangles)),
-                own = true,
-            ),
-        )
+                (Int(ctio.numberoftriangles));
+                own = true))
     end
 
     if ctio.numberoftriangles > 0 && ctio.neighborlist != C_NULL
-        tio.neighborlist = convert(
-            Array{Cint,2},
-            Base.unsafe_wrap(
-                Array,
+        tio.neighborlist = convert(Array{Cint, 2},
+            Base.unsafe_wrap(Array,
                 ctio.neighborlist,
-                (3, Int(ctio.numberoftriangles)),
-                own = true,
-            ),
-        )
+                (3, Int(ctio.numberoftriangles));
+                own = true))
     end
 
     if ctio.numberofsegments > 0 &&
        ctio.segmentlist != C_NULL &&
        ctio.segmentmarkerlist != C_NULL
-        tio.segmentlist = convert(
-            Array{Cint,2},
-            Base.unsafe_wrap(
-                Array,
+        tio.segmentlist = convert(Array{Cint, 2},
+            Base.unsafe_wrap(Array,
                 ctio.segmentlist,
-                (2, Int(ctio.numberofsegments)),
-                own = true,
-            ),
-        )
-        tio.segmentmarkerlist = convert(
-            Array{Cint,1},
-            Base.unsafe_wrap(
-                Array,
+                (2, Int(ctio.numberofsegments));
+                own = true))
+        tio.segmentmarkerlist = convert(Array{Cint, 1},
+            Base.unsafe_wrap(Array,
                 ctio.segmentmarkerlist,
-                (Int(ctio.numberofsegments)),
-                own = true,
-            ),
-        )
+                (Int(ctio.numberofsegments));
+                own = true))
     end
 
     # Usually, ctio comes from the output of triangulate(). In this case, the holelist pointer is copied from the input
     # so we would get a double free corruption if we own it here.
     if ctio.numberofholes > 0 && ctio.holelist != C_NULL
-        tio.holelist = convert(
-            Array{Cdouble,2},
-            Base.unsafe_wrap(
-                Array,
+        tio.holelist = convert(Array{Cdouble, 2},
+            Base.unsafe_wrap(Array,
                 ctio.holelist,
-                (2, Int(ctio.numberofholes)),
-                own = false,
-            ),
-        )
+                (2, Int(ctio.numberofholes));
+                own = false))
     end
 
     # Usually, ctio comes from the output of triangulate(). In this case, the regionlist pointer is copied from the input
     # so we would get a double free corruption if we own it here.
     if ctio.numberofregions > 0 && ctio.regionlist != C_NULL
-        tio.regionlist = convert(
-            Array{Cdouble,2},
-            Base.unsafe_wrap(
-                Array,
+        tio.regionlist = convert(Array{Cdouble, 2},
+            Base.unsafe_wrap(Array,
                 ctio.regionlist,
-                (4, Int(ctio.numberofregions)),
-                own = false,
-            ),
-        )
+                (4, Int(ctio.numberofregions));
+                own = false))
     end
 
     if ctio.numberofedges > 0 && ctio.edgelist != C_NULL
-        tio.edgelist = convert(
-            Array{Cint,2},
-            Base.unsafe_wrap(
-                Array,
+        tio.edgelist = convert(Array{Cint, 2},
+            Base.unsafe_wrap(Array,
                 ctio.edgelist,
-                (2, Int(ctio.numberofedges)),
-                own = true,
-            ),
-        )
+                (2, Int(ctio.numberofedges));
+                own = true))
         if ctio.edgemarkerlist != C_NULL
-            tio.edgemarkerlist = convert(
-                Array{Cint,1},
-                Base.unsafe_wrap(
-                    Array,
+            tio.edgemarkerlist = convert(Array{Cint, 1},
+                Base.unsafe_wrap(Array,
                     ctio.edgemarkerlist,
-                    (Int(ctio.numberofedges)),
-                    own = true,
-                ),
-            )
+                    (Int(ctio.numberofedges));
+                    own = true))
         end
         if ctio.normlist != C_NULL
-            tio.normlist = convert(
-                Array{Cdouble,2},
-                Base.unsafe_wrap(
-                    Array,
+            tio.normlist = convert(Array{Cdouble, 2},
+                Base.unsafe_wrap(Array,
                     ctio.normlist,
-                    (2, Int(ctio.numberofedges)),
-                    own = true,
-                ),
-            )
+                    (2, Int(ctio.numberofedges));
+                    own = true))
         end
     end
     return tio
@@ -560,7 +493,6 @@ function triangulate(switches::String, tri_in::TriangulateIO)
     return out, vor_out
 end
 
-
 ##########################################################
 """
 $(TYPEDSIGNATURES)
@@ -596,5 +528,3 @@ function triunsuitable!(unsuitable::Function; check_signature = true)
 end
 
 @deprecate triunsuitable(f; kwargs...) triunsuitable!(f; kwargs...)
-
-
