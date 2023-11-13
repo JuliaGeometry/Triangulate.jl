@@ -7,13 +7,13 @@ include("triangulateio.jl")
 include("plot.jl")
 
 export triangulate
-export triunsuitable
+export triunsuitable!, triunsuitable
 export TriangulateIO
 export numberofpoints
 export numberofsegments
 export numberoftriangles
 export TriangulateError
-export plot_triangulateio, plot_in_out, isplots, ispyplot
+export plot_triangulateio, plot_in_out
+export isplots, ispyplot
 
 end
-
