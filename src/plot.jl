@@ -108,11 +108,11 @@ This allows to keep the package free of heavy
 plot package dependencies. 
 """
 function plot_triangulateio(Plotter,
-                            tio::TriangulateIO;
-                            axis = nothing,
-                            voronoi = nothing,
-                            aspect = 1,
-                            circumcircles = false,)
+        tio::TriangulateIO;
+        axis = nothing,
+        voronoi = nothing,
+        aspect = 1,
+        circumcircles = false,)
     x = view(tio.pointlist, 1, :)
     y = view(tio.pointlist, 2, :)
 
@@ -143,9 +143,9 @@ function plot_triangulateio(Plotter,
             if circumcircles
                 t = 0:(0.025 * π):(2π)
                 pycircle(x, y, r) = PyPlot.plot(x .+ r .* cos.(t),
-                                                y .+ r .* sin.(t);
-                                                color = (0.4, 0.05, 0.4),
-                                                linewidth = 0.3)
+                    y .+ r .* sin.(t);
+                    color = (0.4, 0.05, 0.4),
+                    linewidth = 0.3)
                 cc = zeros(2)
                 for itri = 1:numberoftriangles(tio)
                     trinodes = tio.trianglelist[:, itri]
@@ -181,8 +181,8 @@ function plot_triangulateio(Plotter,
                 push!(rgb, frgb(PyPlot, tio.segmentmarkerlist[i], markermax))
             end
             ax.add_collection(PyPlot.matplotlib.collections.LineCollection(lines;
-                                                                           colors = rgb,
-                                                                           linewidth = 3))
+                colors = rgb,
+                linewidth = 3))
         end
 
         if numberoftriangles(tio) == 0 && numberofholes(tio) > 0
@@ -206,8 +206,8 @@ function plot_triangulateio(Plotter,
                 i2 = voronoi.edgelist[2, i]
                 if i1 > 0 && i2 > 0
                     PyPlot.plot([voronoi.pointlist[1, i1], voronoi.pointlist[1, i2]],
-                                [voronoi.pointlist[2, i1], voronoi.pointlist[2, i2]];
-                                color = "g")
+                        [voronoi.pointlist[2, i1], voronoi.pointlist[2, i2]];
+                        color = "g")
                 else
                     x0 = voronoi.pointlist[1, i1]
                     y0 = voronoi.pointlist[2, i1]
@@ -227,8 +227,8 @@ function plot_triangulateio(Plotter,
                         normscale = abs((bcy - ww - y0) / yn)
                     end
                     PyPlot.plot([x0, x0 + normscale * xn],
-                                [y0, y0 + normscale * yn];
-                                color = "g")
+                        [y0, y0 + normscale * yn];
+                        color = "g")
                 end
             end
         end
@@ -243,7 +243,6 @@ function plot_triangulateio(Plotter,
         Makie.ylims!(axis, (yminmax[1] - dy / 10, yminmax[2] + dy / 10))
         Makie.xlims!(axis, (xminmax[1] - dx / 10, xminmax[2] + dx / 10))
 
-        @info tio.pointlist
         points = reshape(reinterpret(Makie.Point{2, Cdouble}, tio.pointlist), numberofpoints(tio))
 
         if numberoftriangles(tio) > 0
@@ -252,20 +251,20 @@ function plot_triangulateio(Plotter,
                 maxattr = maximum(attr)
                 for i = 1:numberoftriangles(tio)
                     Makie.poly!(axis,
-                                view(points, view(tio.trianglelist, :, i));
-                                strokecolor = :black,
-                                strokewidth = 1,
-                                color = frgb(Makie, attr[i], maxattr; pastel = true))
+                        view(points, view(tio.trianglelist, :, i));
+                        strokecolor = :black,
+                        strokewidth = 1,
+                        color = frgb(Makie, attr[i], maxattr; pastel = true))
                 end
 
             else
                 for i = 1:numberoftriangles(tio)
                     Makie.poly!(axis,
-                                view(points, view(tio.trianglelist, :, i));
-                                strokecolor = :black,
-                                strokewidth = 1,
-                                color = :white,
-                                alpha = 0.75)
+                        view(points, view(tio.trianglelist, :, i));
+                        strokecolor = :black,
+                        strokewidth = 1,
+                        color = :white,
+                        alpha = 0.75)
                 end
             end
         end
@@ -275,10 +274,10 @@ function plot_triangulateio(Plotter,
 
             t = 0:(0.025 * π):(2π)
             circle(x, y, r) = Makie.lines!(axis,
-                                           x .+ r .* cos.(t),
-                                           y .+ r .* sin.(t);
-                                           color = col,
-                                           linewidth = 0.3)
+                x .+ r .* cos.(t),
+                y .+ r .* sin.(t);
+                color = col,
+                linewidth = 0.3)
             cc = zeros(2)
             for itri = 1:numberoftriangles(tio)
                 a = view(tio.pointlist, :, tio.trianglelist[1, itri])
@@ -301,10 +300,10 @@ function plot_triangulateio(Plotter,
                 xx[2] = tio.pointlist[1, tio.segmentlist[2, i]]
                 yy[2] = tio.pointlist[2, tio.segmentlist[2, i]]
                 Makie.lines!(axis,
-                             xx,
-                             yy;
-                             color = frgb(Makie, tio.segmentmarkerlist[i], markermax),
-                             linewidth = 3)
+                    xx,
+                    yy;
+                    color = frgb(Makie, tio.segmentmarkerlist[i], markermax),
+                    linewidth = 3)
             end
         end
 
@@ -314,10 +313,10 @@ function plot_triangulateio(Plotter,
             yy = tio.regionlist[2, :]
             r = tio.regionlist[3, :]
             Makie.scatter!(axis,
-                           xx,
-                           yy;
-                           markersize = 10,
-                           color = [frgb(Makie, r[i], markermax) for i = 1:numberofregions(tio)])
+                xx,
+                yy;
+                markersize = 10,
+                color = [frgb(Makie, r[i], markermax) for i = 1:numberofregions(tio)])
         end
 
         if numberoftriangles(tio) == 0 && numberofholes(tio) > 0
@@ -341,9 +340,9 @@ function plot_triangulateio(Plotter,
                 i2 = voronoi.edgelist[2, i]
                 if i1 > 0 && i2 > 0
                     Makie.lines!(axis,
-                                 [voronoi.pointlist[1, i1], voronoi.pointlist[1, i2]],
-                                 [voronoi.pointlist[2, i1], voronoi.pointlist[2, i2]];
-                                 color = :green)
+                        [voronoi.pointlist[1, i1], voronoi.pointlist[1, i2]],
+                        [voronoi.pointlist[2, i1], voronoi.pointlist[2, i2]];
+                        color = :green)
                 else
                     x0 = voronoi.pointlist[1, i1]
                     y0 = voronoi.pointlist[2, i1]
@@ -363,9 +362,9 @@ function plot_triangulateio(Plotter,
                         normscale = min(normscale, abs((bcy - ww - y0) / yn))
                     end
                     Makie.lines!(axis,
-                                 [x0, x0 + normscale * xn],
-                                 [y0, y0 + normscale * yn];
-                                 color = :green)
+                        [x0, x0 + normscale * xn],
+                        [y0, y0 + normscale * yn];
+                        color = :green)
                 end
             end
         end
@@ -381,12 +380,12 @@ in two subplots. This is intendd for visualizing both input
 and output data.
 """
 function plot_in_out(Plotter,
-                     triin,
-                     triout;
-                     figure = nothing,
-                     voronoi = nothing,
-                     circumcircles = false,
-                     title = "",)
+        triin,
+        triout;
+        figure = nothing,
+        voronoi = nothing,
+        circumcircles = false,
+        title = "",)
     if ispyplot(Plotter)
         PyPlot = Plotter
         PyPlot.clf()
@@ -409,10 +408,10 @@ function plot_in_out(Plotter,
         ax_out = Makie.Axis(figure[2, 2]; title = "Out", aspect = Makie.DataAspect())
         plot_triangulateio(Makie, triin; axis = ax_in)
         plot_triangulateio(Makie,
-                           triout;
-                           axis = ax_out,
-                           voronoi = voronoi,
-                           circumcircles = circumcircles,)
+            triout;
+            axis = ax_out,
+            voronoi = voronoi,
+            circumcircles = circumcircles,)
         return figure
     end
 end

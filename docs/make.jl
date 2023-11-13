@@ -1,4 +1,4 @@
-using Documenter, Triangulate, Literate, Pluto
+using Documenter, Triangulate, Pluto, Pkg
 
 function rendernotebook(name)
     input = joinpath(@__DIR__, "..", "examples", name * ".jl")
@@ -11,21 +11,26 @@ function rendernotebook(name)
 end
 
 function make_all()
+    thisdir = pwd()
+    Pkg.activate(joinpath(@__DIR__, "..", "examples"))
+    Pkg.develop(; path = joinpath(thisdir, ".."))
+    Pkg.instantiate()
+    Pkg.activate(thisdir)
     rendernotebook("pluto-examples")
 
     makedocs(; sitename = "Triangulate.jl",
-             modules = [Triangulate],
-             clean = false,
-             doctest = false,
-             authors = "Juergen Fuhrmann, Francesco Furiani, Konrad Simon",
-             repo = "https://github.com/JuliaGeometry/Triangulate.jl",
-             pages = [
-                 "Home" => "index.md",
-                 "triangle-h.md",
-                 "changes.md",
-                 "allindex.md",
-                 "examples.md",
-             ])
+        modules = [Triangulate],
+        clean = false,
+        doctest = false,
+        authors = "Juergen Fuhrmann, Francesco Furiani, Konrad Simon",
+        repo = "https://github.com/JuliaGeometry/Triangulate.jl",
+        pages = [
+            "Home" => "index.md",
+            "triangle-h.md",
+            "changes.md",
+            "allindex.md",
+            "examples.md",
+        ])
 
     if !isinteractive()
         deploydocs(; repo = "github.com/JuliaGeometry/Triangulate.jl.git")
