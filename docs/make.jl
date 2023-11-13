@@ -14,18 +14,18 @@ function make_all()
     rendernotebook("pluto-examples")
 
     makedocs(; sitename = "Triangulate.jl",
-        modules = [Triangulate],
-        clean = false,
-        doctest = false,
-        authors = "Juergen Fuhrmann, Francesco Furiani, Konrad Simon",
-        repo = "https://github.com/JuliaGeometry/Triangulate.jl",
-        pages = [
-            "Home" => "index.md",
-            "triangle-h.md",
-            "changes.md",
-            "allindex.md",
-            "examples.md",
-        ])
+             modules = [Triangulate],
+             clean = false,
+             doctest = false,
+             authors = "Juergen Fuhrmann, Francesco Furiani, Konrad Simon",
+             repo = "https://github.com/JuliaGeometry/Triangulate.jl",
+             pages = [
+                 "Home" => "index.md",
+                 "triangle-h.md",
+                 "changes.md",
+                 "allindex.md",
+                 "examples.md",
+             ])
 
     if !isinteractive()
         deploydocs(; repo = "github.com/JuliaGeometry/Triangulate.jl.git")

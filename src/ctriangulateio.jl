@@ -47,12 +47,12 @@ triunsuitable_func = trivial_triunsuitable
 
 # triunsuitable function called from C (by triangulate(::CTriangulateIO)) if -u flag has been set
 function jl_wrap_triunsuitable(org_x::Cdouble,
-        org_y::Cdouble,
-        dest_x::Cdouble,
-        dest_y::Cdouble,
-        apex_x::Cdouble,
-        apex_y::Cdouble,
-        area::Cdouble)::Cint
+                               org_y::Cdouble,
+                               dest_x::Cdouble,
+                               dest_y::Cdouble,
+                               apex_x::Cdouble,
+                               apex_y::Cdouble,
+                               area::Cdouble)::Cint
     return Cint(triunsuitable_func(org_x, org_y, dest_x, dest_y, apex_x, apex_y, area))
 end
 
@@ -98,37 +98,37 @@ end
 # 
 function CTriangulateIO()
     return CTriangulateIO(C_NULL,
-        C_NULL,
-        C_NULL,
-        0,
-        0,
-        C_NULL,
-        C_NULL,
-        C_NULL,
-        C_NULL,
-        0,
-        0,
-        0,
-        C_NULL,
-        C_NULL,
-        0,
-        C_NULL,
-        0,
-        C_NULL,
-        0,
-        C_NULL,
-        C_NULL,
-        C_NULL,
-        0)
+                          C_NULL,
+                          C_NULL,
+                          0,
+                          0,
+                          C_NULL,
+                          C_NULL,
+                          C_NULL,
+                          C_NULL,
+                          0,
+                          0,
+                          0,
+                          C_NULL,
+                          C_NULL,
+                          0,
+                          C_NULL,
+                          0,
+                          C_NULL,
+                          0,
+                          C_NULL,
+                          C_NULL,
+                          C_NULL,
+                          0)
 end
 
 #
 # "Raw" triangulation call to Triangle library
 #
 function triangulate(triangle_switches::String,
-        ctio_in::CTriangulateIO,
-        ctio_out::CTriangulateIO,
-        vor_out::CTriangulateIO)
+                     ctio_in::CTriangulateIO,
+                     ctio_out::CTriangulateIO,
+                     vor_out::CTriangulateIO)
 
     # Check locale settings for decimal point
     checklocale()
@@ -136,21 +136,21 @@ function triangulate(triangle_switches::String,
     # Set unsuitable callback
     if occursin("u", triangle_switches)
         c_wrap_triunsuitable = @cfunction(jl_wrap_triunsuitable,
-            Cint,
-            (Cdouble, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble))
+                                          Cint,
+                                          (Cdouble, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble))
         ccall((:triunsuitable_callback, libtriangle),
-            Cvoid,
-            (Ptr{Cvoid},),
-            c_wrap_triunsuitable)
+              Cvoid,
+              (Ptr{Cvoid},),
+              c_wrap_triunsuitable)
     end
 
     # Call triangulate
     rc = ccall((:triangulate_catch_exit, libtriangle),
-        Cint,
-        (Cstring, Ref{CTriangulateIO}, Ref{CTriangulateIO}, Ref{CTriangulateIO}),
-        triangle_switches,
-        Ref(ctio_in),
-        Ref(ctio_out),
-        Ref(vor_out))
+               Cint,
+               (Cstring, Ref{CTriangulateIO}, Ref{CTriangulateIO}, Ref{CTriangulateIO}),
+               triangle_switches,
+               Ref(ctio_in),
+               Ref(ctio_out),
+               Ref(vor_out))
     return rc
 end

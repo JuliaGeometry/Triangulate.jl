@@ -175,17 +175,17 @@ injupyter() && example_domain_regions(; Plotter = PyPlot, minangle = 20);
 function example_domain_holes(; Plotter = nothing, minangle = 20, maxarea = 0.001)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}([0.0 0.0;
-        1.0 0.0;
-        1.0 1.0;
-        0.0 1.0;
-        0.2 0.2;
-        0.3 0.2;
-        0.3 0.3;
-        0.2 0.3;
-        0.6 0.6;
-        0.7 0.6;
-        0.7 0.7;
-        0.6 0.7]')
+                                       1.0 0.0;
+                                       1.0 1.0;
+                                       0.0 1.0;
+                                       0.2 0.2;
+                                       0.3 0.2;
+                                       0.3 0.3;
+                                       0.2 0.3;
+                                       0.6 0.6;
+                                       0.7 0.6;
+                                       0.7 0.7;
+                                       0.6 0.7]')
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 1; 5 6; 6 7; 7 8; 8 5; 9 10; 10 11; 11 12; 12 9]')
     triin.segmentmarkerlist = Vector{Int32}([1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3])
     triin.holelist = [0.25 0.25; 0.65 0.65]'

@@ -220,11 +220,11 @@ function example_convex_hull(; n = 10, raster = 10)
     (triout, vorout) = triangulate("Q", triin)
     doplot() do figure
         plot_in_out(Plotter,
-            triin,
-            triout;
-            figure,
-            title = "Convex hull",
-            circumcircles = true,)
+                    triin,
+                    triout;
+                    figure,
+                    title = "Convex hull",
+                    circumcircles = true,)
     end
 end;
 
@@ -251,11 +251,11 @@ function example_convex_hull_voronoi(; n = 10, raster = 10)
     (triout, vorout) = triangulate("vQ", triin)
     doplot() do figure
         plot_in_out(Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Convex hull with Voronoi diagram",)
+                    triin,
+                    triout;
+                    figure,
+                    voronoi = vorout,
+                    title = "Convex hull with Voronoi diagram",)
     end
 end;
 
@@ -270,11 +270,11 @@ function example_convex_hull_voronoi_delaunay(; n = 10, raster = 10)
         (triout, vorout) = triangulate("vcDQ", triin)
         doplot() do figure
             plot_in_out(Plotter,
-                triin,
-                triout;
-                figure,
-                voronoi = vorout,
-                title = "Convex hull with Voronoi diagram",)
+                        triin,
+                        triout;
+                        figure,
+                        voronoi = vorout,
+                        title = "Convex hull with Voronoi diagram",)
         end
     catch err
         if typeof(err) == TriangulateError
@@ -328,12 +328,12 @@ function example_domain_cdt_area(; maxarea = 0.05)
     (triout, vorout) = triangulate("pa$(area)Q", triin)
     doplot() do figure
         plot_in_out(Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Domain CDT with area constraint",
-            circumcircles = true,)
+                    triin,
+                    triout;
+                    figure,
+                    voronoi = vorout,
+                    title = "Domain CDT with area constraint",
+                    circumcircles = true,)
     end
 end;
 
@@ -350,12 +350,12 @@ function example_domain_bcdt_area(; maxarea = 0.05)
     (triout, vorout) = triangulate("pa$(area)DQ", triin)
     doplot() do figure
         plot_in_out(Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Boundary conforming Delaunay triangulation",
-            circumcircles = true,)
+                    triin,
+                    triout;
+                    figure,
+                    voronoi = vorout,
+                    title = "Boundary conforming Delaunay triangulation",
+                    circumcircles = true,)
     end
 end;
 
@@ -373,11 +373,11 @@ function example_domain_qcdt_area(; minangle = 20, maxarea = 0.05)
     (triout, vorout) = triangulate("pa$(area)q$(angle)", triin)
     doplot() do figure
         plot_in_out(Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Quality triangulation",)
+                    triin,
+                    triout;
+                    figure,
+                    voronoi = vorout,
+                    title = "Quality triangulation",)
     end
 end;
 
@@ -407,11 +407,11 @@ function example_domain_localref(; minangle = 20)
     (triout, vorout) = triangulate("pauq$(angle)Q", triin)
     doplot() do figure
         plot_in_out(Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Quality triangulation with local refinement",)
+                    triin,
+                    triout;
+                    figure,
+                    voronoi = vorout,
+                    title = "Quality triangulation with local refinement",)
     end
 end;
 
@@ -429,11 +429,11 @@ function example_domain_regions(; minangle = 20)
     (triout, vorout) = triangulate("paAq$(angle)Q", triin)
     doplot() do figure
         plot_in_out(Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Hetero domain triangulation",)
+                    triin,
+                    triout;
+                    figure,
+                    voronoi = vorout,
+                    title = "Hetero domain triangulation",)
     end
 end;
 
@@ -444,17 +444,17 @@ example_domain_regions(; minangle = 20)
 function example_domain_holes(; minangle = 20, maxarea = 0.001)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}([0.0 0.0
-        1.0 0.0
-        1.0 1.0
-        0.0 1.0
-        0.2 0.2
-        0.3 0.2
-        0.3 0.3
-        0.2 0.3
-        0.6 0.6
-        0.7 0.6
-        0.7 0.7
-        0.6 0.7]')
+                                       1.0 0.0
+                                       1.0 1.0
+                                       0.0 1.0
+                                       0.2 0.2
+                                       0.3 0.2
+                                       0.3 0.3
+                                       0.2 0.3
+                                       0.6 0.6
+                                       0.7 0.6
+                                       0.7 0.7
+                                       0.6 0.7]')
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 1; 5 6; 6 7; 7 8; 8 5; 9 10; 10 11; 11 12; 12 9]')
     triin.segmentmarkerlist = Vector{Int32}([1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3])
     triin.holelist = [0.25 0.25; 0.65 0.65]'
@@ -464,11 +464,11 @@ function example_domain_holes(; minangle = 20, maxarea = 0.001)
 
     doplot() do figure
         plot_in_out(Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Domain with holes",)
+                    triin,
+                    triout;
+                    figure,
+                    voronoi = vorout,
+                    title = "Domain with holes",)
     end
 end;
 
