@@ -1,7 +1,6 @@
 module Triangulate
 using DocStringExtensions
 using Triangle_jll
-using Compat: @compat
 
 include("ctriangulateio.jl")
 include("triangulateio.jl")
@@ -16,11 +15,5 @@ export numberoftriangles
 export TriangulateError
 export plot_triangulateio, plot_in_out
 export isplots, ispyplot
-
-@compat public triangulate, triunsuitable, triunsuitable!
-@compat public numberofpoints, numberofsegments, numberoftriangles
-@compat public TriangulateError
-@compat public plot_triangulateio, plot_in_out
-@compat public isplots, ispyplot
 
 end

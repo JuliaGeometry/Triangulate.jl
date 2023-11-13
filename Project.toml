@@ -4,7 +4,6 @@ authors = ["Juergen Fuhrmann <juergen.fuhrmann@wias-berlin.de>"]
 version = "2.2.1"
 
 [deps]
-Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Triangle_jll = "5639c1d2-226c-5e70-8d55-b3095415a16a"
@@ -16,7 +15,6 @@ PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
 
 [compat]
 CairoMakie = "0.10"
-Compat = "4.10"
 DocStringExtensions = "0.8, 0.9"
 GLMakie = "0.8"
 Printf = "1.6"
