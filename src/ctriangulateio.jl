@@ -97,12 +97,29 @@ end
 # Constructor for `CTriangulateIO`. Initializes everything as `NULL`. 
 # 
 function CTriangulateIO()
-    return CTriangulateIO(C_NULL, C_NULL, C_NULL, 0, 0,
-        C_NULL, C_NULL, C_NULL, C_NULL, 0, 0, 0,
-        C_NULL, C_NULL, 0,
-        C_NULL, 0,
-        C_NULL, 0,
-        C_NULL, C_NULL, C_NULL, 0)
+    return CTriangulateIO(C_NULL,
+        C_NULL,
+        C_NULL,
+        0,
+        0,
+        C_NULL,
+        C_NULL,
+        C_NULL,
+        C_NULL,
+        0,
+        0,
+        0,
+        C_NULL,
+        C_NULL,
+        0,
+        C_NULL,
+        0,
+        C_NULL,
+        0,
+        C_NULL,
+        C_NULL,
+        C_NULL,
+        0)
 end
 
 #
@@ -121,16 +138,16 @@ function triangulate(triangle_switches::String,
         c_wrap_triunsuitable = @cfunction(jl_wrap_triunsuitable,
             Cint,
             (Cdouble, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble))
-        ccall((:triunsuitable_callback, libtriangle), Cvoid, (Ptr{Cvoid},), c_wrap_triunsuitable)
+        ccall((:triunsuitable_callback, libtriangle),
+            Cvoid,
+            (Ptr{Cvoid},),
+            c_wrap_triunsuitable)
     end
 
     # Call triangulate
     rc = ccall((:triangulate_catch_exit, libtriangle),
         Cint,
-        (Cstring,
-            Ref{CTriangulateIO},
-            Ref{CTriangulateIO},
-            Ref{CTriangulateIO}),
+        (Cstring, Ref{CTriangulateIO}, Ref{CTriangulateIO}, Ref{CTriangulateIO}),
         triangle_switches,
         Ref(ctio_in),
         Ref(ctio_out),
