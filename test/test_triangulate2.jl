@@ -18,7 +18,7 @@ function test()
     return all([
                    size(triout.pointlist, 2) == 4,
                    size(triout.trianglelist, 2) == 2,
-                   size(triout.segmentlist, 2) == 5,
+                   size(triout.segmentlist, 2) == 5
                ])
 end
 
