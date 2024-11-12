@@ -44,24 +44,6 @@ but on a raster, preventing the appearance of too close points.
 
 """
 
-# ╔═╡ a5f7aca5-9e40-471a-bece-34498a804bd8
-function example_convex_hull(; n = 10, raster = 10)
-    triin = Triangulate.TriangulateIO()
-    triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i = 1:n])...)
-    (triout, vorout) = triangulate("Q", triin)
-    doplot() do figure
-        plot_in_out(Plotter,
-                    triin,
-                    triout;
-                    figure,
-                    title = "Convex hull",
-                    circumcircles = true,)
-    end
-end;
-
-# ╔═╡ d0e63ebd-9288-42d5-9735-3c94a2baa8e3
-example_convex_hull(; n = 10, raster = 10)
-
 # ╔═╡ c56434f3-e0a4-462e-86d5-fcfbb6778c11
 md"""
 ### DT with boundary
@@ -73,19 +55,6 @@ Delaunay triangulation (CDT) where the boundary segments
 are the seen constraining edges which must appear in the output.
 
 """
-
-# ╔═╡ 6f3f0014-42bc-4565-a03e-208fed8b8f48
-function example_convex_hull_with_boundary(; n = 10, raster = 10)
-    triin = Triangulate.TriangulateIO()
-    triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i = 1:n])...)
-    (triout, vorout) = triangulate("cQ", triin)
-    doplot() do figure
-        plot_in_out(Plotter, triin, triout; figure, title = "Convex hull with boundary")
-    end
-end;
-
-# ╔═╡ 6ec811ca-e6d3-43ea-8da9-02bb05060d8d
-example_convex_hull_with_boundary(; n = 10, raster = 10)
 
 # ╔═╡ f13ad00e-a3d3-462f-93d4-ebe1fe4a7b4d
 md"""
@@ -105,6 +74,176 @@ outside of the triangulated domain.
 
 """
 
+# ╔═╡ 852e1ebf-3f29-472a-945e-53920d7653be
+md"""
+### Boundary conforming DT (BCDT)
+Specify "c" flag for convex hull segments, "v" flag for Voronoi
+and "D" flag for creating a boundary conforming Delaunay triangulation of
+the point set. 
+
+In this case additional points ("Steiner points") are created which split
+the boundary segments and ensure that all triangle circumcenters
+lie within the convex hull.
+Due to random input, there may be situations where Triangle fails with this task,
+so we check for the corresponding exception.
+
+"""
+
+# ╔═╡ b95859af-ab21-4c41-b095-82b3ea39724a
+md"""
+### Constrained DT (CDT) 
+Constrained Delaunay triangulation (CDT) of a point set with
+additional constraints given a priori. This is obtained when
+specifying the "p" flag and an additional list of segments each described
+by two points 
+which should become edges of the triangulation. Note that
+the resulting triangulation is not Delaunay in the sense
+given above.
+
+"""
+
+# ╔═╡ c5a87fb5-c264-498d-aa7c-91d9e6d7bfe2
+md"""
+## Triangulations of domains
+"""
+
+# ╔═╡ 7f2b4252-a827-4de4-abb6-42d1bbde44b9
+md"""
+### CDT of a domain 
+
+Specification is similar to that of the CDT of a point set.
+
+The domain is given by a segment list specifying its boundary.
+
+This is obtained by specifying the "p" flag.
+
+"""
+
+# ╔═╡ 6793711b-d476-45c6-8b2b-b1d0693d8e6e
+md"""
+### CDT with maximum area constraint
+
+This constraint is specfied as a floating
+point number given after the -a flag.
+Be careful to not give it in the exponential format as Triangle would be unable to analyse it.
+Therefore it is dangerous to provide it via string interpolation and it is better to convert it to a string before using `@sprintf`.
+
+Specifying only the maximum area constraint does not prevent very thin
+triangles from occuring at the boundary.
+
+"""
+
+# ╔═╡ 3f2f0b19-3c13-482d-abd5-e6325802c6e8
+md"""
+### BCDT with maximum area constraint 
+
+In addition to the area constraint specify the -D flag
+in order to keep the triangle circumcenters  within the domain.
+
+"""
+
+# ╔═╡ 14145886-2a5f-4ae8-bf00-a5eaaa7e0568
+md"""
+### CDT with minimum angle condition
+
+The "q" flag  allows to specify a minimum angle
+constraint preventing skinny triangles.
+
+This combination of flags, possibly with an additional "D" flag is recommended
+when creating triangulations for finite element or finite volume methods.
+It the mimimum angle is larger then 28.6 degrees, Triangle's algorithm may
+run into an infinite loop.
+
+"""
+
+# ╔═╡ 61dc30ce-9256-4f20-9163-e8d473ac9e53
+md"""
+### Triangulation with refinement callback
+
+A maximum area constraint is specified in the `unsuitable` callback
+which is activated via the "u" flag if it has been passed before calling triangulate.
+
+In addition, the "q" flag  allows to specify a minimum angle
+constraint preventing skinny triangles.
+
+"""
+
+# ╔═╡ 30990760-92e1-4a26-98a5-b43be658dee7
+md"""
+### Triangulation of a heterogeneous domain
+
+The segment list specifies its boundary and the inner boundary between subdomains.
+An additional region list is specified which provides "region points" in `regionlist[1,:]`
+and `regionlist[2,:]`.  These kind of mark the subdomains. `regionlist[3,:]` contains an attribute
+which labels the subdomains. `regionlist[4,:]` contains a maximum area value. `size(regionlist,2)`
+is the number of regions.
+
+With the "A" flag, the subdomain labels are spread to all triangles in the corresponding
+subdomains, becoming available in `triangleattributelist[1,:]`.
+With the "a" flag, the area constraints are applied in the corresponding subdomains.
+
+"""
+
+# ╔═╡ 783975f5-cbab-4b23-9155-7a6276cd25df
+md"""
+### Triangulation of a domain with holes
+The segment list specifies its boundary and the boundaries of the holes.
+An additional hole list is specified which provides "hole points" in `holelist[1,:]`
+and `holelist[2,:]`. 
+
+"""
+
+# ╔═╡ 9a090bba-093b-4ca4-a186-1c43b52cd4ff
+html"""<hr>"""
+
+# ╔═╡ 9447e874-22ce-4b99-9037-e0d202430ee2
+# Wrap "Pyplotting" into this function in order to shield calling code
+# from all these peculiarities.
+function doplot(f; w = 650, h = 300)
+    fig = nothing
+    if Triangulate.ispyplot(Plotter)
+        Plotter.close()
+        Plotter.clf()
+        fig = Plotter.figure(1; dpi = 100)
+        fig.set_size_inches(w / 100, h / 100; forward = true)
+    end
+    if Triangulate.ismakie(Plotter)
+        fig = Plotter.Figure(; size = (w, h))
+    end
+    f(fig)
+end;
+
+# ╔═╡ a5f7aca5-9e40-471a-bece-34498a804bd8
+function example_convex_hull(; n = 10, raster = 10)
+    triin = Triangulate.TriangulateIO()
+    triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i = 1:n])...)
+    (triout, vorout) = triangulate("Q", triin)
+    doplot() do figure
+        plot_in_out(Plotter,
+                    triin,
+                    triout;
+                    figure,
+                    title = "Convex hull",
+                    circumcircles = true,)
+    end
+end;
+
+# ╔═╡ d0e63ebd-9288-42d5-9735-3c94a2baa8e3
+example_convex_hull(; n = 10, raster = 10)
+
+# ╔═╡ 6f3f0014-42bc-4565-a03e-208fed8b8f48
+function example_convex_hull_with_boundary(; n = 10, raster = 10)
+    triin = Triangulate.TriangulateIO()
+    triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i = 1:n])...)
+    (triout, vorout) = triangulate("cQ", triin)
+    doplot() do figure
+        plot_in_out(Plotter, triin, triout; figure, title = "Convex hull with boundary")
+    end
+end;
+
+# ╔═╡ 6ec811ca-e6d3-43ea-8da9-02bb05060d8d
+example_convex_hull_with_boundary(; n = 10, raster = 10)
+
 # ╔═╡ 6e2d70c4-dc0f-4672-823a-930a50114811
 function example_convex_hull_voronoi(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
@@ -122,21 +261,6 @@ end;
 
 # ╔═╡ 0b54833f-0458-4417-aa03-27c4fe2a873c
 example_convex_hull_voronoi(; n = 10, raster = 10)
-
-# ╔═╡ 852e1ebf-3f29-472a-945e-53920d7653be
-md"""
-### Boundary conforming DT (BCDT)
-Specify "c" flag for convex hull segments, "v" flag for Voronoi
-and "D" flag for creating a boundary conforming Delaunay triangulation of
-the point set. 
-
-In this case additional points ("Steiner points") are created which split
-the boundary segments and ensure that all triangle circumcenters
-lie within the convex hull.
-Due to random input, there may be situations where Triangle fails with this task,
-so we check for the corresponding exception.
-
-"""
 
 # ╔═╡ 1ee0af11-96e4-4929-926e-d7143ed1f791
 function example_convex_hull_voronoi_delaunay(; n = 10, raster = 10)
@@ -163,19 +287,6 @@ end;
 # ╔═╡ 4da9a598-bf59-4b3b-aea7-ee1c2721c206
 example_convex_hull_voronoi_delaunay(; n = 10, raster = 10)
 
-# ╔═╡ b95859af-ab21-4c41-b095-82b3ea39724a
-md"""
-### Constrained DT (CDT) 
-Constrained Delaunay triangulation (CDT) of a point set with
-additional constraints given a priori. This is obtained when
-specifying the "p" flag and an additional list of segments each described
-by two points 
-which should become edges of the triangulation. Note that
-the resulting triangulation is not Delaunay in the sense
-given above.
-
-"""
-
 # ╔═╡ 0d648d22-aa03-437b-b019-59bd693bc55e
 function example_cdt(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
@@ -192,23 +303,6 @@ end;
 # ╔═╡ 910ce428-4989-4b08-8037-887dae5c847e
 example_cdt(; n = 10, raster = 10)
 
-# ╔═╡ c5a87fb5-c264-498d-aa7c-91d9e6d7bfe2
-md"""
-## Triangulations of domains
-"""
-
-# ╔═╡ 7f2b4252-a827-4de4-abb6-42d1bbde44b9
-md"""
-### CDT of a domain 
-
-Specification is similar to that of the CDT of a point set.
-
-The domain is given by a segment list specifying its boundary.
-
-This is obtained by specifying the "p" flag.
-
-"""
-
 # ╔═╡ ccd8ed8d-7991-4a19-8a05-65761adc2fee
 function example_domain_cdt()
     triin = Triangulate.TriangulateIO()
@@ -223,20 +317,6 @@ end;
 
 # ╔═╡ fc5264cf-b1f7-43c5-bcff-09e6274ca215
 example_domain_cdt()
-
-# ╔═╡ 6793711b-d476-45c6-8b2b-b1d0693d8e6e
-md"""
-### CDT with maximum area constraint
-
-This constraint is specfied as a floating
-point number given after the -a flag.
-Be careful to not give it in the exponential format as Triangle would be unable to analyse it.
-Therefore it is dangerous to provide it via string interpolation and it is better to convert it to a string before using `@sprintf`.
-
-Specifying only the maximum area constraint does not prevent very thin
-triangles from occuring at the boundary.
-
-"""
 
 # ╔═╡ b71b1faf-ff3f-4404-8a2c-9de84fa498f7
 function example_domain_cdt_area(; maxarea = 0.05)
@@ -260,15 +340,6 @@ end;
 # ╔═╡ cd007961-7f0e-4c56-9c86-1a9827a71e3e
 example_domain_cdt_area(; maxarea = 0.05)
 
-# ╔═╡ 3f2f0b19-3c13-482d-abd5-e6325802c6e8
-md"""
-### BCDT with maximum area constraint 
-
-In addition to the area constraint specify the -D flag
-in order to keep the triangle circumcenters  within the domain.
-
-"""
-
 # ╔═╡ 8ac6cc0b-e4e7-4aa0-bc37-b22b15bf2a83
 function example_domain_bcdt_area(; maxarea = 0.05)
     triin = Triangulate.TriangulateIO()
@@ -291,20 +362,6 @@ end;
 # ╔═╡ a0cb6060-8278-444a-a4e5-46055d98616c
 example_domain_bcdt_area(; maxarea = 0.05)
 
-# ╔═╡ 14145886-2a5f-4ae8-bf00-a5eaaa7e0568
-md"""
-### CDT with minimum angle condition
-
-The "q" flag  allows to specify a minimum angle
-constraint preventing skinny triangles.
-
-This combination of flags, possibly with an additional "D" flag is recommended
-when creating triangulations for finite element or finite volume methods.
-It the mimimum angle is larger then 28.6 degrees, Triangle's algorithm may
-run into an infinite loop.
-
-"""
-
 # ╔═╡ a7e97f1c-e091-4555-abc0-a71abd22dd8a
 function example_domain_qcdt_area(; minangle = 20, maxarea = 0.05)
     triin = Triangulate.TriangulateIO()
@@ -326,18 +383,6 @@ end;
 
 # ╔═╡ 4e7dad4d-7d3c-4201-a56f-28e3df51e885
 example_domain_qcdt_area(; maxarea = 0.05, minangle = 20)
-
-# ╔═╡ 61dc30ce-9256-4f20-9163-e8d473ac9e53
-md"""
-### Triangulation with refinement callback
-
-A maximum area constraint is specified in the `unsuitable` callback
-which is activated via the "u" flag if it has been passed before calling triangulate.
-
-In addition, the "q" flag  allows to specify a minimum angle
-constraint preventing skinny triangles.
-
-"""
 
 # ╔═╡ 083b8aef-67f1-489a-8eff-b70fb6dc9da4
 function example_domain_localref(; minangle = 20)
@@ -373,22 +418,6 @@ end;
 # ╔═╡ 3c88e5cb-5e85-4146-a6d7-3682f4b9a892
 example_domain_localref(; minangle = 20)
 
-# ╔═╡ 30990760-92e1-4a26-98a5-b43be658dee7
-md"""
-### Triangulation of a heterogeneous domain
-
-The segment list specifies its boundary and the inner boundary between subdomains.
-An additional region list is specified which provides "region points" in `regionlist[1,:]`
-and `regionlist[2,:]`.  These kind of mark the subdomains. `regionlist[3,:]` contains an attribute
-which labels the subdomains. `regionlist[4,:]` contains a maximum area value. `size(regionlist,2)`
-is the number of regions.
-
-With the "A" flag, the subdomain labels are spread to all triangles in the corresponding
-subdomains, becoming available in `triangleattributelist[1,:]`.
-With the "a" flag, the area constraints are applied in the corresponding subdomains.
-
-"""
-
 # ╔═╡ f0f9922b-70ce-4866-bc41-349a26095ade
 function example_domain_regions(; minangle = 20)
     triin = Triangulate.TriangulateIO()
@@ -410,15 +439,6 @@ end;
 
 # ╔═╡ 58dbd0e3-b34f-44ec-905a-488c7bbd07ca
 example_domain_regions(; minangle = 20)
-
-# ╔═╡ 783975f5-cbab-4b23-9155-7a6276cd25df
-md"""
-### Triangulation of a domain with holes
-The segment list specifies its boundary and the boundaries of the holes.
-An additional hole list is specified which provides "hole points" in `holelist[1,:]`
-and `holelist[2,:]`. 
-
-"""
 
 # ╔═╡ 3dfe5acd-72f7-4510-b3a0-40364f679073
 function example_domain_holes(; minangle = 20, maxarea = 0.001)
@@ -454,26 +474,6 @@ end;
 
 # ╔═╡ 6545d149-d4dd-4f26-8f51-5db90f6b444d
 example_domain_holes(; minangle = 20, maxarea = 0.05)
-
-# ╔═╡ 9a090bba-093b-4ca4-a186-1c43b52cd4ff
-html"""<hr>"""
-
-# ╔═╡ 9447e874-22ce-4b99-9037-e0d202430ee2
-# Wrap "Pyplotting" into this function in order to shield calling code
-# from all these peculiarities.
-function doplot(f; w = 650, h = 300)
-    fig = nothing
-    if Triangulate.ispyplot(Plotter)
-        Plotter.close()
-        Plotter.clf()
-        fig = Plotter.figure(1; dpi = 100)
-        fig.set_size_inches(w / 100, h / 100; forward = true)
-    end
-    if Triangulate.ismakie(Plotter)
-        fig = Plotter.Figure(; size = (w, h))
-    end
-    f(fig)
-end;
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
