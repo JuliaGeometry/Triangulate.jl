@@ -334,7 +334,7 @@ function plot_triangulateio(Plotter,
 
             x = voronoi.pointlist[1, :]
             y = voronoi.pointlist[2, :]
-            Makie.scatter!(axis, x, y; s = 10, color = :green)
+            Makie.scatter!(axis, x, y; markersize = 10, color = :green)
             for i = 1:numberofedges(voronoi)
                 i1 = voronoi.edgelist[1, i]
                 i2 = voronoi.edgelist[2, i]
