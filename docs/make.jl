@@ -26,7 +26,7 @@ function make_all()
         pages = [
             "Home" => "index.md",
             "triangle-h.md",
-            "changes.md",
+            "Major changes" => "changes.md",
             "allindex.md",
             "examples.md",
         ])
