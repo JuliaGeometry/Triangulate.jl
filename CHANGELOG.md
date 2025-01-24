@@ -7,7 +7,7 @@
 - JuliaFormatter
 
 ## v2.2.0 Oct 10, 2022
-- Fix ReadOnlyMemoryError occuring sometimes on windows for Julia <=1.8 and consistently for 1.9
+- Fix ReadOnlyMemoryError occurring sometimes on windows for Julia <=1.8 and consistently for 1.9
 - New upstream repo for Triangle c source: https://github.com/JuliaGeometry/Triangle
 
 ## v2.1.0  Oct 7, 2021

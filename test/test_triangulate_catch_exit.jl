@@ -8,7 +8,7 @@ function test()
         (triout, vorout) = triangulate("Q", triin)
     catch err
         if typeof(err) == TriangulateError
-            println("Catched TriangulateError")
+            println("Caught TriangulateError")
             return true
         end
     end

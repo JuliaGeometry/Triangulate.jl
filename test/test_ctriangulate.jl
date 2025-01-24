@@ -19,7 +19,7 @@ function test()
     triin.regionlist = pointer(regionpoints)
     triangulate("paAqQ", triin, triout, vorout)
 
-    triout.numberofpoints == 177 && triout.numberoftriangles == 319 && triout.numberofsegments == 33
+    return triout.numberofpoints == 177 && triout.numberoftriangles == 319 && triout.numberofsegments == 33
 end
 
 end

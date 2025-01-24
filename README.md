@@ -4,6 +4,7 @@ Triangulate
 [![Build status](https://github.com/JuliaGeometry/Triangulate.jl/workflows/linux-macos-windows/badge.svg)](https://github.com/JuliaGeometry/Triangulate.jl/actions)
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliageometry.github.io/Triangulate.jl/stable)
 [![PkgEval](https://juliaci.github.io/NanosoldierReports/pkgeval_badges/T/Triangulate.svg)](https://juliaci.github.io/NanosoldierReports/pkgeval_badges/report.html)
+[![code style: runic](https://img.shields.io/badge/code_style-%E1%9A%B1%E1%9A%A2%E1%9A%BE%E1%9B%81%E1%9A%B2-black)](https://github.com/fredrikekre/Runic.jl)
 
 Julia wrapper for Jonathan Richard Shewchuk's Triangle mesh generator. The package tries to provide a 1:1 mapping of Triangle's functionality to Julia.
 
@@ -40,5 +41,3 @@ free, then you are not required to make any arrangement with me.)
 ## Acknowledgement
 This package uses ideas from  [TriangleMesh.jl](https://github.com/konsim83/TriangleMesh.jl)
 and [Triangle.jl](https://github.com/cvdlab/Triangle.jl).
-
-
