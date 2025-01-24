@@ -1,4 +1,9 @@
 # Major changes
+## v2.4.0 Jan 23, 2025
+- Introduce Changelog
+- Bump Makie compat
+- Pre-commit
+- Runic formatting
 
 ## v2.3.0 Nov 13, 2023
 - Allow for Makie plots
