@@ -15,24 +15,34 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1.6' # Replace this with the minimum Julia version that your package supports. E.g. if your package requires Julia 1.5 or higher, change this to '1.5'.
+          - 'lts' # Replace this with the minimum Julia version that your package supports. E.g. if your package requires Julia 1.5 or higher, change this to '1.5'.
           - '1'   # Leave this line unchanged. '1' will automatically expand to the latest stable 1.x release of Julia.
           - 'nightly'
         os:
           - ubuntu-latest
-          - macos-latest
           - windows-latest
+          - macOS-13 # intel
+          - macOS-14 # arm
         arch:
           - x64
+          - aarch64
+        exclude:
+          - os: ubuntu-latest
+            arch: aarch64
+          - os: windows-latest
+            arch: aarch64
+          - os: macOS-13
+            arch: aarch64
+          - os: macOS-14
+            arch: x64
     steps:
-      - uses: actions/checkout@v2
-      - uses: julia-actions/setup-julia@v1
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
-      - uses: julia-actions/cache@v2
+      - uses: actions/cache@v4
         env:
-          PYTHON: ""
           cache-name: cache-artifacts
         with:
           path: ~/.julia/artifacts
@@ -42,17 +52,22 @@ jobs:
             ${{ runner.os }}-test-
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@v1
+      - run: |
+          julia --project=docs -e '
+            using Pkg
+            Pkg.develop(PackageSpec(path=pwd()))
+            Pkg.instantiate()'
       - uses: julia-actions/julia-runtest@v1
+        # env:
+        #   JULIA_NUM_THREADS: 4
       - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v1
-        with:
-          file: lcov.info
+      - uses: codecov/codecov-action@v5
   docs:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: julia-actions/setup-julia@v1
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
         with:
           version: '1'
       - run: |
@@ -67,7 +82,5 @@ jobs:
       #       doctest(MYPACKAGE)'
       - run: julia --project=docs docs/make.jl
         env:
-          PYTHON: ""
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
-          
