@@ -123,13 +123,13 @@ This is obtained by specifying the "p" flag.
 md"""
 ### CDT with maximum area constraint
 
-This constraint is specfied as a floating
+This constraint is specified as a floating
 point number given after the -a flag.
 Be careful to not give it in the exponential format as Triangle would be unable to analyse it.
 Therefore it is dangerous to provide it via string interpolation and it is better to convert it to a string before using `@sprintf`.
 
 Specifying only the maximum area constraint does not prevent very thin
-triangles from occuring at the boundary.
+triangles from occurring at the boundary.
 
 """
 
@@ -151,7 +151,7 @@ constraint preventing skinny triangles.
 
 This combination of flags, possibly with an additional "D" flag is recommended
 when creating triangulations for finite element or finite volume methods.
-It the mimimum angle is larger then 28.6 degrees, Triangle's algorithm may
+It the minimum angle is larger then 28.6 degrees, Triangle's algorithm may
 run into an infinite loop.
 
 """
