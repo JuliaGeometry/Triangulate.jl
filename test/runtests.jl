@@ -9,7 +9,7 @@ modname(fname) = splitext(basename(fname))[1]
 # or false depending on success.
 #
 function run_tests_from_directory(testdir, prefix)
-    @testset "all tests" begin
+    return @testset "all tests" begin
         println("Directory $(testdir):")
         examples = modname.(readdir(testdir))
         for example in examples

@@ -10,6 +10,6 @@ function test()
 
     (triout, vorout) = triangulate("paAqQ", triin)
 
-    size(triout.pointlist, 2) == 177 && size(triout.trianglelist, 2) == 319 && size(triout.segmentlist, 2) == 33
+    return size(triout.pointlist, 2) == 177 && size(triout.trianglelist, 2) == 319 && size(triout.segmentlist, 2) == 33
 end
 end

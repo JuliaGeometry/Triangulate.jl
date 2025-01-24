@@ -2,7 +2,7 @@ module test_examples
 include("example_pointsets.jl")
 include("example_domains.jl")
 
-# 
+#
 # Called by runtest.
 #
 function test()
@@ -13,7 +13,7 @@ function test()
             getfield(@__MODULE__, symbol)()
         end
     end
-    true
+    return true
 end
 
 # End of module

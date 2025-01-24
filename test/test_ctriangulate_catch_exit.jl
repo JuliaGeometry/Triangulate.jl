@@ -10,6 +10,6 @@ function test()
     triin.numberofpoints = Cint(size(nodes, 2))
     triin.pointlist = pointer(nodes)
     rc = triangulate("Q", triin, triout, vorout)
-    rc == 1
+    return rc == 1
 end
 end
