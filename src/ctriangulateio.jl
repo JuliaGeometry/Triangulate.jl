@@ -1,4 +1,4 @@
-# Methods and structs from this file are not meant to be part ot the public interface, so
+# Methods and structs from this file are not meant to be part of the public interface, so
 # documentation is in the comments, no docstrings here.
 
 ###############################################################

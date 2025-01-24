@@ -46,8 +46,8 @@ mutable struct TriangulateIO
     """
     An array of triangle corners. The first three entries
     of each column describe the three nodes of the triangle
-    in counterclockwise manner. They are followd by  any other nodes if the triangle    
-    represents a nonlinear element. This means that without specfiying the 'o2' switch,
+    in counterclockwise manner. They are followed by  any other nodes if the triangle    
+    represents a nonlinear element. This means that without specifying the 'o2' switch,
     each column contains three node indices, while in the opposite case, each column
     contains six entries: the three triangle vertices and the three edge mindpoint nodes.
 
@@ -493,7 +493,7 @@ struct TriangulateError <: Exception end
 $(TYPEDSIGNATURES)
 
 Create triangulation. Returns tuple `(out::TriangulateIO, vor_out::TriangulateIO)`
-containing the output triangulation and the optional Voronoi tesselation.
+containing the output triangulation and the optional Voronoi tessellation.
 
 After a call to triangulate(), the valid fields of `out` and `vorout`
 will depend, in an obvious way, on the choice of switches used.  Note

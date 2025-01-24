@@ -39,13 +39,13 @@ injupyter() && example_domain_cdt(; Plotter = PyPlot);
 
 # ### Constrained Delaunay triangulation (CDT) of a domain given by a segment list specifying its boundary together with a maximum  area constraint.
 #
-# This constraint is specfied as a floating
+# This constraint is specified as a floating
 # point number given after the -a flag.
 # Be careful to not give it in the exponential format as Triangle would be unable to analyse it.
 # Therefore it is dangerous to a number in the string interpolation and it is better to convert
 # it to a string before using `@sprintf`.
 # Specifying only the maximum area constraint does not prevent very thin
-# triangles from occuring at the boundary.
+# triangles from occurring at the boundary.
 function example_domain_cdt_area(; Plotter = nothing, maxarea = 0.05)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}([0.0 0.0; 1.0 0.0; 1.0 1.0; 0.6 0.6; 0.0 1.0]')
@@ -86,7 +86,7 @@ injupyter() && example_domain_bcdt_area(; Plotter = PyPlot, maxarea = 0.05);
 #
 # This combination of flags, possibly with an additional "D" flag is recommended
 # when creating triangulations for finite element or finite volume methods.
-# It the mimimum angle is larger then 28.6 degrees, Triangle's algorithm may
+# It the minimum angle is larger then 28.6 degrees, Triangle's algorithm may
 # run into an infinite loop.
 function example_domain_qcdt_area(; Plotter = nothing, minangle = 20, maxarea = 0.05)
     triin = Triangulate.TriangulateIO()
