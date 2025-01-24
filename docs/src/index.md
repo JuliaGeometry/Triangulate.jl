@@ -38,4 +38,3 @@ of Triangle.
 Modules = [Triangulate]
 Pages = [ "triangulateio.jl", "plot.jl"]
 ```
-

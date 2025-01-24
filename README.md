@@ -41,5 +41,3 @@ free, then you are not required to make any arrangement with me.)
 ## Acknowledgement
 This package uses ideas from  [TriangleMesh.jl](https://github.com/konsim83/TriangleMesh.jl)
 and [Triangle.jl](https://github.com/cvdlab/Triangle.jl).
-
-
