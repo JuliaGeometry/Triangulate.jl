@@ -1,4 +1,11 @@
 # Major changes
+
+## v2.4.1 June 12, 2025
+- Bump Makie compat
+- Compathelper
+- Fix dependabot
+
+
 ## v2.4.0 Jan 23, 2025
 - Introduce Changelog
 - Bump Makie compat
