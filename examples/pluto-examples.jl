@@ -11,9 +11,9 @@ begin
     using Revise
     using CairoMakie
     import GridVisualize
-    using Triangulate, PlutoUI, Printf
+    using Triangulate: Triangulate, TriangulateIO, triangulate, triunsuitable!
+    using PlutoUI, Printf
     CairoMakie.activate!(; type = "png")
-    Plotter = CairoMakie
     GridVisualize.default_plotter!(CairoMakie)
 end;
 
@@ -199,7 +199,7 @@ and `holelist[2,:]`.
 html"""<hr>"""
 
 # ╔═╡ 2272dcef-b376-4a0a-aaeb-214af9297858
-function Triangulate.plot_in_out(
+function plot_in_out(
         triin, triout;
         Plotter = GridVisualize.default_plotter(),
         voronoi = nothing,
@@ -451,23 +451,6 @@ end;
 
 # ╔═╡ 6545d149-d4dd-4f26-8f51-5db90f6b444d
 example_domain_holes(; minangle = 20, maxarea = 0.05)
-
-# ╔═╡ 9447e874-22ce-4b99-9037-e0d202430ee2
-# Wrap "Pyplotting" into this function in order to shield calling code
-# from all these peculiarities.
-function doplot(f; w = 650, h = 300)
-    fig = nothing
-    if Triangulate.ispyplot(Plotter)
-        Plotter.close()
-        Plotter.clf()
-        fig = Plotter.figure(1; dpi = 100)
-        fig.set_size_inches(w / 100, h / 100; forward = true)
-    end
-    if Triangulate.ismakie(Plotter)
-        fig = Plotter.Figure(; size = (w, h))
-    end
-    return f(fig)
-end;
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -2187,6 +2170,5 @@ version = "3.6.0+0"
 # ╠═6545d149-d4dd-4f26-8f51-5db90f6b444d
 # ╟─9a090bba-093b-4ca4-a186-1c43b52cd4ff
 # ╠═2272dcef-b376-4a0a-aaeb-214af9297858
-# ╠═9447e874-22ce-4b99-9037-e0d202430ee2
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
