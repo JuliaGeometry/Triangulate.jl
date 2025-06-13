@@ -1,6 +1,10 @@
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+GridVisualize = "5eed8a63-0fb0-45eb-886d-8d5a387d12b8"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 Triangulate = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
+
+[compat]
+GridVisualize = "1.14"

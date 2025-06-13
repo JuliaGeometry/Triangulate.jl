@@ -1,5 +1,15 @@
 # Major changes
 
+## v3.0 planned
+- Remove plotting code (`plot_in_out`, `plot_triangulateio`)
+- Remove deprecated `triunsuitable`
+
+## v2.5 June 13, 2025
+- Deprecate plotting code in Triangulate.jl
+  - `plot_triangulateio` is now exported from GridVisualize.jl
+  - See example notebook how to replace the deprecated code.
+- Update example notebook
+
 ## v2.4.1 June 12, 2025
 - Bump Makie compat
 - Compathelper

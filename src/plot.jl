@@ -100,6 +100,10 @@ The plot function is not exported, but kept for backward compatibility.
 """
 # plot(Plotter, tio; kwargs...) = plot_triangulateio(Plotter, tio; kwargs...)
 
+
+global depwarned::Bool = false
+
+
 """
 $(TYPEDSIGNATURES)
 
@@ -116,6 +120,14 @@ function plot_triangulateio(
         aspect = 1,
         circumcircles = false,
     )
+    global depwarned
+    if !depwarned
+        @warn """
+        Triangulate.plot_triangulateio() is deprecated and will be removed in the next release.
+        It is replaced by GridVisualize.plot_triangulateio() exported from GridVisualize.jl.
+        """
+        depwarned = true
+    end
     x = view(tio.pointlist, 1, :)
     y = view(tio.pointlist, 2, :)
 

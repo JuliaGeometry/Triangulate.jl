@@ -1,7 +1,7 @@
 name = "Triangulate"
 uuid = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 authors = ["Juergen Fuhrmann <juergen.fuhrmann@wias-berlin.de>"]
-version = "2.4.1"
+version = "2.5"
 
 [deps]
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
