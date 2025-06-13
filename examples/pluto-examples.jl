@@ -10,9 +10,11 @@ begin
     haskey(ENV, "PLUTO_PROJECT") && _Pkg.activate(ENV["PLUTO_PROJECT"])
     using Revise
     using CairoMakie
+    import GridVisualize
     using Triangulate, PlutoUI, Printf
     CairoMakie.activate!(; type = "png")
     Plotter = CairoMakie
+    GridVisualize.default_plotter!(CairoMakie)
 end;
 
 # ╔═╡ fae15626-bc69-438f-8ea5-92b3ffdf2c7b
@@ -196,38 +198,39 @@ and `holelist[2,:]`.
 # ╔═╡ 9a090bba-093b-4ca4-a186-1c43b52cd4ff
 html"""<hr>"""
 
-# ╔═╡ 9447e874-22ce-4b99-9037-e0d202430ee2
-# Wrap "Pyplotting" into this function in order to shield calling code
-# from all these peculiarities.
-function doplot(f; w = 650, h = 300)
-    fig = nothing
-    if Triangulate.ispyplot(Plotter)
-        Plotter.close()
-        Plotter.clf()
-        fig = Plotter.figure(1; dpi = 100)
-        fig.set_size_inches(w / 100, h / 100; forward = true)
-    end
-    if Triangulate.ismakie(Plotter)
-        fig = Plotter.Figure(; size = (w, h))
-    end
-    return f(fig)
-end;
+# ╔═╡ 2272dcef-b376-4a0a-aaeb-214af9297858
+function Triangulate.plot_in_out(
+        triin, triout;
+        Plotter = GridVisualize.default_plotter(),
+        voronoi = nothing,
+        circumcircles = false, resolution = (600, 300)
+    )
+
+    vis = GridVisualize.GridVisualizer(;
+        Plotter, layout = (1, 2), clear = true, resolution
+    )
+
+    GridVisualize.plot_triangulateio!(vis[1, 1], triin; title = "Input")
+    GridVisualize.plot_triangulateio!(
+        vis[1, 2],
+        triout;
+        voronoi,
+        circumcircles,
+        title = "Output"
+    )
+    return GridVisualize.reveal(vis)
+end
 
 # ╔═╡ a5f7aca5-9e40-471a-bece-34498a804bd8
 function example_convex_hull(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i in 1:n])...)
     (triout, vorout) = triangulate("Q", triin)
-    return doplot() do figure
-        plot_in_out(
-            Plotter,
-            triin,
-            triout;
-            figure,
-            title = "Convex hull",
-            circumcircles = true,
-        )
-    end
+    return plot_in_out(
+        triin,
+        triout;
+        circumcircles = true,
+    )
 end;
 
 # ╔═╡ d0e63ebd-9288-42d5-9735-3c94a2baa8e3
@@ -238,9 +241,7 @@ function example_convex_hull_with_boundary(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i in 1:n])...)
     (triout, vorout) = triangulate("cQ", triin)
-    return doplot() do figure
-        plot_in_out(Plotter, triin, triout; figure, title = "Convex hull with boundary")
-    end
+    return plot_in_out(triin, triout)
 end;
 
 # ╔═╡ 6ec811ca-e6d3-43ea-8da9-02bb05060d8d
@@ -251,16 +252,11 @@ function example_convex_hull_voronoi(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i in 1:n])...)
     (triout, vorout) = triangulate("vQ", triin)
-    return doplot() do figure
-        plot_in_out(
-            Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Convex hull with Voronoi diagram",
-        )
-    end
+    return plot_in_out(
+        triin,
+        triout;
+        voronoi = vorout
+    )
 end;
 
 # ╔═╡ 0b54833f-0458-4417-aa03-27c4fe2a873c
@@ -272,16 +268,11 @@ function example_convex_hull_voronoi_delaunay(; n = 10, raster = 10)
     triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i in 1:n])...)
     return try
         (triout, vorout) = triangulate("vcDQ", triin)
-        doplot() do figure
-            plot_in_out(
-                Plotter,
-                triin,
-                triout;
-                figure,
-                voronoi = vorout,
-                title = "Convex hull with Voronoi diagram",
-            )
-        end
+        plot_in_out(
+            triin,
+            triout;
+            voronoi = vorout,
+        )
     catch err
         if typeof(err) == TriangulateError
             println("Triangle had some problem.")
@@ -301,9 +292,7 @@ function example_cdt(; n = 10, raster = 10)
     triin.segmentlist = Matrix{Cint}([1 2; npt - 1 npt - 2; 1 npt]')
     triin.segmentmarkerlist = Vector{Cint}([2, 3, 4])
     (triout, vorout) = triangulate("pcQ", triin)
-    return doplot() do figure
-        plot_in_out(Plotter, triin, triout; figure, title = "CDT")
-    end
+    return plot_in_out(triin, triout)
 end;
 
 # ╔═╡ 910ce428-4989-4b08-8037-887dae5c847e
@@ -316,9 +305,7 @@ function example_domain_cdt()
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 5; 5 1]')
     triin.segmentmarkerlist = Vector{Int32}([1, 2, 3, 4, 5])
     (triout, vorout) = triangulate("pQ", triin)
-    return doplot() do figure
-        plot_in_out(Plotter, triin, triout; figure, title = "Domain CDT")
-    end
+    return plot_in_out(triin, triout)
 end;
 
 # ╔═╡ fc5264cf-b1f7-43c5-bcff-09e6274ca215
@@ -332,17 +319,12 @@ function example_domain_cdt_area(; maxarea = 0.05)
     triin.segmentmarkerlist = Vector{Int32}([1, 2, 3, 4, 5])
     area = @sprintf("%.15f", maxarea) # Don't use exponential format!
     (triout, vorout) = triangulate("pa$(area)Q", triin)
-    return doplot() do figure
-        plot_in_out(
-            Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Domain CDT with area constraint",
-            circumcircles = true,
-        )
-    end
+    return plot_in_out(
+        triin,
+        triout;
+        voronoi = vorout,
+        circumcircles = true,
+    )
 end;
 
 # ╔═╡ cd007961-7f0e-4c56-9c86-1a9827a71e3e
@@ -356,17 +338,11 @@ function example_domain_bcdt_area(; maxarea = 0.05)
     triin.segmentmarkerlist = Vector{Int32}([1, 2, 3, 4, 5])
     area = @sprintf("%.15f", maxarea)
     (triout, vorout) = triangulate("pa$(area)DQ", triin)
-    return doplot() do figure
-        plot_in_out(
-            Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Boundary conforming Delaunay triangulation",
-            circumcircles = true,
-        )
-    end
+    return plot_in_out(
+        triin,
+        triout;
+        circumcircles = true,
+    )
 end;
 
 # ╔═╡ a0cb6060-8278-444a-a4e5-46055d98616c
@@ -381,16 +357,10 @@ function example_domain_qcdt_area(; minangle = 20, maxarea = 0.05)
     area = @sprintf("%.15f", maxarea)
     angle = @sprintf("%.15f", minangle)
     (triout, vorout) = triangulate("pa$(area)q$(angle)", triin)
-    return doplot() do figure
-        plot_in_out(
-            Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Quality triangulation",
-        )
-    end
+    return plot_in_out(
+        triin,
+        triout
+    )
 end;
 
 # ╔═╡ 4e7dad4d-7d3c-4201-a56f-28e3df51e885
@@ -417,16 +387,11 @@ function example_domain_localref(; minangle = 20)
     triin.segmentmarkerlist = Vector{Int32}([1, 2, 3, 4, 5])
     angle = @sprintf("%.15f", minangle)
     (triout, vorout) = triangulate("pauq$(angle)Q", triin)
-    return doplot() do figure
-        plot_in_out(
-            Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Quality triangulation with local refinement",
-        )
-    end
+    return plot_in_out(
+        triin,
+        triout;
+        voronoi = vorout,
+    )
 end;
 
 # ╔═╡ 3c88e5cb-5e85-4146-a6d7-3682f4b9a892
@@ -440,17 +405,12 @@ function example_domain_regions(; minangle = 20)
     triin.segmentmarkerlist = Vector{Int32}([1, 2, 3, 4, 5, 6, 7])
     triin.regionlist = Matrix{Cdouble}([0.2 0.8; 0.2 0.2; 1 2; 0.01 0.05])
     angle = @sprintf("%.15f", minangle)
-    (triout, vorout) = triangulate("paAq$(angle)Q", triin)
-    return doplot() do figure
-        plot_in_out(
-            Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Hetero domain triangulation",
-        )
-    end
+    (triout, vorout) = triangulate("paAq$(angle)Qv", triin)
+    return plot_in_out(
+        triin,
+        triout;
+        voronoi = vorout
+    )
 end;
 
 # ╔═╡ 58dbd0e3-b34f-44ec-905a-488c7bbd07ca
@@ -482,25 +442,38 @@ function example_domain_holes(; minangle = 20, maxarea = 0.001)
     angle = @sprintf("%.15f", minangle)
     (triout, vorout) = triangulate("pa$(area)q$(angle)Q", triin)
 
-    return doplot() do figure
-        plot_in_out(
-            Plotter,
-            triin,
-            triout;
-            figure,
-            voronoi = vorout,
-            title = "Domain with holes",
-        )
-    end
+    return plot_in_out(
+        triin,
+        triout;
+        voronoi = vorout,
+    )
 end;
 
 # ╔═╡ 6545d149-d4dd-4f26-8f51-5db90f6b444d
 example_domain_holes(; minangle = 20, maxarea = 0.05)
 
+# ╔═╡ 9447e874-22ce-4b99-9037-e0d202430ee2
+# Wrap "Pyplotting" into this function in order to shield calling code
+# from all these peculiarities.
+function doplot(f; w = 650, h = 300)
+    fig = nothing
+    if Triangulate.ispyplot(Plotter)
+        Plotter.close()
+        Plotter.clf()
+        fig = Plotter.figure(1; dpi = 100)
+        fig.set_size_inches(w / 100, h / 100; forward = true)
+    end
+    if Triangulate.ismakie(Plotter)
+        fig = Plotter.Figure(; size = (w, h))
+    end
+    return f(fig)
+end;
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+GridVisualize = "5eed8a63-0fb0-45eb-886d-8d5a387d12b8"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
@@ -509,6 +482,7 @@ Triangulate = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 
 [compat]
 CairoMakie = "~0.12.16"
+GridVisualize = "~1.13.0"
 PlutoUI = "~0.7.60"
 Revise = "~3.6.2"
 Triangulate = "~2.3.3"
@@ -520,7 +494,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.9"
 manifest_format = "2.0"
-project_hash = "88b2dccafa4b3a9e1cfc3c42359e71a3c241cfa1"
+project_hash = "840ae6b0486334a36099c3722cc3cb6a32c89c19"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -581,6 +555,12 @@ version = "0.8.9"
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
 version = "1.1.1"
 
+[[deps.ArnoldiMethod]]
+deps = ["LinearAlgebra", "Random", "StaticArrays"]
+git-tree-sha1 = "d57bd3762d308bded22c3b82d033bff85f6195c6"
+uuid = "ec485272-7323-5ecc-a04f-4719b315124d"
+version = "0.4.0"
+
 [[deps.ArrayLayouts]]
 deps = ["FillArrays", "LinearAlgebra"]
 git-tree-sha1 = "492681bc44fac86804706ddb37da10880a2bd528"
@@ -614,6 +594,11 @@ version = "0.4.7"
 
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
+
+[[deps.Bijections]]
+git-tree-sha1 = "6aaafea90a56dc1fc8cbc15e3cf26d6bc81eb0a3"
+uuid = "e2ed5e7c-b2de-5872-ae92-c73ca462fb04"
+version = "0.1.10"
 
 [[deps.BlockArrays]]
 deps = ["ArrayLayouts", "FillArrays", "LinearAlgebra"]
@@ -680,6 +665,12 @@ deps = ["InteractiveUtils", "UUIDs"]
 git-tree-sha1 = "7eee164f122511d3e4e1ebadb7956939ea7e1c77"
 uuid = "da1fd8a2-8d9e-5ec2-8556-3022fb5608a2"
 version = "1.3.6"
+
+[[deps.CodecZlib]]
+deps = ["TranscodingStreams", "Zlib_jll"]
+git-tree-sha1 = "962834c22b66e32aa10f7611c08c8ca4e20749a9"
+uuid = "944b1d66-785c-5afd-91f1-9de20f533193"
+version = "0.7.8"
 
 [[deps.ColorBrewer]]
 deps = ["Colors", "JSON", "Test"]
@@ -809,6 +800,12 @@ git-tree-sha1 = "e3290f2d49e661fbd94046d7e3726ffcb2d41053"
 uuid = "5ae413db-bbd1-5e63-b57d-d24a61df00f5"
 version = "2.2.4+0"
 
+[[deps.ElasticArrays]]
+deps = ["Adapt"]
+git-tree-sha1 = "75e5697f521c9ab89816d3abeea806dfc5afb967"
+uuid = "fdbdab4c-e67f-52f5-8c3f-e7b388dad3d4"
+version = "1.2.12"
+
 [[deps.EnumX]]
 git-tree-sha1 = "bdb1942cd4c45e3c678fd11569d5cccd80976237"
 uuid = "4e289a0a-7415-4d19-859d-a7e5c4648b56"
@@ -825,6 +822,24 @@ deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "1c6317308b9dc757616f0b5cb379db10494443a7"
 uuid = "2e619515-83b5-522b-bb60-26c02a35a201"
 version = "2.6.2+0"
+
+[[deps.ExtendableGrids]]
+deps = ["AbstractTrees", "Bijections", "Compat", "Dates", "DocStringExtensions", "ElasticArrays", "Graphs", "InteractiveUtils", "LinearAlgebra", "Printf", "Random", "SparseArrays", "StaticArrays", "StatsBase", "UUIDs", "WriteVTK"]
+git-tree-sha1 = "cb574010e5589b94e583b7c6caac025bf99d49b6"
+uuid = "cfc395e8-590f-11e8-1f13-43a2532b2fa8"
+version = "1.13.1"
+
+    [deps.ExtendableGrids.extensions]
+    ExtendableGridsGmshExt = "Gmsh"
+    ExtendableGridsMetisExt = "Metis"
+    ExtendableGridsTetGenExt = "TetGen"
+    ExtendableGridsTriangulateExt = "Triangulate"
+
+    [deps.ExtendableGrids.weakdeps]
+    Gmsh = "705231aa-382f-11e9-3f0c-b7cb4346fdeb"
+    Metis = "2679e427-3c69-5b7f-982b-ece356f1e94b"
+    TetGen = "c5d3f3f7-f850-59f6-8a2e-ffc6dc1317ea"
+    Triangulate = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 
 [[deps.Extents]]
 git-tree-sha1 = "81023caa0021a41712685887db1fc03db26f41f5"
@@ -975,11 +990,37 @@ git-tree-sha1 = "344bf40dcab1073aca04aa0df4fb092f920e4011"
 uuid = "3b182d85-2403-5c21-9c21-1e1f0cc25472"
 version = "1.3.14+0"
 
+[[deps.Graphs]]
+deps = ["ArnoldiMethod", "DataStructures", "Distributed", "Inflate", "LinearAlgebra", "Random", "SharedArrays", "SimpleTraits", "SparseArrays", "Statistics"]
+git-tree-sha1 = "c5abfa0ae0aaee162a3fbb053c13ecda39be545b"
+uuid = "86223c79-3864-5bf0-83f7-82e725a168b6"
+version = "1.13.0"
+
 [[deps.GridLayoutBase]]
 deps = ["GeometryBasics", "InteractiveUtils", "Observables"]
 git-tree-sha1 = "fc713f007cff99ff9e50accba6373624ddd33588"
 uuid = "3955a311-db13-416c-9275-1d80ed98e5e9"
 version = "0.11.0"
+
+[[deps.GridVisualize]]
+deps = ["ColorSchemes", "Colors", "DocStringExtensions", "ElasticArrays", "ExtendableGrids", "GeometryBasics", "GridVisualizeTools", "HypertextLiteral", "Interpolations", "IntervalSets", "LinearAlgebra", "Observables", "OrderedCollections", "Printf", "StaticArrays"]
+git-tree-sha1 = "2e3e8b51b52a9fea93ad0f4cf8191ac6322f386c"
+uuid = "5eed8a63-0fb0-45eb-886d-8d5a387d12b8"
+version = "1.13.0"
+
+    [deps.GridVisualize.weakdeps]
+    CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+    GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+    Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+    PlutoVista = "646e1f28-b900-46d7-9d87-d554eb38a413"
+    PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+    WGLMakie = "276b4fcb-3e11-5398-bf8b-a0c2d153d008"
+
+[[deps.GridVisualizeTools]]
+deps = ["ColorSchemes", "Colors", "DocStringExtensions", "StaticArraysCore"]
+git-tree-sha1 = "5ed3ab329a52ecd2c7037f11522f45d6335b0865"
+uuid = "5573ae12-3b76-41d9-b48c-81d0b6e61cc5"
+version = "3.0.0"
 
 [[deps.Grisu]]
 git-tree-sha1 = "53bb909d1151e57e2484c3d1b53e19552b887fb2"
@@ -1294,6 +1335,12 @@ deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "5ee6203157c120d79034c748a2acba45b82b8807"
 uuid = "38a345b3-de98-5d2b-a5d3-14cd9215e700"
 version = "2.40.1+0"
+
+[[deps.LightXML]]
+deps = ["Libdl", "XML2_jll"]
+git-tree-sha1 = "3a994404d3f6709610701c7dabfc03fed87a81f8"
+uuid = "9c8b4983-aa76-5018-a973-4c85ecc9e179"
+version = "0.9.1"
 
 [[deps.LinearAlgebra]]
 deps = ["Libdl", "OpenBLAS_jll", "libblastrampoline_jll"]
@@ -1915,6 +1962,11 @@ weakdeps = ["ConstructionBase", "InverseFunctions"]
     ConstructionBaseUnitfulExt = "ConstructionBase"
     InverseFunctionsUnitfulExt = "InverseFunctions"
 
+[[deps.VTKBase]]
+git-tree-sha1 = "c2d0db3ef09f1942d08ea455a9e252594be5f3b6"
+uuid = "4004b06d-e244-455f-a6ce-a5f9919cc534"
+version = "1.0.1"
+
 [[deps.WebP]]
 deps = ["CEnum", "ColorTypes", "FileIO", "FixedPointNumbers", "ImageCore", "libwebp_jll"]
 git-tree-sha1 = "aa1ca3c47f119fbdae8770c29820e5e6119b83f2"
@@ -1926,6 +1978,12 @@ deps = ["LinearAlgebra", "SparseArrays"]
 git-tree-sha1 = "c1a7aa6219628fcd757dede0ca95e245c5cd9511"
 uuid = "efce3f68-66dc-5838-9240-27a6d6f5f9b6"
 version = "1.0.0"
+
+[[deps.WriteVTK]]
+deps = ["Base64", "CodecZlib", "FillArrays", "LightXML", "TranscodingStreams", "VTKBase"]
+git-tree-sha1 = "a329e0b6310244173690d6a4dfc6d1141f9b9370"
+uuid = "64499a7a-5c06-52f2-abe2-ccb03c286192"
+version = "1.21.2"
 
 [[deps.XML2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Libiconv_jll", "Zlib_jll"]
@@ -2128,6 +2186,7 @@ version = "3.6.0+0"
 # ╠═3dfe5acd-72f7-4510-b3a0-40364f679073
 # ╠═6545d149-d4dd-4f26-8f51-5db90f6b444d
 # ╟─9a090bba-093b-4ca4-a186-1c43b52cd4ff
+# ╠═2272dcef-b376-4a0a-aaeb-214af9297858
 # ╠═9447e874-22ce-4b99-9037-e0d202430ee2
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
