@@ -18,7 +18,7 @@ using Printf
 #
 # This is obtained by
 # specifying the "p" flag.
-function example_domain_cdt(; Plotter = nothing)
+function example_domain_cdt()
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}([0.0 0.0; 1.0 0.0; 1.0 1.0; 0.6 0.6; 0.0 1.0]')
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 5; 5 1]')
@@ -38,7 +38,7 @@ end
 # it to a string before using `@sprintf`.
 # Specifying only the maximum area constraint does not prevent very thin
 # triangles from occurring at the boundary.
-function example_domain_cdt_area(; Plotter = nothing, maxarea = 0.05)
+function example_domain_cdt_area(; maxarea = 0.05)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}([0.0 0.0; 1.0 0.0; 1.0 1.0; 0.6 0.6; 0.0 1.0]')
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 5; 5 1]')
@@ -54,7 +54,7 @@ end
 # ### Boundary conforming  Delaunay triangulation (BCDT) of a domain given by a segment list specifying its boundary
 # In addition to the area constraint specify the -D flag
 # in order to keep the triangle circumcenters  within the domain.
-function example_domain_bcdt_area(; Plotter = nothing, maxarea = 0.05)
+function example_domain_bcdt_area(; maxarea = 0.05)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}([0.0 0.0; 1.0 0.0; 1.0 1.0; 0.6 0.6; 0.0 1.0]')
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 5; 5 1]')
@@ -76,7 +76,7 @@ end
 # when creating triangulations for finite element or finite volume methods.
 # It the minimum angle is larger then 28.6 degrees, Triangle's algorithm may
 # run into an infinite loop.
-function example_domain_qcdt_area(; Plotter = nothing, minangle = 20, maxarea = 0.05)
+function example_domain_qcdt_area(; minangle = 20, maxarea = 0.05)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}([0.0 0.0; 1.0 0.0; 1.0 1.0; 0.6 0.6; 0.0 1.0]')
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 5; 5 1]')
@@ -96,7 +96,7 @@ end
 # which is activated via the "u" flag if it has been passed before calling triangulate.
 # In addition, the "q" flag  allows to specify a minimum angle
 # constraint preventing skinny triangles.
-function example_domain_localref(; Plotter = nothing, minangle = 20)
+function example_domain_localref(; minangle = 20)
     center_x = 0.6
     center_y = 0.6
     localdist = 0.1
@@ -133,7 +133,7 @@ end
 # With the "A" flag, the subdomain labels are spread to all triangles in the corresponding
 # subdomains, becoming available in `triangleattributelist[1,:]`.
 # With the "a" flag, the area constraints are applied in the corresponding subdomains.
-function example_domain_regions(; Plotter = nothing, minangle = 20)
+function example_domain_regions(; minangle = 20)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}([0.0 0.0; 0.5 0.0; 1.0 0.0; 1.0 1.0; 0.6 0.6; 0.0 1.0]')
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 5; 5 6; 6 1; 2 5]')
@@ -154,7 +154,7 @@ end
 # The segment list specifies its boundary and the boundaries of the holes.
 # An additional hole list is specified which provides "hole points" in `holelist[1,:]`
 # and `holelist[2,:]`.
-function example_domain_holes(; Plotter = nothing, minangle = 20, maxarea = 0.001)
+function example_domain_holes(; minangle = 20, maxarea = 0.001)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}(
         [

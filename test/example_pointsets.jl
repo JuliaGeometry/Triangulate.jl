@@ -31,7 +31,7 @@ using Test
 # For this and the next examples, the input list of points is created randomly,
 # but on a raster, preventing the appearance of too close points.
 #
-function example_convex_hull(; Plotter = nothing, n = 10, raster = 10)
+function example_convex_hull(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i in 1:n])...)
     (triout, vorout) = triangulate("Q", triin)
@@ -47,7 +47,7 @@ end
 # describing the boundary of the convex hull. In fact this is a constrained
 # Delaunay triangulation (CDT) where the boundary segments
 # are the seen constraining edges which must appear in the output.
-function example_convex_hull_with_boundary(; Plotter = nothing, n = 10, raster = 10)
+function example_convex_hull_with_boundary(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i in 1:n])...)
     (triout, vorout) = triangulate("cQ", triin)
@@ -70,7 +70,7 @@ end
 # of the convex hull are of infinite size. The corners of the Voronoi
 # cells are the circumcenters of the triangles. They can be far
 # outside of the triangulated domain.
-function example_convex_hull_voronoi(; Plotter = nothing, n = 10, raster = 10)
+function example_convex_hull_voronoi(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i in 1:n])...)
     (triout, vorout) = triangulate("vQ", triin)
@@ -88,7 +88,7 @@ end
 # lie within the convex hull.
 # Due to random input, there may be situations where Triangle fails with this task,
 # so we check for the corresponding exception.
-function example_convex_hull_voronoi_delaunay(; Plotter = nothing, n = 10, raster = 10)
+function example_convex_hull_voronoi_delaunay(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i in 1:n])...)
     return try
@@ -113,7 +113,7 @@ end
 # which should become edges of the triangulation. Note that
 # the resulting triangulation is not Delaunay in the sense
 # given above.
-function example_cdt(; Plotter = nothing, n = 10, raster = 10)
+function example_cdt(; n = 10, raster = 10)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = hcat(unique([Cdouble[rand(1:raster) / raster, rand(1:raster) / raster] for i in 1:n])...)
     npt = size(triin.pointlist, 2)
