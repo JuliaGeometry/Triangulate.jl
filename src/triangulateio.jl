@@ -586,5 +586,3 @@ function triunsuitable!(unsuitable::Function; check_signature = true)
     triunsuitable_func = unsuitable
     return nothing
 end
-
-@deprecate triunsuitable(f; kwargs...) triunsuitable!(f; kwargs...)
