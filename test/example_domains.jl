@@ -13,11 +13,6 @@ using Triangulate
 using Test
 using Printf
 
-injupyter() = (isdefined(Main, :IJulia) && Main.IJulia.inited)
-
-if injupyter()
-    import PyPlot
-end
 
 # ### Constrained Delaunay triangulation (CDT) of a domain given by a segment list specifying its boundary.
 #
@@ -29,13 +24,10 @@ function example_domain_cdt(; Plotter = nothing)
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 5; 5 1]')
     triin.segmentmarkerlist = Vector{Int32}([1, 2, 3, 4, 5])
     (triout, vorout) = triangulate("pQ", triin)
-    plot_in_out(Plotter, triin, triout; title = "Domain triangulation")
     @test numberofpoints(triout) >= numberofpoints(triin)
     @test numberofsegments(triout) >= numberofsegments(triin)
     return @test numberoftriangles(triout) > 0
 end
-#
-injupyter() && example_domain_cdt(; Plotter = PyPlot);
 
 # ### Constrained Delaunay triangulation (CDT) of a domain given by a segment list specifying its boundary together with a maximum  area constraint.
 #
@@ -53,13 +45,11 @@ function example_domain_cdt_area(; Plotter = nothing, maxarea = 0.05)
     triin.segmentmarkerlist = Vector{Int32}([1, 2, 3, 4, 5])
     area = @sprintf("%.15f", maxarea) # Don't use exponential format!
     (triout, vorout) = triangulate("pa$(area)Q", triin)
-    plot_in_out(Plotter, triin, triout; voronoi = vorout, title = "Domain CDT with area constraint")
     @test numberofpoints(triout) >= numberofpoints(triin)
     @test numberofsegments(triout) >= numberofsegments(triin)
     return @test numberoftriangles(triout) > 0
 end
 #
-injupyter() && example_domain_cdt_area(; Plotter = PyPlot, maxarea = 0.05);
 
 # ### Boundary conforming  Delaunay triangulation (BCDT) of a domain given by a segment list specifying its boundary
 # In addition to the area constraint specify the -D flag
@@ -71,13 +61,11 @@ function example_domain_bcdt_area(; Plotter = nothing, maxarea = 0.05)
     triin.segmentmarkerlist = Vector{Int32}([1, 2, 3, 4, 5])
     area = @sprintf("%.15f", maxarea)
     (triout, vorout) = triangulate("pa$(area)DQ", triin)
-    plot_in_out(Plotter, triin, triout; voronoi = vorout, title = "Boundary conforming Delaunay triangulation")
     @test numberofpoints(triout) >= numberofpoints(triin)
     @test numberofsegments(triout) >= numberofsegments(triin)
     return @test numberoftriangles(triout) > 0
 end
 #
-injupyter() && example_domain_bcdt_area(; Plotter = PyPlot, maxarea = 0.05);
 
 # ### Constrained Delaunay triangulation of a domain with minimum angle condition
 #
@@ -96,13 +84,11 @@ function example_domain_qcdt_area(; Plotter = nothing, minangle = 20, maxarea = 
     area = @sprintf("%.15f", maxarea)
     angle = @sprintf("%.15f", minangle)
     (triout, vorout) = triangulate("pa$(area)Qq$(angle)", triin)
-    plot_in_out(Plotter, triin, triout; voronoi = vorout, title = "Quality triangulation")
     @test numberofpoints(triout) >= numberofpoints(triin)
     @test numberofsegments(triout) >= numberofsegments(triin)
     return @test numberoftriangles(triout) > 0
 end
 #
-injupyter() && example_domain_qcdt_area(; Plotter = PyPlot, maxarea = 0.05, minangle = 20);
 
 # ### Triangulation of a domain with refinement callback
 #
@@ -123,20 +109,18 @@ function example_domain_localref(; Plotter = nothing, minangle = 20)
         return qdist > 1.0e-5 && area > 0.1 * qdist
     end
 
-    triunsuitable(unsuitable)
+    triunsuitable!(unsuitable)
     triin = Triangulate.TriangulateIO()
     triin.pointlist = Matrix{Cdouble}([0.0 0.0; 1.0 0.0; 1.0 1.0; 0.6 0.6; 0.0 1.0]')
     triin.segmentlist = Matrix{Cint}([1 2; 2 3; 3 4; 4 5; 5 1]')
     triin.segmentmarkerlist = Vector{Int32}([1, 2, 3, 4, 5])
     angle = @sprintf("%.15f", minangle)
     (triout, vorout) = triangulate("pauq$(angle)Q", triin)
-    plot_in_out(Plotter, triin, triout; voronoi = vorout, title = "Quality triangulation with local refinement")
     @test numberofpoints(triout) >= numberofpoints(triin)
     @test numberofsegments(triout) >= numberofsegments(triin)
     return @test numberoftriangles(triout) > 0
 end
 #
-injupyter() && example_domain_localref(; Plotter = PyPlot, minangle = 20);
 
 # ### Triangulation of a heterogeneous domain
 #
@@ -158,14 +142,12 @@ function example_domain_regions(; Plotter = nothing, minangle = 20)
     angle = @sprintf("%.15f", minangle)
     (triout, vorout) = triangulate("paAq$(angle)Q", triin)
 
-    plot_in_out(Plotter, triin, triout; voronoi = vorout, title = "Hetero domain triangulation")
 
     @test numberofpoints(triout) >= numberofpoints(triin)
     @test numberofsegments(triout) >= numberofsegments(triin)
     return @test numberoftriangles(triout) > 0
 end
 #
-injupyter() && example_domain_regions(; Plotter = PyPlot, minangle = 20);
 
 # ### Triangulation of a domain with holes
 #
@@ -197,11 +179,9 @@ function example_domain_holes(; Plotter = nothing, minangle = 20, maxarea = 0.00
     angle = @sprintf("%.15f", minangle)
     (triout, vorout) = triangulate("pa$(area)q$(angle)Q", triin)
 
-    plot_in_out(Plotter, triin, triout; voronoi = vorout, title = "Domain with holes")
 
     @test numberofpoints(triout) >= numberofpoints(triin)
     @test numberofsegments(triout) >= numberofsegments(triin)
     return @test numberoftriangles(triout) > 0
 end
 #
-injupyter() && example_domain_holes(; Plotter = PyPlot, minangle = 20, maxarea = 0.05);
