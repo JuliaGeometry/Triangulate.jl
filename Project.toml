@@ -16,7 +16,7 @@ PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
 [compat]
 CairoMakie = "0.10, 0.11, 0.12, 0.13, 0.14"
 DocStringExtensions = "0.8, 0.9"
-GLMakie = "0.8,0.9, 0.10, 0.11, 0.12"
+GLMakie = "0.8,0.9, 0.10, 0.11, 0.12, 0.13"
 Printf = "1.6"
 PyPlot = "2"
 Triangle_jll = "1.6.2"
