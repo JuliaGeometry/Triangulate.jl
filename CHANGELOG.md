@@ -1,8 +1,9 @@
 # Major changes
 
-## v3.0 planned
-- Remove plotting code (`plot_in_out`, `plot_triangulateio`, `tricircumcenter!`)
-- Remove deprecated `triunsuitable`
+## v3.0.0 June 22, 2025
+- Removed plotting code (`plot_in_out`, `plot_triangulateio`, `tricircumcenter!`), and thus
+all Makie and Pyplot compat entries. Plotting for triangulateio structs moved to [GridVisualize.jl](https://wias-pdelib.github.io/GridVisualize.jl/stable/api/#Plotting-TriangulateIO)
+- Removed deprecated `triunsuitable`
 
 ## v2.5.1 June 22, 2025
 - Bump Makie compat to include 0.25
