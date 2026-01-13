@@ -1,9 +1,7 @@
-````@eval
-using Markdown
-Markdown.parse("""
-$(read("../../README.md",String))
-""")
-````
+```@docs
+Triangulate
+```
+
 ## Copyright information
 
 This is the copyright information of the original Triangle code.

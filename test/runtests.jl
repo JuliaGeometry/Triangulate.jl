@@ -1,4 +1,6 @@
 using Test
+using Triangulate
+using ExplicitImports, Aqua
 
 modname(fname) = splitext(basename(fname))[1]
 
@@ -30,6 +32,29 @@ function run_tests_from_directory(testdir, prefix)
     end
 end
 
-@time begin
+@testset "functionality" begin
     run_tests_from_directory(@__DIR__, "test_")
+end
+
+
+@testset "ExplicitImports" begin
+    @test ExplicitImports.check_no_implicit_imports(Triangulate, skip = (Base, Core)) === nothing
+    @test ExplicitImports.check_all_explicit_imports_via_owners(Triangulate) === nothing
+    @static if VERSION >= v"1.11.0"
+        @test ExplicitImports.check_all_explicit_imports_are_public(Triangulate) === nothing
+        @test ExplicitImports.check_all_qualified_accesses_are_public(Triangulate) === nothing
+    end
+    @test ExplicitImports.check_no_stale_explicit_imports(Triangulate, ignore = (:README,)) === nothing
+    @test ExplicitImports.check_all_qualified_accesses_via_owners(Triangulate) === nothing
+    @test ExplicitImports.check_no_self_qualified_accesses(Triangulate) === nothing
+end
+
+@testset "Aqua" begin
+    Aqua.test_all(Triangulate)
+end
+
+if isdefined(Docs, :undocumented_names)
+    @testset "UndocumentedNames" begin
+        @test isempty(Docs.undocumented_names(Triangulate))
+    end
 end
