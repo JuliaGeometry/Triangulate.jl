@@ -1,6 +1,9 @@
+"""
+$(README)
+"""
 module Triangulate
-using DocStringExtensions
-using Triangle_jll
+using DocStringExtensions: DocStringExtensions, TYPEDEF, TYPEDFIELDS, TYPEDSIGNATURES, README
+using Triangle_jll: Triangle_jll, libtriangle
 
 include("ctriangulateio.jl")
 include("triangulateio.jl")
